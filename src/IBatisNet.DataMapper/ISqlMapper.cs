@@ -41,7 +41,7 @@ using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
-using IBatisNet.DataMapper.SessionStore;
+//using IBatisNet.DataMapper.SessionStore;
 using IBatisNet.DataMapper.TypeHandlers;
 using IBatisNet.Common.Utilities;
 #endregion

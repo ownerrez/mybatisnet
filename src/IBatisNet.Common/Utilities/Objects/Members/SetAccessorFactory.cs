@@ -72,7 +72,7 @@ namespace IBatisNet.Common.Utilities.Objects.Members
                     assemblyName.Name = "iBATIS.FastSetAccessor" + HashCodeProvider.GetIdentityHashCode(this).ToString();
 
                     // Create a new assembly with one module
-                    _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+                    _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
                     _moduleBuilder = _assemblyBuilder.DefineDynamicModule(assemblyName.Name + ".dll");
 
                     _createPropertySetAccessor = new CreatePropertySetAccessor(CreatePropertyAccessor);

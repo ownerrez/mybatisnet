@@ -44,7 +44,7 @@ using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.Scope;
-using IBatisNet.DataMapper.SessionStore;
+//using IBatisNet.DataMapper.SessionStore;
 using IBatisNet.DataMapper.TypeHandlers;
 
 #endregion
@@ -78,7 +78,7 @@ namespace IBatisNet.DataMapper
 		/// <summary>
 		/// Container session unique for each thread. 
 		/// </summary>
-        private ISessionStore _sessionStore = null;
+        //private ISessionStore _sessionStore = null;
         private IObjectFactory _objectFactory = null;
         private AccessorFactory _accessorFactory = null;
         private DataExchangeFactory _dataExchangeFactory = null;
@@ -101,10 +101,10 @@ namespace IBatisNet.DataMapper
         /// <example>
         /// sqlMapper.SessionStore = new HybridWebThreadSessionStore( sqlMapper.Id );
         /// </example>
-        public ISessionStore SessionStore
-        {
-            set { _sessionStore = value; }
-        }
+        //public ISessionStore SessionStore
+        //{
+        //    set { _sessionStore = value; }
+        //}
 	    
 		/// <summary>
 		///  Returns the DalSession instance 
@@ -197,7 +197,7 @@ namespace IBatisNet.DataMapper
 
             _dataExchangeFactory = new DataExchangeFactory(_typeHandlerFactory, _objectFactory, accessorFactory);
 			_id = HashCodeProvider.GetIdentityHashCode(this).ToString();
-            _sessionStore = SessionStoreFactory.GetSessionStore(_id);
+            //_sessionStore = SessionStoreFactory.GetSessionStore(_id);
 		}
 		#endregion
 
