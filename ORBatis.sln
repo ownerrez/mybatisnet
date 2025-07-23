@@ -6,11 +6,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Common", "ORBatis.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework", "ORBatis.Framework\ORBatis.Framework.csproj", "{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework.Test", "ORBatis.Framework.Test\ORBatis.Framework.Test.csproj", "{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Test.Framework", "ORBatis.Test.Framework\ORBatis.Test.Framework.csproj", "{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Test.Common", "ORBatis.Test.Common\ORBatis.Test.Common.csproj", "{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Core.Test", "ORBatis.Core.Test\ORBatis.Core.Test.csproj", "{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Test.Core", "ORBatis.Test.Core\ORBatis.Test.Core.csproj", "{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

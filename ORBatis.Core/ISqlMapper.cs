@@ -55,29 +55,6 @@ public interface ISqlMapper
     string Id { get; }
 
     /// <summary>
-    /// Allow to set a custom session store like the <see cref="HybridWebThreadSessionStore"/>
-    /// </summary>
-    /// <remarks>Set it after the configuration and before use of the <see cref="SqlMapper"/></remarks>
-    /// <example>
-    /// sqlMapper.SessionStore = new HybridWebThreadSessionStore( sqlMapper.Id );
-    /// </example>
-    //ISessionStore SessionStore { set; }
-
-    /// <summary>
-    /// Gets a value indicating whether this instance is session started.
-    /// </summary>
-    /// <value>
-    /// 	<c>true</c> if this instance is session started; otherwise, <c>false</c>.
-    /// </value>
-    //bool IsSessionStarted { get; }
-
-    /// <summary>
-    ///  Returns the DalSession instance 
-    ///  currently being used by the SqlMap.
-    /// </summary>
-    //ISqlMapSession LocalSession { get; }
-
-    /// <summary>
     ///     Gets the DB helper parameter cache.
     /// </summary>
     /// <value>The DB helper parameter cache.</value>
@@ -123,74 +100,6 @@ public interface ISqlMapper
     ///     The MappedStatements collection
     /// </summary>
     HybridDictionary MappedStatements { get; }
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction();
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="openConnection">if set to <c>true</c> [open connection].</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(bool openConnection);
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="connectionString">The connection string.</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(string connectionString);
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="openNewConnection">if set to <c>true</c> [open new connection].</param>
-    ///// <param name="isolationLevel">The isolation level.</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(bool openNewConnection, IsolationLevel isolationLevel);
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="connectionString">The connection string.</param>
-    ///// <param name="openNewConnection">if set to <c>true</c> [open new connection].</param>
-    ///// <param name="isolationLevel">The isolation level.</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(string connectionString, bool openNewConnection, IsolationLevel isolationLevel);
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="isolationLevel">The isolation level.</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(IsolationLevel isolationLevel);
-
-    ///// <summary>
-    ///// Begins the transaction.
-    ///// </summary>
-    ///// <param name="connectionString">The connection string.</param>
-    ///// <param name="isolationLevel">The isolation level.</param>
-    ///// <returns></returns>
-    //ISqlMapSession BeginTransaction(string connectionString, IsolationLevel isolationLevel);
-
-    ///// <summary>
-    ///// Closes the connection.
-    ///// </summary>
-    //void CloseConnection();
-
-    ///// <summary>
-    ///// Commits the transaction.
-    ///// </summary>
-    ///// <param name="closeConnection">if set to <c>true</c> [close connection].</param>
-    //void CommitTransaction(bool closeConnection);
-
-    ///// <summary>
-    ///// Commits the transaction.
-    ///// </summary>
-    //void CommitTransaction();
 
     /// <summary>
     ///     Gets or sets the data source.

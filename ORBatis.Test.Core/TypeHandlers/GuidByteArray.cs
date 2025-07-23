@@ -2,7 +2,7 @@
 using IBatisNet.DataMapper.TypeHandlers;
 
 
-namespace ORBatis.Framework.Test.TypeHandlers;
+namespace ORBatis.Test.Core.TypeHandlers;
 
 public class GuidByteArray : ITypeHandlerCallback
 {

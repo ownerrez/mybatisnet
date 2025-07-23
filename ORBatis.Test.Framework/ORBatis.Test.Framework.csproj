@@ -9,8 +9,8 @@
         <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ORBatis.Framework.Test</RootNamespace>
-        <AssemblyName>ORBatis.Framework.Test</AssemblyName>
+        <RootNamespace>ORBatis.Test.Framework</RootNamespace>
+        <AssemblyName>ORBatis.Test.Framework</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>13</LangVersion>
