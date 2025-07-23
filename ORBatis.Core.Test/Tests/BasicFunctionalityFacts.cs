@@ -12,7 +12,7 @@ public class Tests
     public void Basic_AbleToSelectHolidays()
     {
         var sqlMapConfig = IBatisNet.Common.Utilities.Resources.GetEmbeddedResourceAsXmlDocument("ORBatis.Core.Test.Config.SqlMap.config, ORBatis.Core.Test");
-        var defaultConnectionString = "server=localhost;pwd=38wk1dr28t34r7d82dir9;uid=ownerrez_dev;database=ownerrez_dev;charset=utf8mb4;ConnectionReset=true";
+        var defaultConnectionString = "server=127.0.0.1;pwd=38wk1dr28t34r7d82dir9;uid=ownerrez_dev;database=ownerrez_dev;charset=utf8mb4;ConnectionReset=true";
         var builder = new DomSqlMapBuilder()
         {
             Properties = new NameValueCollection()
