@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework", "ORBati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework.Test", "ORBatis.Framework.Test\ORBatis.Framework.Test.csproj", "{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Test.Common", "ORBatis.Test.Common\ORBatis.Test.Common.csproj", "{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Core.Test", "ORBatis.Core.Test\ORBatis.Core.Test.csproj", "{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD6BE8B9-AEF0-4D00-8B58-125A15F328C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC6A1A7-8DCB-43E5-8F4D-7F9A9C1875C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

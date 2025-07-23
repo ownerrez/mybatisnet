@@ -114,5 +114,8 @@
         <Name>ORBatis.Test.Common</Name>
       </ProjectReference>
     </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Config\Definitions\Holiday.xml" />
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

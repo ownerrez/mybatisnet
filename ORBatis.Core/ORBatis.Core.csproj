@@ -4,7 +4,8 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>ORBatisCore</RootNamespace>
+        <AssemblyName>IBatisNet.DataMapper</AssemblyName>
+        <RootNamespace>IBatisNet.DataMapper</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
