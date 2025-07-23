@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.MappedStatements;
+using System.Collections;
 
 namespace IBatisNet.DataMapper.Proxy
 {

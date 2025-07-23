@@ -24,27 +24,27 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.Cache;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for CacheModelDeSerializer.
-	/// </summary>
-	public sealed class CacheModelDeSerializer
+    /// <summary>
+    ///     Summary description for CacheModelDeSerializer.
+    /// </summary>
+    public sealed class CacheModelDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a CacheModel object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <param name="configScope"></param>
-	    /// <returns></returns>
-	    public static CacheModel Deserialize(XmlNode node, ConfigurationScope configScope)
+        /// <summary>
+        ///     Deserialize a CacheModel object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="configScope"></param>
+        /// <returns></returns>
+        public static CacheModel Deserialize(XmlNode node, ConfigurationScope configScope)
         {
             var model = new CacheModel();
 

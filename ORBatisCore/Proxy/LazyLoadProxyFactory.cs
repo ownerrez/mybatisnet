@@ -23,11 +23,11 @@
  ********************************************************************************/
 #endregion
 
-using System.Reflection;
 using Castle.DynamicProxy;
 using IBatisNet.Common.Logging;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.MappedStatements;
+using System.Reflection;
 
 namespace IBatisNet.DataMapper.Proxy;
 

@@ -24,8 +24,8 @@
 #endregion
 
 #region Imports
-using System.Collections;
 using IBatisNet.DataMapper.Exceptions;
+using System.Collections;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
@@ -38,11 +38,11 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public sealed class IterateContext : IEnumerator
 {
-	/// <summary>
-	///     Constructor
-	/// </summary>
-	/// <param name="collection"></param>
-	public IterateContext(object collection)
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="collection"></param>
+    public IterateContext(object collection)
     {
         if (collection is ICollection)
         {
@@ -70,26 +70,26 @@ public sealed class IterateContext : IEnumerator
         Index = -1;
     }
 
-	/// <summary>
-	///     Gets the index of the current element in the collection.
-	/// </summary>
-	public int Index { get; private set; } = -1;
+    /// <summary>
+    ///     Gets the index of the current element in the collection.
+    /// </summary>
+    public int Index { get; private set; } = -1;
 
-	/// <summary>
-	///     Return true if the current element is the first.
-	/// </summary>
-	public bool IsFirst => Index == 0;
+    /// <summary>
+    ///     Return true if the current element is the first.
+    /// </summary>
+    public bool IsFirst => Index == 0;
 
-	/// <summary>
-	///     Return true if the current element is the last.
-	/// </summary>
-	public bool IsLast => Index == _items.Count - 1;
+    /// <summary>
+    ///     Return true if the current element is the last.
+    /// </summary>
+    public bool IsLast => Index == _items.Count - 1;
 
-	/// <summary>
-	///     Returns true if the iteration has more elements. (In other words, returns true
-	///     if next would return an element rather than throwing an exception.)
-	/// </summary>
-	public bool HasNext
+    /// <summary>
+    ///     Returns true if the iteration has more elements. (In other words, returns true
+    ///     if next would return an element rather than throwing an exception.)
+    /// </summary>
+    public bool HasNext
     {
         get
         {
@@ -99,23 +99,23 @@ public sealed class IterateContext : IEnumerator
         }
     }
 
-	/// <summary>
-	///     Sets the enumerator to its initial position,
-	///     which is before the first element in the collection.
-	/// </summary>
-	public void Reset()
+    /// <summary>
+    ///     Sets the enumerator to its initial position,
+    ///     which is before the first element in the collection.
+    /// </summary>
+    public void Reset()
     {
         Index = -1;
     }
 
-	/// <summary>
-	///     Advances the enumerator to the next element of the collection.
-	/// </summary>
-	/// <returns>
-	///     True if the enumerator was successfully advanced to the next element;
-	///     False if the enumerator has passed the end of the collection.
-	/// </returns>
-	public bool MoveNext()
+    /// <summary>
+    ///     Advances the enumerator to the next element of the collection.
+    /// </summary>
+    /// <returns>
+    ///     True if the enumerator was successfully advanced to the next element;
+    ///     False if the enumerator has passed the end of the collection.
+    /// </returns>
+    public bool MoveNext()
     {
         Index++;
         if (Index == _items.Count)
@@ -124,15 +124,15 @@ public sealed class IterateContext : IEnumerator
         return true;
     }
 
-	/// <summary>
-	///     Gets the current element in the collection.
-	/// </summary>
-	public object Current => _items[Index];
+    /// <summary>
+    ///     Gets the current element in the collection.
+    /// </summary>
+    public object Current => _items[Index];
 
-	/// <summary>
-	///     Removes from the underlying collection the last element returned by the iterator.
-	/// </summary>
-	public void Remove()
+    /// <summary>
+    ///     Removes from the underlying collection the last element returned by the iterator.
+    /// </summary>
+    public void Remove()
     {
         if (_collection is IList)
             ((IList)_collection).Remove(Current);

@@ -24,17 +24,17 @@
 #endregion
 
 #region Using
-using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Xml;
 using IBatisNet.Common;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Configuration;
 using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.TypeHandlers;
+using System;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Scope

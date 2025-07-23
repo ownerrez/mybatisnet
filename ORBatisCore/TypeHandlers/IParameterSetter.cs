@@ -40,13 +40,13 @@ namespace IBatisNet.DataMapper.TypeHandlers;
 /// </remarks>
 public interface IParameterSetter
 {
-	/// <summary>
-	///     Returns the underlying IDataParameter
-	/// </summary>
-	IDataParameter DataParameter { get; }
+    /// <summary>
+    ///     Returns the underlying IDataParameter
+    /// </summary>
+    IDataParameter DataParameter { get; }
 
-	/// <summary>
-	///     Get the parameter value
-	/// </summary>
-	object Value { set; }
+    /// <summary>
+    ///     Get the parameter value
+    /// </summary>
+    object Value { set; }
 }

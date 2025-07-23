@@ -23,8 +23,8 @@
  ********************************************************************************/
 #endregion
 
-using System.Reflection;
 using IBatisNet.DataMapper.Scope;
+using System.Reflection;
 
 namespace IBatisNet.DataMapper.MappedStatements.PostSelectStrategy;
 

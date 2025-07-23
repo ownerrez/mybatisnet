@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
+using System;
 
 namespace IBatisNet.DataMapper.DataExchange
 {

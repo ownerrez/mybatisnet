@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Data;
 
 namespace IBatisNet.DataMapper.MappedStatements.ArgumentStrategy
 {

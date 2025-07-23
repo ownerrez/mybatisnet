@@ -23,25 +23,25 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 using System;
 using System.Collections;
 using System.Xml.Serialization;
-using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     SqlTag is a children element of dynamic Sql element.
-	///     SqlTag represent any binary unary/conditional element (like isEmpty, isNull, iEquall...)
-	///     or other element as isParameterPresent, isNotParameterPresent, iterate.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     SqlTag is a children element of dynamic Sql element.
+    ///     SqlTag represent any binary unary/conditional element (like isEmpty, isNull, iEquall...)
+    ///     or other element as isParameterPresent, isNotParameterPresent, iterate.
+    /// </summary>
+    [Serializable]
     public abstract class SqlTag : ISqlChild, IDynamicParent
     {
-	    /// <summary>
-	    ///     Parent tag element
-	    /// </summary>
-	    [XmlIgnoreAttribute]
+        /// <summary>
+        ///     Parent tag element
+        /// </summary>
+        [XmlIgnoreAttribute]
         public SqlTag Parent
         {
             get => _parent;
@@ -49,10 +49,10 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
         }
 
 
-	    /// <summary>
-	    ///     Prepend attribute
-	    /// </summary>
-	    [XmlAttribute("prepend")]
+        /// <summary>
+        ///     Prepend attribute
+        /// </summary>
+        [XmlAttribute("prepend")]
         public string Prepend
         {
             get => _prepend;
@@ -60,19 +60,19 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
         }
 
 
-	    /// <summary>
-	    ///     Handler for this sql tag
-	    /// </summary>
-	    [XmlIgnoreAttribute]
+        /// <summary>
+        ///     Handler for this sql tag
+        /// </summary>
+        [XmlIgnoreAttribute]
         public ISqlTagHandler Handler
         {
             get => _handler;
             set => _handler = value;
         }
 
-	    /// <summary>
-	    /// </summary>
-	    public bool IsPrependAvailable => _prepend != null && _prepend.Length > 0;
+        /// <summary>
+        /// </summary>
+        public bool IsPrependAvailable => _prepend != null && _prepend.Length > 0;
 
         #region IDynamicParent Members
         /// <summary>

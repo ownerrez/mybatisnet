@@ -23,25 +23,25 @@
  ********************************************************************************/
 #endregion
 
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isEqual sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isEqual sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isEqual", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsEqual : Conditional
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsEqual" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsEqual(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsEqual" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsEqual(AccessorFactory accessorFactory)
         {
             Handler = new IsEqualTagHandler(accessorFactory);
         }

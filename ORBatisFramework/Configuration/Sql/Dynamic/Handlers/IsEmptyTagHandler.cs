@@ -24,11 +24,11 @@
 #endregion
 
 #region Imports
-using System;
-using System.Collections;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
+using System;
+using System.Collections;
 #endregion
 
 

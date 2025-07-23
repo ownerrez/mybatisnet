@@ -24,26 +24,26 @@
 #endregion
 
 #region Imports
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isNotEqual sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isNotEqual sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isNotEqual", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsNotEqual : Conditional
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsNotEqual" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsNotEqual(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsNotEqual" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsNotEqual(AccessorFactory accessorFactory)
         {
             Handler = new IsNotEqualTagHandler(accessorFactory);
         }

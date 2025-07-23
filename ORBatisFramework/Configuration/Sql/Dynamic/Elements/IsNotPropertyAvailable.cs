@@ -23,25 +23,25 @@
  ********************************************************************************/
 #endregion
 
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isEmpty sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isEmpty sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isNotPropertyAvailable", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsNotPropertyAvailable : BaseTag
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsNotPropertyAvailable" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsNotPropertyAvailable(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsNotPropertyAvailable" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsNotPropertyAvailable(AccessorFactory accessorFactory)
         {
             Handler = new IsNotPropertyAvailableTagHandler(accessorFactory);
         }

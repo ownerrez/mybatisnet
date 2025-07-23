@@ -24,8 +24,8 @@
 #endregion
 
 #region Imports
-using System.Text;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
+using System.Text;
 #endregion
 
 
@@ -36,32 +36,32 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public interface ISqlTagHandler
 {
-	/// <summary>
-	/// </summary>
-	bool IsPostParseRequired { get; }
+    /// <summary>
+    /// </summary>
+    bool IsPostParseRequired { get; }
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <returns></returns>
-	int DoStartFragment(SqlTagContext ctx, SqlTag tag, object parameterObject);
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <returns></returns>
+    int DoStartFragment(SqlTagContext ctx, SqlTag tag, object parameterObject);
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <param name="bodyContent"></param>
-	/// <returns></returns>
-	int DoEndFragment(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent);
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <param name="bodyContent"></param>
+    /// <returns></returns>
+    int DoEndFragment(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent);
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <param name="bodyContent"></param>
-	void DoPrepend(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent);
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <param name="bodyContent"></param>
+    void DoPrepend(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent);
 }

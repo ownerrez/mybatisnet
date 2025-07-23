@@ -30,11 +30,11 @@ using System.Data;
 
 namespace IBatisNet.DataMapper.Configuration.Statements
 {
-	/// <summary>
-	///     Construct the list of IDataParameters for the statement
-	///     and prepare the sql
-	/// </summary>
-	public class PreparedStatement
+    /// <summary>
+    ///     Construct the list of IDataParameters for the statement
+    ///     and prepare the sql
+    /// </summary>
+    public class PreparedStatement
     {
         #region Properties
         /// <summary>

@@ -24,14 +24,14 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Configuration;
-using System.Reflection;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper.MappedStatements.ArgumentStrategy;
 using IBatisNet.DataMapper.Scope;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Collections;
+using System.Configuration;
+using System.Reflection;
+using System.Xml.Serialization;
 #endregion
 
 

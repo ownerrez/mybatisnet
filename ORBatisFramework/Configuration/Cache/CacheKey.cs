@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Utilities;
 using System.Collections;
 using System.Text;
-using IBatisNet.Common.Utilities;
 
 namespace IBatisNet.DataMapper.Configuration.Cache
 {

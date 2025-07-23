@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
-using System.Collections.Generic;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.MappedStatements.PropertStrategy;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace IBatisNet.DataMapper.MappedStatements.PropertyStrategy
 {

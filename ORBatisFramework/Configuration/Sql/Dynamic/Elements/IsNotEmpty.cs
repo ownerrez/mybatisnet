@@ -24,26 +24,26 @@
 #endregion
 
 #region Imports
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isNotEmpty sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isNotEmpty sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isNotEmpty", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsNotEmpty : BaseTag
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsNotEmpty" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsNotEmpty(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsNotEmpty" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsNotEmpty(AccessorFactory accessorFactory)
         {
             Handler = new IsNotEmptyTagHandler(accessorFactory);
         }

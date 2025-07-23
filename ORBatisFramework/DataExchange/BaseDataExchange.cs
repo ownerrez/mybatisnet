@@ -28,24 +28,24 @@ using IBatisNet.DataMapper.Configuration.ResultMapping;
 
 namespace IBatisNet.DataMapper.DataExchange
 {
-	/// <summary>
-	///     Summary description for BaseDataExchange.
-	/// </summary>
-	public abstract class BaseDataExchange : IDataExchange
+    /// <summary>
+    ///     Summary description for BaseDataExchange.
+    /// </summary>
+    public abstract class BaseDataExchange : IDataExchange
     {
-	    /// <summary>
-	    ///     Constructor
-	    /// </summary>
-	    /// <param name="dataExchangeFactory"></param>
-	    public BaseDataExchange(DataExchangeFactory dataExchangeFactory)
+        /// <summary>
+        ///     Constructor
+        /// </summary>
+        /// <param name="dataExchangeFactory"></param>
+        public BaseDataExchange(DataExchangeFactory dataExchangeFactory)
         {
             DataExchangeFactory = dataExchangeFactory;
         }
 
-	    /// <summary>
-	    ///     Getter for the factory that created this object
-	    /// </summary>
-	    public DataExchangeFactory DataExchangeFactory { get; }
+        /// <summary>
+        ///     Getter for the factory that created this object
+        /// </summary>
+        public DataExchangeFactory DataExchangeFactory { get; }
 
         #region IDataExchange Members
         /// <summary>

@@ -24,10 +24,10 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers;
@@ -37,13 +37,13 @@ namespace IBatisNet.DataMapper.Configuration.Serializers;
 /// </summary>
 public sealed class ParameterPropertyDeSerializer
 {
-	/// <summary>
-	///     Deserialize a ResultMap object
-	/// </summary>
-	/// <param name="node"></param>
-	/// <param name="configScope"></param>
-	/// <returns></returns>
-	public static ParameterProperty Deserialize(XmlNode node, ConfigurationScope configScope)
+    /// <summary>
+    ///     Deserialize a ResultMap object
+    /// </summary>
+    /// <param name="node"></param>
+    /// <param name="configScope"></param>
+    /// <returns></returns>
+    public static ParameterProperty Deserialize(XmlNode node, ConfigurationScope configScope)
     {
         var property = new ParameterProperty();
         var prop = NodeUtils.ParseAttributes(node, configScope.Properties);

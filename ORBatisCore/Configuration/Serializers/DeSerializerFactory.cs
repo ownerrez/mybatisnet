@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.Scope;
 using System.Collections;
 using System.Collections.Specialized;
-using IBatisNet.DataMapper.Scope;
 
 namespace IBatisNet.DataMapper.Configuration.Serializers;
 

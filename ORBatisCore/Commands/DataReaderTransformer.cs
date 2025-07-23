@@ -23,8 +23,8 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.Common;
+using System.Data;
 
 namespace IBatisNet.DataMapper.Commands;
 
@@ -34,12 +34,12 @@ namespace IBatisNet.DataMapper.Commands;
 /// </summary>
 public sealed class DataReaderTransformer
 {
-	/// <summary>
-	///     Creates a DataReaderAdapter from a <see cref="IDataReader" />
-	/// </summary>
-	/// <param name="reader">The <see cref="IDataReader" /> which holds the records from the Database.</param>
-	/// <param name="dbProvider">The databse provider <see cref="IDbProvider" /></param>
-	public static IDataReader Transform(IDataReader reader, IDbProvider dbProvider)
+    /// <summary>
+    ///     Creates a DataReaderAdapter from a <see cref="IDataReader" />
+    /// </summary>
+    /// <param name="reader">The <see cref="IDataReader" /> which holds the records from the Database.</param>
+    /// <param name="dbProvider">The databse provider <see cref="IDbProvider" /></param>
+    public static IDataReader Transform(IDataReader reader, IDbProvider dbProvider)
     {
         if (!dbProvider.AllowMARS && !(reader is InMemoryDataReader))
             // The underlying reader will be closed.

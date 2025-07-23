@@ -23,12 +23,12 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Logging;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using IBatisNet.Common.Logging;
 
 namespace IBatisNet.Common.Utilities.Objects;
 

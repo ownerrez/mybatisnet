@@ -24,10 +24,10 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 

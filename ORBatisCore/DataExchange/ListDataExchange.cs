@@ -34,11 +34,11 @@ namespace IBatisNet.DataMapper.DataExchange;
 /// </summary>
 public sealed class ListDataExchange : BaseDataExchange
 {
-	/// <summary>
-	///     Cosntructor
-	/// </summary>
-	/// <param name="dataExchangeFactory"></param>
-	public ListDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
+    /// <summary>
+    ///     Cosntructor
+    /// </summary>
+    /// <param name="dataExchangeFactory"></param>
+    public ListDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
 
     #region IDataExchange Members
     /// <summary>

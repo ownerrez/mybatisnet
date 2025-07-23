@@ -23,9 +23,6 @@
  ********************************************************************************/
 #endregion
 
-#region Using
-#endregion
-
 namespace IBatisNet.DataMapper.Configuration.ResultMapping;
 
 /// <summary>

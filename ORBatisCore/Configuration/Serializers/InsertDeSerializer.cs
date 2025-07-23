@@ -24,11 +24,11 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers;

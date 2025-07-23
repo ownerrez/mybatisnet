@@ -24,16 +24,16 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Xml.Serialization;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Logging;
 using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Cache;

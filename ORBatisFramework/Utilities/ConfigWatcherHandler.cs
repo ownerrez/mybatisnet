@@ -23,53 +23,53 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Logging;
 using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using IBatisNet.Common.Logging;
 
 namespace IBatisNet.Common.Utilities
 {
-	/// <summary>
-	///     Represents the method that handles calls from Configure.
-	/// </summary>
-	/// <remarks>
-	///     obj is a null object in a DaoManager context.
-	///     obj is the reconfigured sqlMap in a SqlMap context.
-	/// </remarks>
-	public delegate void ConfigureHandler(object obj);
+    /// <summary>
+    ///     Represents the method that handles calls from Configure.
+    /// </summary>
+    /// <remarks>
+    ///     obj is a null object in a DaoManager context.
+    ///     obj is the reconfigured sqlMap in a SqlMap context.
+    /// </remarks>
+    public delegate void ConfigureHandler(object obj);
 
-	/// <summary>
-	/// </summary>
-	public struct StateConfig
+    /// <summary>
+    /// </summary>
+    public struct StateConfig
     {
-	    /// <summary>
-	    ///     Master Config File name.
-	    /// </summary>
-	    public string FileName;
+        /// <summary>
+        ///     Master Config File name.
+        /// </summary>
+        public string FileName;
 
-	    /// <summary>
-	    ///     Delegate called when a file is changed, use it to rebuild.
-	    /// </summary>
-	    public ConfigureHandler ConfigureHandler;
+        /// <summary>
+        ///     Delegate called when a file is changed, use it to rebuild.
+        /// </summary>
+        public ConfigureHandler ConfigureHandler;
     }
 
-	/// <summary>
-	///     Class used to watch config files.
-	/// </summary>
-	/// <remarks>
-	///     Uses the <see cref="FileSystemWatcher" /> to monitor
-	///     changes to a specified file. Because multiple change notifications
-	///     may be raised when the file is modified, a timer is used to
-	///     compress the notifications into a single event. The timer
-	///     waits for the specified time before delivering
-	///     the event notification. If any further <see cref="FileSystemWatcher" />
-	///     change notifications arrive while the timer is waiting it
-	///     is reset and waits again for the specified time to
-	///     elapse.
-	/// </remarks>
-	public sealed class ConfigWatcherHandler
+    /// <summary>
+    ///     Class used to watch config files.
+    /// </summary>
+    /// <remarks>
+    ///     Uses the <see cref="FileSystemWatcher" /> to monitor
+    ///     changes to a specified file. Because multiple change notifications
+    ///     may be raised when the file is modified, a timer is used to
+    ///     compress the notifications into a single event. The timer
+    ///     waits for the specified time before delivering
+    ///     the event notification. If any further <see cref="FileSystemWatcher" />
+    ///     change notifications arrive while the timer is waiting it
+    ///     is reset and waits again for the specified time to
+    ///     elapse.
+    /// </remarks>
+    public sealed class ConfigWatcherHandler
     {
         #region Constructor (s) / Destructor
         /// <summary>

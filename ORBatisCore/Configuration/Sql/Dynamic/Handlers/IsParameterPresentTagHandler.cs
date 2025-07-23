@@ -33,20 +33,20 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public class IsParameterPresentTagHandler : ConditionalTagHandler
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="IsParameterPresentTagHandler" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public IsParameterPresentTagHandler(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="IsParameterPresentTagHandler" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public IsParameterPresentTagHandler(AccessorFactory accessorFactory)
         : base(accessorFactory) { }
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <returns></returns>
-	public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <returns></returns>
+    public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
     {
         return parameterObject != null;
     }

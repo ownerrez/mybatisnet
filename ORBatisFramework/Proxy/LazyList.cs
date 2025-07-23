@@ -23,12 +23,12 @@
  ********************************************************************************/
 #endregion
 
-using System;
-using System.Collections;
-using System.Reflection;
 using IBatisNet.Common.Logging;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.MappedStatements;
+using System;
+using System.Collections;
+using System.Reflection;
 
 namespace IBatisNet.DataMapper.Proxy
 {

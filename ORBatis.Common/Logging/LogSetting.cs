@@ -28,36 +28,36 @@ using System.Collections.Specialized;
 
 namespace IBatisNet.Common.Logging
 {
-	/// <summary>
-	///     Container used to hold configuration information from config file.
-	/// </summary>
-	public class LogSetting
+    /// <summary>
+    ///     Container used to hold configuration information from config file.
+    /// </summary>
+    public class LogSetting
     {
-	    /// <summary>
-	    /// </summary>
-	    /// <param name="factoryAdapterType">
-	    ///     The <see cref="ILoggerFactoryAdapter" /> type
-	    ///     that will be used for creating <see cref="ILog" />
-	    /// </param>
-	    /// <param name="properties">
-	    ///     Additional user supplied properties that are passed to the
-	    ///     <paramref name="factoryAdapterType" />'s constructor.
-	    /// </param>
-	    public LogSetting(Type factoryAdapterType, NameValueCollection properties)
+        /// <summary>
+        /// </summary>
+        /// <param name="factoryAdapterType">
+        ///     The <see cref="ILoggerFactoryAdapter" /> type
+        ///     that will be used for creating <see cref="ILog" />
+        /// </param>
+        /// <param name="properties">
+        ///     Additional user supplied properties that are passed to the
+        ///     <paramref name="factoryAdapterType" />'s constructor.
+        /// </param>
+        public LogSetting(Type factoryAdapterType, NameValueCollection properties)
         {
             FactoryAdapterType = factoryAdapterType;
             Properties = properties;
         }
 
-	    /// <summary>
-	    ///     The <see cref="ILoggerFactoryAdapter" /> type that will be used for creating <see cref="ILog" />
-	    ///     instances.
-	    /// </summary>
-	    public Type FactoryAdapterType { get; }
+        /// <summary>
+        ///     The <see cref="ILoggerFactoryAdapter" /> type that will be used for creating <see cref="ILog" />
+        ///     instances.
+        /// </summary>
+        public Type FactoryAdapterType { get; }
 
-	    /// <summary>
-	    ///     Additional user supplied properties that are passed to the <see cref="FactoryAdapterType" />'s constructor.
-	    /// </summary>
-	    public NameValueCollection Properties { get; }
+        /// <summary>
+        ///     Additional user supplied properties that are passed to the <see cref="FactoryAdapterType" />'s constructor.
+        /// </summary>
+        public NameValueCollection Properties { get; }
     }
 }

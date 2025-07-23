@@ -24,9 +24,6 @@
 #endregion
 
 #region Imports
-using System.Collections;
-using System.Data;
-using System.Text;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
@@ -35,6 +32,9 @@ using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.Scope;
+using System.Collections;
+using System.Data;
+using System.Text;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic;
@@ -174,20 +174,20 @@ internal sealed class DynamicSql : ISql, IDynamicParent
                 }
                 else
                 {
-//						if (SimpleDynamicSql.IsSimpleDynamicSql(sqlStatement)) 
-//						{
-//							sqlStatement = new SimpleDynamicSql(sqlStatement, _statement).GetSql(parameterObject);
-//							SqlText newSqlText = _paramParser.ParseInlineParameterMap( null, sqlStatement );
-//							sqlStatement = newSqlText.Text;
-//							ParameterProperty[] mappings = newSqlText.Parameters;
-//							if (mappings != null) 
-//							{
-//								for (int i = 0; i < mappings.Length; i++) 
-//								{
-//									ctx.AddParameterMapping(mappings[i]);
-//								}
-//							}
-//						}
+                    //						if (SimpleDynamicSql.IsSimpleDynamicSql(sqlStatement)) 
+                    //						{
+                    //							sqlStatement = new SimpleDynamicSql(sqlStatement, _statement).GetSql(parameterObject);
+                    //							SqlText newSqlText = _paramParser.ParseInlineParameterMap( null, sqlStatement );
+                    //							sqlStatement = newSqlText.Text;
+                    //							ParameterProperty[] mappings = newSqlText.Parameters;
+                    //							if (mappings != null) 
+                    //							{
+                    //								for (int i = 0; i < mappings.Length; i++) 
+                    //								{
+                    //									ctx.AddParameterMapping(mappings[i]);
+                    //								}
+                    //							}
+                    //						}
                     // BODY OUT
                     buffer.Append(" ");
                     buffer.Append(sqlStatement);

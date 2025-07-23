@@ -24,13 +24,13 @@
 #endregion
 
 #region Using
+using IBatisNet.Common.Utilities;
+using IBatisNet.Common.Utilities.Objects;
+using IBatisNet.DataMapper.DataExchange;
 using System;
 using System.Collections.Specialized;
 using System.Data;
 using System.Xml.Serialization;
-using IBatisNet.Common.Utilities;
-using IBatisNet.Common.Utilities.Objects;
-using IBatisNet.DataMapper.DataExchange;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.ResultMapping

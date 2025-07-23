@@ -23,8 +23,8 @@
  ********************************************************************************/
 #endregion
 
-using System.Reflection;
 using IBatisNet.Common.Logging;
+using System.Reflection;
 
 namespace IBatisNet.Common.Utilities.Objects;
 

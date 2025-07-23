@@ -24,10 +24,10 @@
 #endregion
 
 #region using
-using System.Text;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
+using System.Text;
 #endregion
 
 
@@ -38,24 +38,24 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public sealed class IterateTagHandler : BaseTagHandler
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="IterateTagHandler" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public IterateTagHandler(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="IterateTagHandler" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public IterateTagHandler(AccessorFactory accessorFactory)
         : base(accessorFactory) { }
 
-	/// <summary>
-	/// </summary>
-	public override bool IsPostParseRequired => true;
+    /// <summary>
+    /// </summary>
+    public override bool IsPostParseRequired => true;
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <returns></returns>
-	public override int DoStartFragment(SqlTagContext ctx, SqlTag tag, object parameterObject)
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <returns></returns>
+    public override int DoStartFragment(SqlTagContext ctx, SqlTag tag, object parameterObject)
     {
         var iterate = (IterateContext)ctx.GetAttribute(tag);
         if (iterate == null)
@@ -78,26 +78,26 @@ public sealed class IterateTagHandler : BaseTagHandler
     }
 
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <param name="bodyContent"></param>
-	public override void DoPrepend(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent)
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <param name="bodyContent"></param>
+    public override void DoPrepend(SqlTagContext ctx, SqlTag tag, object parameterObject, StringBuilder bodyContent)
     {
         var iterate = (IterateContext)ctx.GetAttribute(tag);
         if (iterate.IsFirst) base.DoPrepend(ctx, tag, parameterObject, bodyContent);
     }
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <param name="bodyContent"></param>
-	/// <returns></returns>
-	public override int DoEndFragment(SqlTagContext ctx, SqlTag tag,
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <param name="bodyContent"></param>
+    /// <returns></returns>
+    public override int DoEndFragment(SqlTagContext ctx, SqlTag tag,
         object parameterObject, StringBuilder bodyContent)
     {
         var iterate = (IterateContext)ctx.GetAttribute(tag);
@@ -145,12 +145,12 @@ public sealed class IterateTagHandler : BaseTagHandler
         return INCLUDE_BODY;
     }
 
-	/// <summary>
-	/// </summary>
-	/// <param name="buffer"></param>
-	/// <param name="find"></param>
-	/// <param name="replace"></param>
-	private static void Replace(StringBuilder buffer, string find, string replace)
+    /// <summary>
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="find"></param>
+    /// <param name="replace"></param>
+    private static void Replace(StringBuilder buffer, string find, string replace)
     {
         var start = buffer.ToString().IndexOf(find);
         var length = find.Length;

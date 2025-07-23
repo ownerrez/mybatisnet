@@ -40,39 +40,39 @@ namespace IBatisNet.DataMapper.TypeHandlers;
 /// </summary>
 public interface ITypeHandlerCallback
 {
-	/// <summary>
-	///     The null value for this type
-	/// </summary>
-	object NullValue { get; }
+    /// <summary>
+    ///     The null value for this type
+    /// </summary>
+    object NullValue { get; }
 
-	/// <summary>
-	///     Performs processing on a value before it is used to set
-	///     the parameter of a IDbCommand.
-	/// </summary>
-	/// <param name="setter">The interface for setting the value on the IDbCommand.</param>
-	/// <param name="parameter">The value to be set</param>
-	void SetParameter(IParameterSetter setter, object parameter);
-
-
-	/// <summary>
-	///     Performs processing on a value before after it has been retrieved
-	///     from a IDataReader.
-	/// </summary>
-	/// <param name="getter">The interface for getting the value from the IDataReader.</param>
-	/// <returns>The processed value.</returns>
-	object GetResult(IResultGetter getter);
+    /// <summary>
+    ///     Performs processing on a value before it is used to set
+    ///     the parameter of a IDbCommand.
+    /// </summary>
+    /// <param name="setter">The interface for setting the value on the IDbCommand.</param>
+    /// <param name="parameter">The value to be set</param>
+    void SetParameter(IParameterSetter setter, object parameter);
 
 
-	/// <summary>
-	///     Casts the string representation of a value into a type recognized by
-	///     this type handler.  This method is used to translate nullValue values
-	///     into types that can be appropriately compared.  If your custom type handler
-	///     cannot support nullValues, or if there is no reasonable string representation
-	///     for this type (e.g. File type), you can simply return the String representation
-	///     as it was passed in.  It is not recommended to return null, unless null was passed
-	///     in.
-	/// </summary>
-	/// <param name="s"></param>
-	/// <returns></returns>
-	object ValueOf(string s);
+    /// <summary>
+    ///     Performs processing on a value before after it has been retrieved
+    ///     from a IDataReader.
+    /// </summary>
+    /// <param name="getter">The interface for getting the value from the IDataReader.</param>
+    /// <returns>The processed value.</returns>
+    object GetResult(IResultGetter getter);
+
+
+    /// <summary>
+    ///     Casts the string representation of a value into a type recognized by
+    ///     this type handler.  This method is used to translate nullValue values
+    ///     into types that can be appropriately compared.  If your custom type handler
+    ///     cannot support nullValues, or if there is no reasonable string representation
+    ///     for this type (e.g. File type), you can simply return the String representation
+    ///     as it was passed in.  It is not recommended to return null, unless null was passed
+    ///     in.
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    object ValueOf(string s);
 }

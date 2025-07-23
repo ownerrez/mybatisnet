@@ -24,10 +24,6 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Collections.Specialized;
-using System.Data;
-using System.Text;
 using IBatisNet.Common;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
@@ -39,6 +35,10 @@ using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Data;
+using System.Text;
 
 //using IBatisNet.DataMapper.SessionStore;
 #endregion

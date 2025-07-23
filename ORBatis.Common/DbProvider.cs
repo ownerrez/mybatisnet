@@ -24,12 +24,12 @@
 #endregion
 
 #region Using
+using IBatisNet.Common.Exceptions;
+using IBatisNet.Common.Utilities;
 using System;
 using System.Data;
 using System.Reflection;
 using System.Xml.Serialization;
-using IBatisNet.Common.Exceptions;
-using IBatisNet.Common.Utilities;
 #endregion
 
 namespace IBatisNet.Common

@@ -27,14 +27,14 @@ using System;
 
 namespace IBatisNet.DataMapper
 {
-	/// <summary>
-	///     Summary description for ExecuteEventArgs.
-	/// </summary>
-	public class ExecuteEventArgs : EventArgs
+    /// <summary>
+    ///     Summary description for ExecuteEventArgs.
+    /// </summary>
+    public class ExecuteEventArgs : EventArgs
     {
-	    /// <summary>
-	    ///     Set or get the statement name
-	    /// </summary>
-	    public string StatementName { get; set; } = string.Empty;
+        /// <summary>
+        ///     Set or get the statement name
+        /// </summary>
+        public string StatementName { get; set; } = string.Empty;
     }
 }

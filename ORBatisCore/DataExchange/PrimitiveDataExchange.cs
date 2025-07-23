@@ -38,11 +38,11 @@ namespace IBatisNet.DataMapper.DataExchange;
 /// </remarks>
 public sealed class PrimitiveDataExchange : BaseDataExchange
 {
-	/// <summary>
-	///     Cosntructor
-	/// </summary>
-	/// <param name="dataExchangeFactory"></param>
-	public PrimitiveDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
+    /// <summary>
+    ///     Cosntructor
+    /// </summary>
+    /// <param name="dataExchangeFactory"></param>
+    public PrimitiveDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
 
     #region IDataExchange Members
     /// <summary>

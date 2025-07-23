@@ -30,22 +30,22 @@ using System.Collections;
 
 namespace IBatisNet.Common.Utilities.TypesResolver
 {
-	/// <summary>
-	///     Provides access to a central registry of aliased <see cref="System.Type" />s.
-	/// </summary>
-	/// <remarks>
-	///     <p>
-	///         Simplifies configuration by allowing aliases to be used instead of
-	///         fully qualified type names.
-	///     </p>
-	///     <p>
-	///         Comes 'pre-loaded' with a number of convenience alias' for the more
-	///         common types; an example would be the '<c>int</c>' (or '<c>Integer</c>'
-	///         for Visual Basic.NET developers) alias for the <see cref="System.Int32" />
-	///         type.
-	///     </p>
-	/// </remarks>
-	public class TypeRegistry
+    /// <summary>
+    ///     Provides access to a central registry of aliased <see cref="System.Type" />s.
+    /// </summary>
+    /// <remarks>
+    ///     <p>
+    ///         Simplifies configuration by allowing aliases to be used instead of
+    ///         fully qualified type names.
+    ///     </p>
+    ///     <p>
+    ///         Comes 'pre-loaded' with a number of convenience alias' for the more
+    ///         common types; an example would be the '<c>int</c>' (or '<c>Integer</c>'
+    ///         for Visual Basic.NET developers) alias for the <see cref="System.Int32" />
+    ///         type.
+    ///     </p>
+    /// </remarks>
+    public class TypeRegistry
     {
         #region Fields
         private static readonly IDictionary _types = new Hashtable();

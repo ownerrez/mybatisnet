@@ -24,9 +24,6 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Data;
-using System.Text;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Commands;
 using IBatisNet.DataMapper.Configuration.Statements;
@@ -34,6 +31,9 @@ using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements.PostSelectStrategy;
 using IBatisNet.DataMapper.MappedStatements.ResultStrategy;
 using IBatisNet.DataMapper.Scope;
+using System.Collections;
+using System.Data;
+using System.Text;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements;

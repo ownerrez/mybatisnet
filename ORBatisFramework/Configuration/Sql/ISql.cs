@@ -23,16 +23,16 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.Scope;
+using System.Data;
 
 namespace IBatisNet.DataMapper.Configuration.Sql
 {
-	/// <summary>
-	///     Summary description for ISql.
-	/// </summary>
-	public interface ISql
+    /// <summary>
+    ///     Summary description for ISql.
+    /// </summary>
+    public interface ISql
     {
         #region Methods
         /// <summary>

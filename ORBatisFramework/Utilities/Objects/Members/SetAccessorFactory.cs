@@ -23,6 +23,7 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -30,7 +31,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
-using IBatisNet.Common.Exceptions;
 
 namespace IBatisNet.Common.Utilities.Objects.Members
 {

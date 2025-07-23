@@ -24,14 +24,14 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Data;
-using System.Runtime.CompilerServices;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.MappedStatements;
+using System.Collections;
+using System.Data;
+using System.Runtime.CompilerServices;
 #endregion
 
 namespace IBatisNet.DataMapper.Scope;

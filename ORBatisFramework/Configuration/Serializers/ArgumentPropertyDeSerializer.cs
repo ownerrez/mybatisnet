@@ -24,26 +24,26 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for ArgumentPropertyDeSerializer.
-	/// </summary>
-	public sealed class ArgumentPropertyDeSerializer
+    /// <summary>
+    ///     Summary description for ArgumentPropertyDeSerializer.
+    /// </summary>
+    public sealed class ArgumentPropertyDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a ResultProperty object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <param name="configScope"></param>
-	    /// <returns></returns>
-	    public static ArgumentProperty Deserialize(XmlNode node, ConfigurationScope configScope)
+        /// <summary>
+        ///     Deserialize a ResultProperty object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="configScope"></param>
+        /// <returns></returns>
+        public static ArgumentProperty Deserialize(XmlNode node, ConfigurationScope configScope)
         {
             var argumentProperty = new ArgumentProperty();
 

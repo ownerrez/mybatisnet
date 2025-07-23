@@ -23,17 +23,17 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.Scope;
 using System;
 using System.Collections;
-using IBatisNet.DataMapper.Scope;
 
 namespace IBatisNet.DataMapper.MappedStatements.PostSelectStrategy
 {
-	/// <summary>
-	///     <see cref="IPostSelectStrategy" /> implementation to exceute a query for
-	///     strong typed list.
-	/// </summary>
-	public sealed class StrongTypedListStrategy : IPostSelectStrategy
+    /// <summary>
+    ///     <see cref="IPostSelectStrategy" /> implementation to exceute a query for
+    ///     strong typed list.
+    /// </summary>
+    public sealed class StrongTypedListStrategy : IPostSelectStrategy
     {
         #region IPostSelectStrategy Members
         /// <summary>

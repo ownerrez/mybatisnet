@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.Scope;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
-using IBatisNet.DataMapper.Scope;
 
 namespace IBatisNet.DataMapper.Commands;
 

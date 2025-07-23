@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 
@@ -36,9 +36,9 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 [XmlRoot("isNull", Namespace = "http://ibatis.apache.org/mapping")]
 public sealed class IsNull : BaseTag
 {
-	/// <summary>
-	/// </summary>
-	public IsNull(AccessorFactory accessorFactory)
+    /// <summary>
+    /// </summary>
+    public IsNull(AccessorFactory accessorFactory)
     {
         Handler = new IsNullTagHandler(accessorFactory);
     }

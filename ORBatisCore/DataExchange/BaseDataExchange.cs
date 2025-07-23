@@ -33,19 +33,19 @@ namespace IBatisNet.DataMapper.DataExchange;
 /// </summary>
 public abstract class BaseDataExchange : IDataExchange
 {
-	/// <summary>
-	///     Constructor
-	/// </summary>
-	/// <param name="dataExchangeFactory"></param>
-	public BaseDataExchange(DataExchangeFactory dataExchangeFactory)
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="dataExchangeFactory"></param>
+    public BaseDataExchange(DataExchangeFactory dataExchangeFactory)
     {
         DataExchangeFactory = dataExchangeFactory;
     }
 
-	/// <summary>
-	///     Getter for the factory that created this object
-	/// </summary>
-	public DataExchangeFactory DataExchangeFactory { get; }
+    /// <summary>
+    ///     Getter for the factory that created this object
+    /// </summary>
+    public DataExchangeFactory DataExchangeFactory { get; }
 
     #region IDataExchange Members
     /// <summary>

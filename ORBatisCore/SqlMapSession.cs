@@ -24,11 +24,11 @@
 #endregion
 
 #region Imports
-using System.Data;
-using System.Reflection;
 using IBatisNet.Common;
 using IBatisNet.Common.Logging;
 using IBatisNet.DataMapper.Exceptions;
+using System.Data;
+using System.Reflection;
 #endregion
 
 
@@ -431,9 +431,9 @@ public class SqlMapSession : ISqlMapSession
             }
 
         //			if (_logger.IsDebugEnabled)
-//			{
-//				command = IDbCommandProxy.NewInstance(command);
-//			}
+        //			{
+        //				command = IDbCommandProxy.NewInstance(command);
+        //			}
 
         return command;
     }

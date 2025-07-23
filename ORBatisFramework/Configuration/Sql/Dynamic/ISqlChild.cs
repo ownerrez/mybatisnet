@@ -25,8 +25,8 @@
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic
 {
-	/// <summary>
-	///     Summary description for ISqlChild.
-	/// </summary>
-	public interface ISqlChild { }
+    /// <summary>
+    ///     Summary description for ISqlChild.
+    /// </summary>
+    public interface ISqlChild { }
 }

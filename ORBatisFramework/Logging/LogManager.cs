@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Logging.Impl;
 using System;
 using System.Configuration;
-using IBatisNet.Common.Logging.Impl;
 
 namespace IBatisNet.Common.Logging
 {

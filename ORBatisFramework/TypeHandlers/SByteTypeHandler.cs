@@ -24,9 +24,9 @@
 #endregion
 
 #region Using
+using IBatisNet.DataMapper.Configuration.ResultMapping;
 using System;
 using System.Data;
-using IBatisNet.DataMapper.Configuration.ResultMapping;
 #endregion
 
 

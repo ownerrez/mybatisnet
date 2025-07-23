@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
 using IBatisNet.Common.Pagination;
 using IBatisNet.DataMapper.Exceptions;
+using System.Collections;
 
 namespace IBatisNet.DataMapper.MappedStatements;
 

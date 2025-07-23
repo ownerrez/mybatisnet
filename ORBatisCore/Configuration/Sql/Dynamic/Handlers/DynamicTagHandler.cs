@@ -35,11 +35,11 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public sealed class DynamicTagHandler : BaseTagHandler
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="DynamicTagHandler" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public DynamicTagHandler(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="DynamicTagHandler" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public DynamicTagHandler(AccessorFactory accessorFactory)
         : base(accessorFactory) { }
 
     #region Methods

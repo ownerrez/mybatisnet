@@ -33,20 +33,20 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public sealed class IsLessThanTagHandler : ConditionalTagHandler
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="IsLessThanTagHandler" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public IsLessThanTagHandler(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="IsLessThanTagHandler" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public IsLessThanTagHandler(AccessorFactory accessorFactory)
         : base(accessorFactory) { }
 
-	/// <summary>
-	/// </summary>
-	/// <param name="ctx"></param>
-	/// <param name="tag"></param>
-	/// <param name="parameterObject"></param>
-	/// <returns></returns>
-	public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
+    /// <summary>
+    /// </summary>
+    /// <param name="ctx"></param>
+    /// <param name="tag"></param>
+    /// <param name="parameterObject"></param>
+    /// <returns></returns>
+    public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
     {
         var x = Compare(ctx, tag, parameterObject);
         return x < 0 && x != NOT_COMPARABLE;

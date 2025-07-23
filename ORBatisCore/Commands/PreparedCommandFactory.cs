@@ -29,22 +29,22 @@ namespace IBatisNet.DataMapper.Commands;
 /// </summary>
 internal sealed class PreparedCommandFactory
 {
-	/// <summary>
-	///     Get an IPreparedCommand.
-	/// </summary>
-	/// <returns></returns>
-	public static IPreparedCommand GetPreparedCommand(bool isEmbedStatementParams)
+    /// <summary>
+    ///     Get an IPreparedCommand.
+    /// </summary>
+    /// <returns></returns>
+    public static IPreparedCommand GetPreparedCommand(bool isEmbedStatementParams)
     {
         IPreparedCommand preparedCommand = null;
 
-//			if (isEmbedStatementParams)
-//			{
-//				preparedCommand = new EmbedParamsPreparedCommand();
-//			}
-//			else
-//			{
+        //			if (isEmbedStatementParams)
+        //			{
+        //				preparedCommand = new EmbedParamsPreparedCommand();
+        //			}
+        //			else
+        //			{
         preparedCommand = new DefaultPreparedCommand();
-//			}
+        //			}
 
         return preparedCommand;
     }

@@ -34,12 +34,12 @@ namespace IBatisNet.DataMapper.MappedStatements;
 /// </summary>
 public sealed class SelectMappedStatement : MappedStatement
 {
-	/// <summary>
-	///     Constructor
-	/// </summary>
-	/// <param name="sqlMap">An SqlMap</param>
-	/// <param name="statement">An SQL statement</param>
-	internal SelectMappedStatement(ISqlMapper sqlMap, IStatement statement)
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="sqlMap">An SqlMap</param>
+    /// <param name="statement">An SQL statement</param>
+    internal SelectMappedStatement(ISqlMapper sqlMap, IStatement statement)
         : base(sqlMap, statement) { }
 
 

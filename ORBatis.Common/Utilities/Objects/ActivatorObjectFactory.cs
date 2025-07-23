@@ -27,11 +27,11 @@ using System;
 
 namespace IBatisNet.Common.Utilities.Objects
 {
-	/// <summary>
-	///     A <see cref="IObjectFactory" /> implementation that can create objects
-	///     via Activator.CreateInstance
-	/// </summary>
-	public class ActivatorObjectFactory : IObjectFactory
+    /// <summary>
+    ///     A <see cref="IObjectFactory" /> implementation that can create objects
+    ///     via Activator.CreateInstance
+    /// </summary>
+    public class ActivatorObjectFactory : IObjectFactory
     {
         #region IObjectFactory members
         /// <summary>

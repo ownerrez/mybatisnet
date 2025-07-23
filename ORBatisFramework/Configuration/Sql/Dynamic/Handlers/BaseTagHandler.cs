@@ -24,9 +24,9 @@
 #endregion
 
 #region Using
-using System.Text;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
+using System.Text;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers

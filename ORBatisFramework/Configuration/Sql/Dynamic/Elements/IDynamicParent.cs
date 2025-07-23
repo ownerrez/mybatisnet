@@ -25,14 +25,14 @@
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Summary description for DynamicParent.
-	/// </summary>
-	public interface IDynamicParent
+    /// <summary>
+    ///     Summary description for DynamicParent.
+    /// </summary>
+    public interface IDynamicParent
     {
-	    /// <summary>
-	    /// </summary>
-	    /// <param name="child"></param>
-	    void AddChild(ISqlChild child);
+        /// <summary>
+        /// </summary>
+        /// <param name="child"></param>
+        void AddChild(ISqlChild child);
     }
 }

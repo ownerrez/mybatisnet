@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Exceptions;
 using System.Reflection;
 using System.Reflection.Emit;
-using IBatisNet.Common.Exceptions;
 
 namespace IBatisNet.Common.Utilities.Objects;
 

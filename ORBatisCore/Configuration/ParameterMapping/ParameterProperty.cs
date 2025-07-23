@@ -24,15 +24,15 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Data;
-using System.Xml.Serialization;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Scope;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Collections;
+using System.Data;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.ParameterMapping;

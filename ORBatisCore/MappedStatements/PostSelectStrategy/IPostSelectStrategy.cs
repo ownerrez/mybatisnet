@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Data;
 
 namespace IBatisNet.DataMapper.MappedStatements.PostSelectStrategy;
 
@@ -35,10 +35,10 @@ namespace IBatisNet.DataMapper.MappedStatements.PostSelectStrategy;
 /// </summary>
 public interface IPostSelectStrategy
 {
-	/// <summary>
-	///     Executes the specified <see cref="PostBindind" />.
-	/// </summary>
-	/// <param name="postSelect">The <see cref="PostBindind" />.</param>
-	/// <param name="request">The <see cref="RequestScope" /></param>
-	void Execute(PostBindind postSelect, RequestScope request);
+    /// <summary>
+    ///     Executes the specified <see cref="PostBindind" />.
+    /// </summary>
+    /// <param name="postSelect">The <see cref="PostBindind" />.</param>
+    /// <param name="request">The <see cref="RequestScope" /></param>
+    void Execute(PostBindind postSelect, RequestScope request);
 }

@@ -23,11 +23,11 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.Scope;
+using System.Collections;
+using System.Data;
 
 //using System.Reflection;
 //using IBatisNet.Common;

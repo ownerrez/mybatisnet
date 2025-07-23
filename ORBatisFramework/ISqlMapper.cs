@@ -24,11 +24,6 @@
 #endregion
 
 #region using
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
 using IBatisNet.Common;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
@@ -40,6 +35,11 @@ using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.TypeHandlers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
 
 //using IBatisNet.DataMapper.SessionStore;
 #endregion
@@ -432,7 +432,7 @@ namespace IBatisNet.DataMapper
         /// <param name="parameterObject">The object used to set the parameters in the SQL.</param>
         /// <returns> The single result object populated with the result set data.</returns>
         object QueryForObject(string statementName, object parameterObject, ISqlMapSession session);
-        
+
         /// <summary>
         ///     Executes the SQL and retuns a subset of the results in a dynamic PaginatedList that can be used to
         ///     automatically scroll through results from a database table.

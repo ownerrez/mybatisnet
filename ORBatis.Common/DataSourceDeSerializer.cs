@@ -24,23 +24,23 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.Common
 {
-	/// <summary>
-	///     Summary description for DataSourceDeSerializer.
-	/// </summary>
-	public sealed class DataSourceDeSerializer
+    /// <summary>
+    ///     Summary description for DataSourceDeSerializer.
+    /// </summary>
+    public sealed class DataSourceDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a DataSource object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <returns></returns>
-	    public static DataSource Deserialize(XmlNode node)
+        /// <summary>
+        ///     Deserialize a DataSource object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public static DataSource Deserialize(XmlNode node)
         {
             var dataSource = new DataSource();
             var prop = NodeUtils.ParseAttributes(node);

@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System.Reflection;
-using System.Reflection.Emit;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Logging;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace IBatisNet.Common.Utilities.Objects;
 

@@ -24,16 +24,16 @@
 #endregion
 
 #region Using
+using IBatisNet.Common.Logging;
+using IBatisNet.DataMapper.Configuration.Serializers;
+using IBatisNet.DataMapper.DataExchange;
+using IBatisNet.DataMapper.Scope;
 using System;
 using System.Collections;
 using System.Data;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
-using IBatisNet.Common.Logging;
-using IBatisNet.DataMapper.Configuration.Serializers;
-using IBatisNet.DataMapper.DataExchange;
-using IBatisNet.DataMapper.Scope;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.ParameterMapping

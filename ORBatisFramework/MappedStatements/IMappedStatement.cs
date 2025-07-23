@@ -24,22 +24,22 @@
 #endregion
 
 #region Imports
-using System.Collections;
-using System.Collections.Generic;
 using IBatisNet.DataMapper.Commands;
 using IBatisNet.DataMapper.Configuration.Statements;
+using System.Collections;
+using System.Collections.Generic;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements
 {
-	/// <summary>
-	/// </summary>
-	public delegate void ExecuteEventHandler(object sender, ExecuteEventArgs e);
+    /// <summary>
+    /// </summary>
+    public delegate void ExecuteEventHandler(object sender, ExecuteEventArgs e);
 
-	/// <summary>
-	///     Summary description for IMappedStatement.
-	/// </summary>
-	public interface IMappedStatement
+    /// <summary>
+    ///     Summary description for IMappedStatement.
+    /// </summary>
+    public interface IMappedStatement
     {
         #region Event
         /// <summary>

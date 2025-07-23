@@ -24,12 +24,6 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-using System.Xml.Schema;
 using IBatisNet.Common;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Logging;
@@ -56,6 +50,12 @@ using IBatisNet.DataMapper.MappedStatements.ArgumentStrategy;
 using IBatisNet.DataMapper.MappedStatements.PropertyStrategy;
 using IBatisNet.DataMapper.Scope;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.Schema;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration;

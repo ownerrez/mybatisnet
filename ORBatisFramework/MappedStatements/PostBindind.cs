@@ -23,49 +23,49 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
+using System.Data;
 
 namespace IBatisNet.DataMapper.MappedStatements
 {
-	/// <summary>
-	///     All dataq tor retrieve 'select' <see cref="ResultProperty" />
-	/// </summary>
-	/// <remarks>
-	///     As ADO.NET allows one open <see cref="IDataReader" /> per connection at once, we keep
-	///     all the datas to open the next <see cref="IDataReader" /> after having closed the current.
-	/// </remarks>
-	public sealed class PostBindind
+    /// <summary>
+    ///     All dataq tor retrieve 'select' <see cref="ResultProperty" />
+    /// </summary>
+    /// <remarks>
+    ///     As ADO.NET allows one open <see cref="IDataReader" /> per connection at once, we keep
+    ///     all the datas to open the next <see cref="IDataReader" /> after having closed the current.
+    /// </remarks>
+    public sealed class PostBindind
     {
-	    /// <summary>
-	    ///     Enumeration of the ExecuteQuery method.
-	    /// </summary>
-	    public enum ExecuteMethod
+        /// <summary>
+        ///     Enumeration of the ExecuteQuery method.
+        /// </summary>
+        public enum ExecuteMethod
         {
-	        /// <summary>
-	        ///     Execute Query For Object
-	        /// </summary>
-	        ExecuteQueryForObject = 1,
+            /// <summary>
+            ///     Execute Query For Object
+            /// </summary>
+            ExecuteQueryForObject = 1,
 
-	        /// <summary>
-	        ///     Execute Query For IList
-	        /// </summary>
-	        ExecuteQueryForIList,
+            /// <summary>
+            ///     Execute Query For IList
+            /// </summary>
+            ExecuteQueryForIList,
 
-	        /// <summary>
-	        ///     Execute Query For Generic IList
-	        /// </summary>
-	        ExecuteQueryForGenericIList,
+            /// <summary>
+            ///     Execute Query For Generic IList
+            /// </summary>
+            ExecuteQueryForGenericIList,
 
-	        /// <summary>
-	        ///     Execute Query For Array List
-	        /// </summary>
-	        ExecuteQueryForArrayList,
+            /// <summary>
+            ///     Execute Query For Array List
+            /// </summary>
+            ExecuteQueryForArrayList,
 
-	        /// <summary>
-	        ///     Execute Query For Strong Typed IList
-	        /// </summary>
-	        ExecuteQueryForStrongTypedIList
+            /// <summary>
+            ///     Execute Query For Strong Typed IList
+            /// </summary>
+            ExecuteQueryForStrongTypedIList
         }
 
         #region Properties

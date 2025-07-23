@@ -36,10 +36,10 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 [Serializable]
 public abstract class Conditional : BaseTag
 {
-	/// <summary>
-	///     CompareProperty attribute
-	/// </summary>
-	[XmlAttribute("compareProperty")]
+    /// <summary>
+    ///     CompareProperty attribute
+    /// </summary>
+    [XmlAttribute("compareProperty")]
     public string CompareProperty
     {
         get => _compareProperty;
@@ -47,10 +47,10 @@ public abstract class Conditional : BaseTag
     }
 
 
-	/// <summary>
-	///     CompareValue attribute
-	/// </summary>
-	[XmlAttribute("compareValue")]
+    /// <summary>
+    ///     CompareValue attribute
+    /// </summary>
+    [XmlAttribute("compareValue")]
     public string CompareValue
     {
         get => _compareValue;

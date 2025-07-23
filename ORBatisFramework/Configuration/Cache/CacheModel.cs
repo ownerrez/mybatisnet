@@ -24,6 +24,11 @@
 #endregion
 
 #region Using
+using IBatisNet.Common.Exceptions;
+using IBatisNet.Common.Logging;
+using IBatisNet.Common.Utilities;
+using IBatisNet.DataMapper.Exceptions;
+using IBatisNet.DataMapper.MappedStatements;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -32,11 +37,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using IBatisNet.Common.Exceptions;
-using IBatisNet.Common.Logging;
-using IBatisNet.Common.Utilities;
-using IBatisNet.DataMapper.Exceptions;
-using IBatisNet.DataMapper.MappedStatements;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Cache

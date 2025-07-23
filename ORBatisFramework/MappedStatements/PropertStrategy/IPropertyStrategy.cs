@@ -23,39 +23,39 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Data;
 
 namespace IBatisNet.DataMapper.MappedStatements.PropertyStrategy
 {
-	/// <summary>
-	///     <see cref="IPropertyStrategy" /> contract to set value object on <see cref="ResultProperty" />.
-	/// </summary>
-	public interface IPropertyStrategy
+    /// <summary>
+    ///     <see cref="IPropertyStrategy" /> contract to set value object on <see cref="ResultProperty" />.
+    /// </summary>
+    public interface IPropertyStrategy
     {
-	    /// <summary>
-	    ///     Sets value of the specified <see cref="ResultProperty" /> on the target object.
-	    /// </summary>
-	    /// <param name="request">The request.</param>
-	    /// <param name="resultMap">The result map.</param>
-	    /// <param name="mapping">The ResultProperty.</param>
-	    /// <param name="target">The target.</param>
-	    /// <param name="reader">The reader.</param>
-	    /// <param name="keys">The keys</param>
-	    void Set(RequestScope request, IResultMap resultMap,
+        /// <summary>
+        ///     Sets value of the specified <see cref="ResultProperty" /> on the target object.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="resultMap">The result map.</param>
+        /// <param name="mapping">The ResultProperty.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="reader">The reader.</param>
+        /// <param name="keys">The keys</param>
+        void Set(RequestScope request, IResultMap resultMap,
             ResultProperty mapping, ref object target,
             IDataReader reader, object keys);
 
 
-	    /// <summary>
-	    ///     Gets the value of the specified <see cref="ResultProperty" /> that must be set on the target object.
-	    /// </summary>
-	    /// <param name="request">The request.</param>
-	    /// <param name="resultMap">The result map.</param>
-	    /// <param name="mapping">The mapping.</param>
-	    /// <param name="reader">The reader.</param>
-	    /// <param name="target">The target.</param>
-	    object Get(RequestScope request, IResultMap resultMap, ResultProperty mapping, ref object target, IDataReader reader);
+        /// <summary>
+        ///     Gets the value of the specified <see cref="ResultProperty" /> that must be set on the target object.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="resultMap">The result map.</param>
+        /// <param name="mapping">The mapping.</param>
+        /// <param name="reader">The reader.</param>
+        /// <param name="target">The target.</param>
+        object Get(RequestScope request, IResultMap resultMap, ResultProperty mapping, ref object target, IDataReader reader);
     }
 }

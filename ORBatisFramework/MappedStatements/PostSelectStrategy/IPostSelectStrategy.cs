@@ -23,23 +23,23 @@
  ********************************************************************************/
 #endregion
 
-using System.Data;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Data;
 
 namespace IBatisNet.DataMapper.MappedStatements.PostSelectStrategy
 {
-	/// <summary>
-	///     <see cref="IPostSelectStrategy" /> contract to excute a 'select' <see cref="ResultProperty" />
-	///     after the process of the main <see cref="IDataReader" />
-	/// </summary>
-	public interface IPostSelectStrategy
+    /// <summary>
+    ///     <see cref="IPostSelectStrategy" /> contract to excute a 'select' <see cref="ResultProperty" />
+    ///     after the process of the main <see cref="IDataReader" />
+    /// </summary>
+    public interface IPostSelectStrategy
     {
-	    /// <summary>
-	    ///     Executes the specified <see cref="PostBindind" />.
-	    /// </summary>
-	    /// <param name="postSelect">The <see cref="PostBindind" />.</param>
-	    /// <param name="request">The <see cref="RequestScope" /></param>
-	    void Execute(PostBindind postSelect, RequestScope request);
+        /// <summary>
+        ///     Executes the specified <see cref="PostBindind" />.
+        /// </summary>
+        /// <param name="postSelect">The <see cref="PostBindind" />.</param>
+        /// <param name="request">The <see cref="RequestScope" /></param>
+        void Execute(PostBindind postSelect, RequestScope request);
     }
 }

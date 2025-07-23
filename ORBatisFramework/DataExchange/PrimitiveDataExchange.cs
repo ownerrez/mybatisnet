@@ -29,20 +29,20 @@ using IBatisNet.DataMapper.Configuration.ResultMapping;
 
 namespace IBatisNet.DataMapper.DataExchange
 {
-	/// <summary>
-	///     DataExchange implementation for "primitive" objects.
-	/// </summary>
-	/// <remarks>
-	///     The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32,
-	///     UInt32, Int64, UInt64, Char, Double, and Single + string, Guid, Decimal, DateTime
-	/// </remarks>
-	public sealed class PrimitiveDataExchange : BaseDataExchange
+    /// <summary>
+    ///     DataExchange implementation for "primitive" objects.
+    /// </summary>
+    /// <remarks>
+    ///     The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32,
+    ///     UInt32, Int64, UInt64, Char, Double, and Single + string, Guid, Decimal, DateTime
+    /// </remarks>
+    public sealed class PrimitiveDataExchange : BaseDataExchange
     {
-	    /// <summary>
-	    ///     Cosntructor
-	    /// </summary>
-	    /// <param name="dataExchangeFactory"></param>
-	    public PrimitiveDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
+        /// <summary>
+        ///     Cosntructor
+        /// </summary>
+        /// <param name="dataExchangeFactory"></param>
+        public PrimitiveDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
 
         #region IDataExchange Members
         /// <summary>

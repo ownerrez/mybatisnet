@@ -24,13 +24,13 @@
 #endregion
 
 #region Using
+using IBatisNet.Common.Exceptions;
+using IBatisNet.Common.Logging;
+using IBatisNet.Common.Xml;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Xml;
-using IBatisNet.Common.Exceptions;
-using IBatisNet.Common.Logging;
-using IBatisNet.Common.Xml;
 #endregion
 
 namespace IBatisNet.Common.Utilities;

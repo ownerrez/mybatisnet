@@ -24,9 +24,9 @@
 #endregion
 
 #region Imports
-using System.Collections;
 using IBatisNet.DataMapper.Commands;
 using IBatisNet.DataMapper.Configuration.Statements;
+using System.Collections;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements;

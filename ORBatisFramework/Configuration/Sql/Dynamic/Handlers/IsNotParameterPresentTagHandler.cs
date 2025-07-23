@@ -28,25 +28,25 @@ using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers
 {
-	/// <summary>
-	///     Summary description for IsNotParameterPresentTagHandler.
-	/// </summary>
-	public sealed class IsNotParameterPresentTagHandler : IsParameterPresentTagHandler
+    /// <summary>
+    ///     Summary description for IsNotParameterPresentTagHandler.
+    /// </summary>
+    public sealed class IsNotParameterPresentTagHandler : IsParameterPresentTagHandler
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsNotParameterPresentTagHandler" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsNotParameterPresentTagHandler(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsNotParameterPresentTagHandler" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsNotParameterPresentTagHandler(AccessorFactory accessorFactory)
             : base(accessorFactory) { }
 
-	    /// <summary>
-	    /// </summary>
-	    /// <param name="ctx"></param>
-	    /// <param name="tag"></param>
-	    /// <param name="parameterObject"></param>
-	    /// <returns></returns>
-	    public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
+        /// <summary>
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="tag"></param>
+        /// <param name="parameterObject"></param>
+        /// <returns></returns>
+        public override bool IsCondition(SqlTagContext ctx, SqlTag tag, object parameterObject)
         {
             return !base.IsCondition(ctx, tag, parameterObject);
         }

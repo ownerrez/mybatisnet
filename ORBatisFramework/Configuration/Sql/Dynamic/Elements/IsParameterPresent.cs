@@ -23,25 +23,25 @@
  ********************************************************************************/
 #endregion
 
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isParameterPresent sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isParameterPresent sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isParameterPresent", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsParameterPresent : SqlTag
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsParameterPresent" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsParameterPresent(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsParameterPresent" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsParameterPresent(AccessorFactory accessorFactory)
         {
             Handler = new IsParameterPresentTagHandler(accessorFactory);
         }

@@ -24,26 +24,26 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for DeleteDeSerializer.
-	/// </summary>
-	public sealed class DeleteDeSerializer
+    /// <summary>
+    ///     Summary description for DeleteDeSerializer.
+    /// </summary>
+    public sealed class DeleteDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a TypeHandler object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <param name="configScope"></param>
-	    /// <returns></returns>
-	    public static Delete Deserialize(XmlNode node, ConfigurationScope configScope)
+        /// <summary>
+        ///     Deserialize a TypeHandler object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="configScope"></param>
+        /// <returns></returns>
+        public static Delete Deserialize(XmlNode node, ConfigurationScope configScope)
         {
             var delete = new Delete();
             var prop = NodeUtils.ParseAttributes(node, configScope.Properties);

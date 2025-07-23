@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 
@@ -36,11 +36,11 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 [XmlRoot("isGreaterEqual", Namespace = "http://ibatis.apache.org/mapping")]
 public sealed class IsGreaterEqual : Conditional
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="IsGreaterEqual" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public IsGreaterEqual(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="IsGreaterEqual" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public IsGreaterEqual(AccessorFactory accessorFactory)
     {
         Handler = new IsGreaterEqualTagHandler(accessorFactory);
     }

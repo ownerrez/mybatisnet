@@ -31,16 +31,16 @@ using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Summary description for Conditional.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Summary description for Conditional.
+    /// </summary>
+    [Serializable]
     public abstract class Conditional : BaseTag
     {
-	    /// <summary>
-	    ///     CompareProperty attribute
-	    /// </summary>
-	    [XmlAttribute("compareProperty")]
+        /// <summary>
+        ///     CompareProperty attribute
+        /// </summary>
+        [XmlAttribute("compareProperty")]
         public string CompareProperty
         {
             get => _compareProperty;
@@ -48,10 +48,10 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
         }
 
 
-	    /// <summary>
-	    ///     CompareValue attribute
-	    /// </summary>
-	    [XmlAttribute("compareValue")]
+        /// <summary>
+        ///     CompareValue attribute
+        /// </summary>
+        [XmlAttribute("compareValue")]
         public string CompareValue
         {
             get => _compareValue;

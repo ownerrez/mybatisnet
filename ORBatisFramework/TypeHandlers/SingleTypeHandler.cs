@@ -24,34 +24,34 @@
 #endregion
 
 #region Using
+using IBatisNet.DataMapper.Configuration.ResultMapping;
 using System;
 using System.Data;
-using IBatisNet.DataMapper.Configuration.ResultMapping;
 #endregion
 
 namespace IBatisNet.DataMapper.TypeHandlers
 {
-	/// <summary>
-	///     Description r�sum�e de SingleTypeHandler.
-	/// </summary>
-	public sealed class SingleTypeHandler : BaseTypeHandler
+    /// <summary>
+    ///     Description r�sum�e de SingleTypeHandler.
+    /// </summary>
+    public sealed class SingleTypeHandler : BaseTypeHandler
     {
-	    /// <summary>
-	    ///     Gets a value indicating whether this instance is simple type.
-	    /// </summary>
-	    /// <value>
-	    ///     <c>true</c> if this instance is simple type; otherwise, <c>false</c>.
-	    /// </value>
-	    public override bool IsSimpleType => true;
+        /// <summary>
+        ///     Gets a value indicating whether this instance is simple type.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is simple type; otherwise, <c>false</c>.
+        /// </value>
+        public override bool IsSimpleType => true;
 
 
-	    /// <summary>
-	    ///     Gets a column value by the name
-	    /// </summary>
-	    /// <param name="mapping"></param>
-	    /// <param name="dataReader"></param>
-	    /// <returns></returns>
-	    public override object GetValueByName(ResultProperty mapping, IDataReader dataReader)
+        /// <summary>
+        ///     Gets a column value by the name
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
+        public override object GetValueByName(ResultProperty mapping, IDataReader dataReader)
         {
             var index = dataReader.GetOrdinal(mapping.ColumnName);
 
@@ -61,37 +61,37 @@ namespace IBatisNet.DataMapper.TypeHandlers
         }
 
 
-	    /// <summary>
-	    ///     Gets a column value by the index
-	    /// </summary>
-	    /// <param name="mapping"></param>
-	    /// <param name="dataReader"></param>
-	    /// <returns></returns>
-	    public override object GetValueByIndex(ResultProperty mapping, IDataReader dataReader)
+        /// <summary>
+        ///     Gets a column value by the index
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
+        public override object GetValueByIndex(ResultProperty mapping, IDataReader dataReader)
         {
             if (dataReader.IsDBNull(mapping.ColumnIndex)) return DBNull.Value;
 
             return dataReader.GetFloat(mapping.ColumnIndex);
         }
 
-	    /// <summary>
-	    ///     Converts the String to the type that this handler deals with
-	    /// </summary>
-	    /// <param name="type">the tyepe of the property (used only for enum conversion)</param>
-	    /// <param name="s">the String value</param>
-	    /// <returns>the converted value</returns>
-	    public override object ValueOf(Type type, string s)
+        /// <summary>
+        ///     Converts the String to the type that this handler deals with
+        /// </summary>
+        /// <param name="type">the tyepe of the property (used only for enum conversion)</param>
+        /// <param name="s">the String value</param>
+        /// <returns>the converted value</returns>
+        public override object ValueOf(Type type, string s)
         {
             return Convert.ToSingle(s);
         }
 
-	    /// <summary>
-	    ///     Retrieve ouput database value of an output parameter
-	    /// </summary>
-	    /// <param name="outputValue">ouput database value</param>
-	    /// <param name="parameterType">type used in EnumTypeHandler</param>
-	    /// <returns></returns>
-	    public override object GetDataBaseValue(object outputValue, Type parameterType)
+        /// <summary>
+        ///     Retrieve ouput database value of an output parameter
+        /// </summary>
+        /// <param name="outputValue">ouput database value</param>
+        /// <param name="parameterType">type used in EnumTypeHandler</param>
+        /// <returns></returns>
+        public override object GetDataBaseValue(object outputValue, Type parameterType)
         {
             return Convert.ToSingle(outputValue);
         }

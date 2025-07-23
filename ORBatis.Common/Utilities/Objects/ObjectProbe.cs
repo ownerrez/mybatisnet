@@ -23,11 +23,11 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Exceptions;
+using IBatisNet.Common.Utilities.Objects.Members;
 using System;
 using System.Collections;
 using System.Reflection;
-using IBatisNet.Common.Exceptions;
-using IBatisNet.Common.Utilities.Objects.Members;
 
 namespace IBatisNet.Common.Utilities.Objects
 {
@@ -637,56 +637,56 @@ namespace IBatisNet.Common.Utilities.Objects
         }
 
 
-//		/// <summary>
-//		///  Calculates a hash code for all readable properties of a object.
-//		/// </summary>
-//		/// <param name="obj">The object to calculate the hash code for.</param>
-//		/// <returns>The hash code.</returns>
-//		public static int ObjectHashCode(object obj) 
-//		{
-//			return ObjectHashCode(obj, GetReadablePropertyNames(obj));
-//		}
-//
-//
-//		/// <summary>
-//		/// Calculates a hash code for a subset of the readable properties of a object.
-//		/// </summary>
-//		/// <param name="obj">The object to calculate the hash code for.</param>
-//		/// <param name="properties">A list of the properties to hash.</param>
-//		/// <returns>The hash code.</returns>
-//		public static int ObjectHashCode(object obj, string[] properties ) 
-//		{
-//			ArrayList alreadyDigested = new ArrayList();
-//
-//			int hashcode = obj.GetType().FullName.GetHashCode();
-//			int length = properties.Length;
-//			for (int i = 0; i < length; i++) 
-//			{
-//				object value = GetProperty(obj, properties[i]);
-//				if (value != null) 
-//				{
-//					if (IsSimpleType(value.GetType())) 
-//					{
-//						hashcode += value.GetHashCode();
-//						hashcode += value.ToString().GetHashCode()*37;
-//					} 
-//					else 
-//					{
-//						// It's a Object 
-//						// Check to avoid endless loop (circular dependency)
-//						if (value != obj) 
-//						{
-//							if (!alreadyDigested.Contains(value)) 
-//							{
-//								alreadyDigested.Add(value);
-//								hashcode += ObjectHashCode(value);
-//							}
-//						}
-//					}
-//					hashcode *= 29;
-//				}
-//			}
-//			return hashcode;
-//		}
+        //		/// <summary>
+        //		///  Calculates a hash code for all readable properties of a object.
+        //		/// </summary>
+        //		/// <param name="obj">The object to calculate the hash code for.</param>
+        //		/// <returns>The hash code.</returns>
+        //		public static int ObjectHashCode(object obj) 
+        //		{
+        //			return ObjectHashCode(obj, GetReadablePropertyNames(obj));
+        //		}
+        //
+        //
+        //		/// <summary>
+        //		/// Calculates a hash code for a subset of the readable properties of a object.
+        //		/// </summary>
+        //		/// <param name="obj">The object to calculate the hash code for.</param>
+        //		/// <param name="properties">A list of the properties to hash.</param>
+        //		/// <returns>The hash code.</returns>
+        //		public static int ObjectHashCode(object obj, string[] properties ) 
+        //		{
+        //			ArrayList alreadyDigested = new ArrayList();
+        //
+        //			int hashcode = obj.GetType().FullName.GetHashCode();
+        //			int length = properties.Length;
+        //			for (int i = 0; i < length; i++) 
+        //			{
+        //				object value = GetProperty(obj, properties[i]);
+        //				if (value != null) 
+        //				{
+        //					if (IsSimpleType(value.GetType())) 
+        //					{
+        //						hashcode += value.GetHashCode();
+        //						hashcode += value.ToString().GetHashCode()*37;
+        //					} 
+        //					else 
+        //					{
+        //						// It's a Object 
+        //						// Check to avoid endless loop (circular dependency)
+        //						if (value != obj) 
+        //						{
+        //							if (!alreadyDigested.Contains(value)) 
+        //							{
+        //								alreadyDigested.Add(value);
+        //								hashcode += ObjectHashCode(value);
+        //							}
+        //						}
+        //					}
+        //					hashcode *= 29;
+        //				}
+        //			}
+        //			return hashcode;
+        //		}
     }
 }

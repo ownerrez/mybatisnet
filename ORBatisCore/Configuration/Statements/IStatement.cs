@@ -24,12 +24,12 @@
 #endregion
 
 #region Using
-using System.Collections;
-using System.Data;
 using IBatisNet.DataMapper.Configuration.Cache;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Configuration.Sql;
+using System.Collections;
+using System.Data;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Statements;

@@ -23,8 +23,8 @@
  ********************************************************************************/
 #endregion
 
-using System;
 using IBatisNet.Common.Exceptions;
+using System;
 
 namespace IBatisNet.Common.Utilities.Objects
 {

@@ -24,21 +24,21 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for IDeSerializer.
-	/// </summary>
-	public interface IDeSerializer
+    /// <summary>
+    ///     Summary description for IDeSerializer.
+    /// </summary>
+    public interface IDeSerializer
     {
-	    /// <summary>
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <returns></returns>
-	    SqlTag Deserialize(XmlNode node);
+        /// <summary>
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        SqlTag Deserialize(XmlNode node);
     }
 }

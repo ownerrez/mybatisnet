@@ -24,26 +24,26 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.Alias;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for TypeAliasDeSerializer.
-	/// </summary>
-	public sealed class TypeAliasDeSerializer
+    /// <summary>
+    ///     Summary description for TypeAliasDeSerializer.
+    /// </summary>
+    public sealed class TypeAliasDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a TypeAlias object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <param name="configScope"></param>
-	    /// <returns></returns>
-	    public static void Deserialize(XmlNode node, ConfigurationScope configScope)
+        /// <summary>
+        ///     Deserialize a TypeAlias object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="configScope"></param>
+        /// <returns></returns>
+        public static void Deserialize(XmlNode node, ConfigurationScope configScope)
         {
             var typeAlias = new TypeAlias();
             configScope.ErrorContext.MoreInfo = "loading type alias";

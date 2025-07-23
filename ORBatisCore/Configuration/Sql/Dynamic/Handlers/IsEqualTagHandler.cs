@@ -36,11 +36,11 @@ namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
 /// </summary>
 public class IsEqualTagHandler : ConditionalTagHandler
 {
-	/// <summary>
-	///     Initializes a new instance of the <see cref="IsEqualTagHandler" /> class.
-	/// </summary>
-	/// <param name="accessorFactory">The accessor factory.</param>
-	public IsEqualTagHandler(AccessorFactory accessorFactory)
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="IsEqualTagHandler" /> class.
+    /// </summary>
+    /// <param name="accessorFactory">The accessor factory.</param>
+    public IsEqualTagHandler(AccessorFactory accessorFactory)
         : base(accessorFactory) { }
 
     #region Methods

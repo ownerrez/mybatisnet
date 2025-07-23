@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Utilities.TypesResolver;
 using System;
 using System.Collections.Generic;
-using IBatisNet.Common.Utilities.TypesResolver;
 
 namespace IBatisNet.Common.Utilities
 {

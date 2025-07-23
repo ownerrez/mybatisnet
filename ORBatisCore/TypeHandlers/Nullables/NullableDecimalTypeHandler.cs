@@ -24,9 +24,9 @@
 #endregion
 
 #region Using
+using IBatisNet.DataMapper.Configuration.ResultMapping;
 using System.Data;
 using System.Globalization;
-using IBatisNet.DataMapper.Configuration.ResultMapping;
 #endregion
 
 namespace IBatisNet.DataMapper.TypeHandlers.Nullables;

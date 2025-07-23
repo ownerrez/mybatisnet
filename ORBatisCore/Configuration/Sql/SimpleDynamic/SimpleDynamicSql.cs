@@ -24,7 +24,6 @@
 #endregion
 
 #region Imports
-using System.Text;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Configuration.Statements;
@@ -32,6 +31,7 @@ using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.MappedStatements;
 using IBatisNet.DataMapper.Scope;
+using System.Text;
 #endregion
 
 

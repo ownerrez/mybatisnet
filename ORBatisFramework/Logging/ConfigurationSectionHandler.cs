@@ -23,12 +23,12 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.Common.Logging.Impl;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Xml;
-using IBatisNet.Common.Logging.Impl;
 using ConfigurationException = IBatisNet.Common.Exceptions.ConfigurationException;
 
 namespace IBatisNet.Common.Logging

@@ -24,15 +24,15 @@
 #endregion
 
 #region Using
-using System;
-using System.Data;
-using System.Reflection;
-using System.Text;
 using IBatisNet.Common.Logging;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.Scope;
+using System;
+using System.Data;
+using System.Reflection;
+using System.Text;
 #endregion
 
 namespace IBatisNet.DataMapper.Commands

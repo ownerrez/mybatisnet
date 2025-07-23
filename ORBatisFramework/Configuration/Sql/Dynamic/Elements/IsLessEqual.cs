@@ -23,25 +23,25 @@
  ********************************************************************************/
 #endregion
 
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers;
+using System;
+using System.Xml.Serialization;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements
 {
-	/// <summary>
-	///     Represent an isLessEqual sql tag element.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    ///     Represent an isLessEqual sql tag element.
+    /// </summary>
+    [Serializable]
     [XmlRoot("isLessEqual", Namespace = "http://ibatis.apache.org/mapping")]
     public sealed class IsLessEqual : Conditional
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsLessEqual" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsLessEqual(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsLessEqual" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsLessEqual(AccessorFactory accessorFactory)
         {
             Handler = new IsLessEqualTagHandler(accessorFactory);
         }

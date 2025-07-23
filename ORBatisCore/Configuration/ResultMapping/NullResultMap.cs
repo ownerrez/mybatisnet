@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.DataExchange;
 using System.Collections.Specialized;
 using System.Data;
-using IBatisNet.DataMapper.DataExchange;
 
 namespace IBatisNet.DataMapper.Configuration.ResultMapping;
 

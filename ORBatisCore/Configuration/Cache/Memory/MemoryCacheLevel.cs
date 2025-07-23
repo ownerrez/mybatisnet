@@ -24,8 +24,8 @@
 #endregion
 
 #region Imports
-using System.Collections;
 using IBatisNet.DataMapper.Exceptions;
+using System.Collections;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Cache.Memory;

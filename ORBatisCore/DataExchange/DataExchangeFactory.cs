@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.Common.Utilities.Objects.Members;
 using IBatisNet.DataMapper.TypeHandlers;
+using System.Collections;
 
 namespace IBatisNet.DataMapper.DataExchange;
 

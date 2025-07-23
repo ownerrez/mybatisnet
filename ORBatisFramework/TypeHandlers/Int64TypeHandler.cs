@@ -24,32 +24,32 @@
 #endregion
 
 #region Using
+using IBatisNet.DataMapper.Configuration.ResultMapping;
 using System;
 using System.Data;
-using IBatisNet.DataMapper.Configuration.ResultMapping;
 #endregion
 
 namespace IBatisNet.DataMapper.TypeHandlers
 {
-	/// <summary>
-	///     Description r�sum�e de Int64TypeHandler.
-	/// </summary>
-	public sealed class Int64TypeHandler : BaseTypeHandler
+    /// <summary>
+    ///     Description r�sum�e de Int64TypeHandler.
+    /// </summary>
+    public sealed class Int64TypeHandler : BaseTypeHandler
     {
-	    /// <summary>
-	    ///     Gets a value indicating whether this instance is simple type.
-	    /// </summary>
-	    /// <value>
-	    ///     <c>true</c> if this instance is simple type; otherwise, <c>false</c>.
-	    /// </value>
-	    public override bool IsSimpleType => true;
+        /// <summary>
+        ///     Gets a value indicating whether this instance is simple type.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is simple type; otherwise, <c>false</c>.
+        /// </value>
+        public override bool IsSimpleType => true;
 
-	    /// <summary>
-	    /// </summary>
-	    /// <param name="mapping"></param>
-	    /// <param name="dataReader"></param>
-	    /// <returns></returns>
-	    public override object GetValueByName(ResultProperty mapping, IDataReader dataReader)
+        /// <summary>
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
+        public override object GetValueByName(ResultProperty mapping, IDataReader dataReader)
         {
             var index = dataReader.GetOrdinal(mapping.ColumnName);
 
@@ -59,13 +59,13 @@ namespace IBatisNet.DataMapper.TypeHandlers
             return Convert.ToInt64(dataReader.GetValue(index));
         }
 
-	    /// <summary>
-	    ///     Gets a column value by the index
-	    /// </summary>
-	    /// <param name="mapping"></param>
-	    /// <param name="dataReader"></param>
-	    /// <returns></returns>
-	    public override object GetValueByIndex(ResultProperty mapping, IDataReader dataReader)
+        /// <summary>
+        ///     Gets a column value by the index
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
+        public override object GetValueByIndex(ResultProperty mapping, IDataReader dataReader)
         {
             if (dataReader.IsDBNull(mapping.ColumnIndex)) return DBNull.Value;
 
@@ -73,24 +73,24 @@ namespace IBatisNet.DataMapper.TypeHandlers
             return Convert.ToInt64(dataReader.GetValue(mapping.ColumnIndex));
         }
 
-	    /// <summary>
-	    ///     Retrieve ouput database value of an output parameter
-	    /// </summary>
-	    /// <param name="outputValue">ouput database value</param>
-	    /// <param name="parameterType">type used in EnumTypeHandler</param>
-	    /// <returns></returns>
-	    public override object GetDataBaseValue(object outputValue, Type parameterType)
+        /// <summary>
+        ///     Retrieve ouput database value of an output parameter
+        /// </summary>
+        /// <param name="outputValue">ouput database value</param>
+        /// <param name="parameterType">type used in EnumTypeHandler</param>
+        /// <returns></returns>
+        public override object GetDataBaseValue(object outputValue, Type parameterType)
         {
             return Convert.ToInt64(outputValue);
         }
 
-	    /// <summary>
-	    ///     Converts the String to the type that this handler deals with
-	    /// </summary>
-	    /// <param name="type">the tyepe of the property (used only for enum conversion)</param>
-	    /// <param name="s">the String value</param>
-	    /// <returns>the converted value</returns>
-	    public override object ValueOf(Type type, string s)
+        /// <summary>
+        ///     Converts the String to the type that this handler deals with
+        /// </summary>
+        /// <param name="type">the tyepe of the property (used only for enum conversion)</param>
+        /// <param name="s">the String value</param>
+        /// <returns>the converted value</returns>
+        public override object ValueOf(Type type, string s)
         {
             return Convert.ToInt64(s);
         }

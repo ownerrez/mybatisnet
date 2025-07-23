@@ -29,16 +29,16 @@ using IBatisNet.DataMapper.Configuration.ResultMapping;
 
 namespace IBatisNet.DataMapper.DataExchange
 {
-	/// <summary>
-	///     IDataExchange implementation for IList objects
-	/// </summary>
-	public sealed class ListDataExchange : BaseDataExchange
+    /// <summary>
+    ///     IDataExchange implementation for IList objects
+    /// </summary>
+    public sealed class ListDataExchange : BaseDataExchange
     {
-	    /// <summary>
-	    ///     Cosntructor
-	    /// </summary>
-	    /// <param name="dataExchangeFactory"></param>
-	    public ListDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
+        /// <summary>
+        ///     Cosntructor
+        /// </summary>
+        /// <param name="dataExchangeFactory"></param>
+        public ListDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
 
         #region IDataExchange Members
         /// <summary>

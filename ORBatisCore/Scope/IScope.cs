@@ -31,13 +31,13 @@ namespace IBatisNet.DataMapper.Scope;
 /// </summary>
 public interface IScope
 {
-	/// <summary>
-	///     Get the error context
-	/// </summary>
-	ErrorContext ErrorContext { get; }
+    /// <summary>
+    ///     Get the error context
+    /// </summary>
+    ErrorContext ErrorContext { get; }
 
-	/// <summary>
-	///     The factory for DataExchange objects
-	/// </summary>
-	DataExchangeFactory DataExchangeFactory { get; }
+    /// <summary>
+    ///     The factory for DataExchange objects
+    /// </summary>
+    DataExchangeFactory DataExchangeFactory { get; }
 }

@@ -24,12 +24,12 @@
 #endregion
 
 #region Imports
-using System;
-using System.Data;
-using System.Reflection;
 using IBatisNet.Common;
 using IBatisNet.Common.Logging;
 using IBatisNet.DataMapper.Exceptions;
+using System;
+using System.Data;
+using System.Reflection;
 #endregion
 
 
@@ -432,9 +432,9 @@ namespace IBatisNet.DataMapper
                 }
 
             //			if (_logger.IsDebugEnabled)
-//			{
-//				command = IDbCommandProxy.NewInstance(command);
-//			}
+            //			{
+            //				command = IDbCommandProxy.NewInstance(command);
+            //			}
 
             return command;
         }

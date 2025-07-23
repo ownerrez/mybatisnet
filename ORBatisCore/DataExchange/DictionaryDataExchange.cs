@@ -23,10 +23,10 @@
  ********************************************************************************/
 #endregion
 
-using System.Collections;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Configuration.ParameterMapping;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
+using System.Collections;
 
 namespace IBatisNet.DataMapper.DataExchange;
 
@@ -35,11 +35,11 @@ namespace IBatisNet.DataMapper.DataExchange;
 /// </summary>
 public sealed class DictionaryDataExchange : BaseDataExchange
 {
-	/// <summary>
-	///     Cosntructor
-	/// </summary>
-	/// <param name="dataExchangeFactory"></param>
-	public DictionaryDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
+    /// <summary>
+    ///     Cosntructor
+    /// </summary>
+    /// <param name="dataExchangeFactory"></param>
+    public DictionaryDataExchange(DataExchangeFactory dataExchangeFactory) : base(dataExchangeFactory) { }
 
     #region IDataExchange Members
     /// <summary>

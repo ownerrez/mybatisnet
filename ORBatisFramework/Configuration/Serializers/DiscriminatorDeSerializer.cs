@@ -24,26 +24,26 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
 using IBatisNet.DataMapper.Configuration.ResultMapping;
 using IBatisNet.DataMapper.Scope;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
-	/// <summary>
-	///     Summary description for DiscriminatorDeSerializer.
-	/// </summary>
-	public sealed class DiscriminatorDeSerializer
+    /// <summary>
+    ///     Summary description for DiscriminatorDeSerializer.
+    /// </summary>
+    public sealed class DiscriminatorDeSerializer
     {
-	    /// <summary>
-	    ///     Deserialize a ResultMap object
-	    /// </summary>
-	    /// <param name="node"></param>
-	    /// <param name="configScope"></param>
-	    /// <returns></returns>
-	    public static Discriminator Deserialize(XmlNode node, ConfigurationScope configScope)
+        /// <summary>
+        ///     Deserialize a ResultMap object
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="configScope"></param>
+        /// <returns></returns>
+        public static Discriminator Deserialize(XmlNode node, ConfigurationScope configScope)
         {
             var discriminator = new Discriminator();
 

@@ -24,10 +24,10 @@
 #endregion
 
 #region Imports
-using System;
-using System.Xml.Serialization;
 using IBatisNet.Common.Utilities.Objects;
 using IBatisNet.DataMapper.Scope;
+using System;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.Statements

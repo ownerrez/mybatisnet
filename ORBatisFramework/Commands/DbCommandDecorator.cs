@@ -23,9 +23,9 @@
  ********************************************************************************/
 #endregion
 
+using IBatisNet.DataMapper.Scope;
 using System;
 using System.Data;
-using IBatisNet.DataMapper.Scope;
 
 namespace IBatisNet.DataMapper.Commands
 {

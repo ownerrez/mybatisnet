@@ -25,62 +25,62 @@
 
 namespace IBatisNet.Common
 {
-	/// <summary>
-	///     IDataSource
-	/// </summary>
-	public interface IDataSource
+    /// <summary>
+    ///     IDataSource
+    /// </summary>
+    public interface IDataSource
     {
-	    /// <summary>
-	    ///     DataSource Name.
-	    /// </summary>
-	    string Name { set; get; }
-
-	    /// <summary>
-	    ///     Connection string used to create connections.
-	    /// </summary>
-	    string ConnectionString { set; get; }
-
-	    /// <summary>
-	    ///     The data provider.
-	    /// </summary>
-	    IDbProvider DbProvider { set; get; }
-
-/*
         /// <summary>
-        /// Create a connection
+        ///     DataSource Name.
         /// </summary>
-        /// <returns>An IDbConnection</returns>
-        IDbConnection CreateConnection();
+        string Name { set; get; }
 
         /// <summary>
-        /// Create a command object
+        ///     Connection string used to create connections.
         /// </summary>
-        /// <returns>An IdbCommand</returns>
-        IDbCommand CreateCommand();
-        IDbCommand GetCommand(string cmdText);
-        IDbCommand GetCommand(string cmdText, IDbConnection connection);
-        IDbCommand GetCommand(string cmdText, IDbConnection connection, IDbTransaction transaction);
+        string ConnectionString { set; get; }
 
         /// <summary>
-        /// Create a parameter object
+        ///     The data provider.
         /// </summary>
-        /// <returns>An IDataParameter</returns>
-        IDataParameter CreateParameter();
-        // ou return IDbParameter ???
+        IDbProvider DbProvider { set; get; }
 
-        IDataParameter GetParameter(string name, DbType dataType);
-        IDataParameter GetParameter(string name, object value);
-        IDataParameter GetParameter(string name, DbType dataType, int size);
-        IDataParameter GetParameter(string name, DbType dataType, int size, string srcColumn);
+        /*
+                /// <summary>
+                /// Create a connection
+                /// </summary>
+                /// <returns>An IDbConnection</returns>
+                IDbConnection CreateConnection();
 
-        /// <summary>
-        /// Create a DataAdapter object
-        /// </summary>
-        /// <returns>An IDataAdapter</returns>
-        IDataAdapter CreateDataAdapter();
-        IDataAdapter GetDataAdapter(IDbCommand selectCommand);
-        IDataAdapter GetDataAdapter(string selectCommandText, string selectConnectionString);
-        IDataAdapter GetDataAdapter(string selectCommandText, IDbConnection selectConnection);
-        */
+                /// <summary>
+                /// Create a command object
+                /// </summary>
+                /// <returns>An IdbCommand</returns>
+                IDbCommand CreateCommand();
+                IDbCommand GetCommand(string cmdText);
+                IDbCommand GetCommand(string cmdText, IDbConnection connection);
+                IDbCommand GetCommand(string cmdText, IDbConnection connection, IDbTransaction transaction);
+
+                /// <summary>
+                /// Create a parameter object
+                /// </summary>
+                /// <returns>An IDataParameter</returns>
+                IDataParameter CreateParameter();
+                // ou return IDbParameter ???
+
+                IDataParameter GetParameter(string name, DbType dataType);
+                IDataParameter GetParameter(string name, object value);
+                IDataParameter GetParameter(string name, DbType dataType, int size);
+                IDataParameter GetParameter(string name, DbType dataType, int size, string srcColumn);
+
+                /// <summary>
+                /// Create a DataAdapter object
+                /// </summary>
+                /// <returns>An IDataAdapter</returns>
+                IDataAdapter CreateDataAdapter();
+                IDataAdapter GetDataAdapter(IDbCommand selectCommand);
+                IDataAdapter GetDataAdapter(string selectCommandText, string selectConnectionString);
+                IDataAdapter GetDataAdapter(string selectCommandText, IDbConnection selectConnection);
+                */
     }
 }

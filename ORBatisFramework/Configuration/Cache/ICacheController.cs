@@ -29,10 +29,10 @@ using System.Collections;
 
 namespace IBatisNet.DataMapper.Configuration.Cache
 {
-	/// <summary>
-	///     Summary description for ICacheController.
-	/// </summary>
-	public interface ICacheController
+    /// <summary>
+    ///     Summary description for ICacheController.
+    /// </summary>
+    public interface ICacheController
     {
         #region Properties
         /// <summary>

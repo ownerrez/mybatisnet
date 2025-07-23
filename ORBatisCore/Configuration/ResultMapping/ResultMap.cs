@@ -24,11 +24,6 @@
 #endregion
 
 #region Using
-using System.Collections.Specialized;
-using System.Data;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 using IBatisNet.Common.Exceptions;
 using IBatisNet.Common.Utilities;
 using IBatisNet.Common.Utilities.Objects;
@@ -36,6 +31,11 @@ using IBatisNet.DataMapper.Configuration.Serializers;
 using IBatisNet.DataMapper.DataExchange;
 using IBatisNet.DataMapper.Exceptions;
 using IBatisNet.DataMapper.Scope;
+using System.Collections.Specialized;
+using System.Data;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 #endregion
 
 namespace IBatisNet.DataMapper.Configuration.ResultMapping;

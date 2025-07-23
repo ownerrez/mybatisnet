@@ -24,23 +24,23 @@
 #endregion
 
 #region Using
-using System.Xml;
 using IBatisNet.Common.Xml;
+using System.Xml;
 #endregion
 
 namespace IBatisNet.Common
 {
-	/// <summary>
-	///     Summary description for ProviderDeSerializer.
-	/// </summary>
-	public sealed class ProviderDeSerializer
+    /// <summary>
+    ///     Summary description for ProviderDeSerializer.
+    /// </summary>
+    public sealed class ProviderDeSerializer
     {
-	    /// <summary>
-	    ///     Deserializes the specified node in a <see cref="IDbProvider" />.
-	    /// </summary>
-	    /// <param name="node">The node.</param>
-	    /// <returns>The <see cref="IDbProvider" /></returns>
-	    public static IDbProvider Deserialize(XmlNode node)
+        /// <summary>
+        ///     Deserializes the specified node in a <see cref="IDbProvider" />.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>The <see cref="IDbProvider" /></returns>
+        public static IDbProvider Deserialize(XmlNode node)
         {
             IDbProvider provider = new DbProvider();
             var prop = NodeUtils.ParseAttributes(node);

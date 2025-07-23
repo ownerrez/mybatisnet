@@ -42,13 +42,13 @@ namespace IBatisNet.DataMapper.TypeHandlers;
 /// </remarks>
 public interface IResultGetter
 {
-	/// <summary>
-	///     Returns the underlying IDataReader
-	/// </summary>
-	IDataReader DataReader { get; }
+    /// <summary>
+    ///     Returns the underlying IDataReader
+    /// </summary>
+    IDataReader DataReader { get; }
 
-	/// <summary>
-	///     Get the parameter value
-	/// </summary>
-	object Value { get; }
+    /// <summary>
+    ///     Get the parameter value
+    /// </summary>
+    object Value { get; }
 }

@@ -31,16 +31,16 @@ using IBatisNet.DataMapper.Configuration.Sql.Dynamic.Elements;
 
 namespace IBatisNet.DataMapper.Configuration.Sql.Dynamic.Handlers
 {
-	/// <summary>
-	///     Summary description for IsGreaterEqualTagHandler.
-	/// </summary>
-	public sealed class IsGreaterEqualTagHandler : ConditionalTagHandler
+    /// <summary>
+    ///     Summary description for IsGreaterEqualTagHandler.
+    /// </summary>
+    public sealed class IsGreaterEqualTagHandler : ConditionalTagHandler
     {
-	    /// <summary>
-	    ///     Initializes a new instance of the <see cref="IsGreaterEqualTagHandler" /> class.
-	    /// </summary>
-	    /// <param name="accessorFactory">The accessor factory.</param>
-	    public IsGreaterEqualTagHandler(AccessorFactory accessorFactory)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="IsGreaterEqualTagHandler" /> class.
+        /// </summary>
+        /// <param name="accessorFactory">The accessor factory.</param>
+        public IsGreaterEqualTagHandler(AccessorFactory accessorFactory)
             : base(accessorFactory) { }
 
         #region Methods
