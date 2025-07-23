@@ -1,10 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatisCore", "ORBatisCore\ORBatisCore.csproj", "{2882B001-EDFD-4946-9460-858542F5BEAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Core", "ORBatis.Core\ORBatis.Core.csproj", "{2882B001-EDFD-4946-9460-858542F5BEAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Common", "ORBatis.Common\ORBatis.Common.csproj", "{1EC66731-5437-4F55-9617-22E822772864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatisFramework", "ORBatisFramework\ORBatisFramework.csproj", "{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework", "ORBatis.Framework\ORBatis.Framework.csproj", "{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Framework.Test", "ORBatis.Framework.Test\ORBatis.Framework.Test.csproj", "{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C780CE6-4AAC-4439-8334-8DFE3B091CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36A67F1E-0B71-4D66-9293-69EC2DAA0C25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
