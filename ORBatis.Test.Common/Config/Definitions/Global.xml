@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Global" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <resultMaps>
+    <resultMap id="int" class="int">
+      <result property="value" columnIndex="0" />
+    </resultMap>
+  </resultMaps>
+</sqlMap>

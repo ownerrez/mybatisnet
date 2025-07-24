@@ -154,6 +154,9 @@ namespace IBatisNet.DataMapper
         /// <param name="cache">The cache to add</param>
         void AddCache(CacheModel cache);
 
+        void RegisterEntityToMap(string entityName, Action configure);
+
+        
         /// <summary>
         ///     Adds a (named) MappedStatement.
         /// </summary>
@@ -187,6 +190,13 @@ namespace IBatisNet.DataMapper
         /// <param name="id"> The id of the statement</param>
         /// <returns> The MappedStatement</returns>
         IMappedStatement GetMappedStatement(string id);
+        
+        /// <summary>
+        /// Trigger the LazyLoad procedure for a given entity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool LazyLoadMappedStatement(string id);
 
         /// <summary>
         ///     Executes a Sql INSERT statement.

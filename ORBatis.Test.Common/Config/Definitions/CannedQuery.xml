@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="CannedQuery" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <statements>
+        <insert id="Insert" parameterMap="InsertParams">
+            <selectKey property="Id" type="post" resultClass="int">
+                select LAST_INSERT_ID() as value
+            </selectKey>
+            <generate table="CannedQuery"/>
+        </insert>
+        <update id="Update" parameterMap="UpdateParams">
+            <generate table="CannedQuery" by="Id" />
+        </update>
+        <select id="Select" resultClass="CannedQuery" parameterClass="int">
+            select * from CannedQuery
+            <dynamic prepend="where">
+                <isParameterPresent>
+                    Id = #value#
+                </isParameterPresent>
+            </dynamic>
+        </select>
+        <select id="GridForOverview" resultMap="GridForHomepage,Global.int" parameterClass="hashtable">
+            select SQL_CALC_FOUND_ROWS e.*, coalesce(cqu.IsHidden, false) as IsHidden
+            from CannedQuery e
+            left join CannedQueryUser cqu on cqu.CannedQueryId = e.Id and cqu.UserId = #cannedQueryUserId#
+            where DeletedUtc is null
+            <isNotNull property="userId" prepend="and">
+                exists (select 1 from CannedQueryPermission p where p.CannedQueryId = e.Id and p.UserId = #userId#)
+            </isNotNull>
+            <isNotNull property="createdUserIds" prepend="and">
+                e.CreatedUserId in <iterate property="createdUserIds" open="(" close=")" conjunction=",">#createdUserIds[]#</iterate>
+            </isNotNull>
+            <isNotNull property="updatedUserIds" prepend="and">
+                e.UpdatedUserId in <iterate property="updatedUserIds" open="(" close=")" conjunction=",">#updatedUserIds[]#</iterate>
+            </isNotNull>
+            <isNotNull property="canRunUserIds" prepend="and">
+                exists (select 1 from CannedQueryPermission p where p.CannedQueryId = e.Id
+                and p.UserId in <iterate property="canRunUserIds" open="(" close=")" conjunction=",">#canRunUserIds[]#</iterate>)
+            </isNotNull>
+            <isNotNull property="name" prepend="and">e.Name like #name#</isNotNull>
+            <isNotNull property="description" prepend="and">e.Description like #description#</isNotNull>
+            <isNotNull property="queryContent" prepend="and">e.Sql like #queryContent#</isNotNull>
+            <isNotNull property="isHidden" prepend="and">coalesce(cqu.IsHidden, false) = #isHidden#</isNotNull>
+            <isNotNull property="entityTypes" prepend="and">
+                <iterate property="entityTypes" open="(" close=")" conjunction=" or ">json_contains($entityTypesPath$, #entityTypes[]#) = 1</iterate>
+            </isNotNull>
+            order by $orderBy$ $orderDirection$, Id
+            limit #startAtRowNumber#, #pageSize#;
+            select FOUND_ROWS() as TotalRows;
+        </select>
+    </statements>
+    <resultMaps>
+        <resultMap id="CannedQuery" class="CannedQuery">
+            <result property="Id" column="Id" />
+            <result property="UserId" column="UserId" />
+            <result property="Name" column="Name" />
+            <result property="Description" column="Description" />
+            <result property="Sql" column="Sql" />
+            <result property="LimitGrid" column="LimitGrid" />
+            <result property="LimitExport" column="LimitExport" />
+            <result property="Timeout" column="Timeout" />
+            <result property="RelatedItems" column="RelatedItems" />
+            <result property="CreatedUtc" column="CreatedUtc" />
+            <result property="CreatedUserId" column="CreatedUserId" />
+            <result property="UpdatedUtc" column="UpdatedUtc" />
+            <result property="UpdatedUserId" column="UpdatedUserId" />
+            <result property="DeletedUtc" column="DeletedUtc" />
+            <result property="DeletedUserId" column="DeletedUserId" />
+        </resultMap>
+        <resultMap id="GridForHomepage" class="GridCannedQueryForOverview" extends="CannedQuery">
+            <result property="IsHidden" column="IsHidden" />
+        </resultMap>
+    </resultMaps>
+    <parameterMaps>
+        <parameterMap id="InsertParams" class="CannedQuery">
+            <parameter property="UserId" column="UserId" />
+            <parameter property="Name" column="Name" />
+            <parameter property="Description" column="Description" />
+            <parameter property="Sql" column="`Sql`" />
+            <parameter property="LimitGrid" column="LimitGrid" />
+            <parameter property="LimitExport" column="LimitExport" />
+            <parameter property="Timeout" column="`Timeout`" />
+            <parameter property="RelatedItems" column="RelatedItems" />
+            <parameter property="CreatedUtc" column="CreatedUtc" />
+            <parameter property="CreatedUserId" column="CreatedUserId" />
+        </parameterMap>
+        <parameterMap id="UpdateParams" class="CannedQuery" extends="InsertParams">
+            <parameter property="UpdatedUtc" column="UpdatedUtc" />
+            <parameter property="UpdatedUserId" column="UpdatedUserId" />
+            <parameter property="DeletedUtc" column="DeletedUtc" />
+            <parameter property="DeletedUserId" column="DeletedUserId" />
+            <parameter property="Id" column="Id" />
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>

@@ -6,8 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Config\Definitions\Global.xml" />
       <EmbeddedResource Include="Config\Definitions\Holiday.xml" />
       <EmbeddedResource Include="Config\Providers.config" />
+      <None Remove="Config\Definitions\CannedQuery.xml" />
+      <EmbeddedResource Include="Config\Definitions\CannedQuery.xml" />
     </ItemGroup>
 
     <ItemGroup>

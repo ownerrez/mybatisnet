@@ -38,7 +38,7 @@ namespace IBatisNet.DataMapper.Configuration.Serializers
     public sealed class TypeAliasDeSerializer
     {
         /// <summary>
-        ///     Deserialize a TypeAlias object
+        /// Deserialize a TypeAlias object
         /// </summary>
         /// <param name="node"></param>
         /// <param name="configScope"></param>

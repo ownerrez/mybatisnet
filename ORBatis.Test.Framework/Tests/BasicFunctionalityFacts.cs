@@ -6,7 +6,7 @@ using ORBatis.Test.Common;
 using ORBatis.Test.Common.Models;
 using Xunit;
 
-namespace ORBatis.Test.Framewor.Tests;
+namespace ORBatis.Test.Framework.Tests;
 
 public class Tests
 {
@@ -30,8 +30,25 @@ public class Tests
             { "active", true },
             { "userId", 347317427 }
         };
-        var holidays = mapper.QueryForList<Holiday>( "Holiday.SelectAll", parameters, context );
-        
+        var holidays = mapper.QueryForList<Holiday>("Holiday.SelectAll", parameters, context);
         Assert.NotNull(holidays);
+
+        // This one should use the previously LazyLoaded version!
+        var holidays2 = mapper.QueryForList<Holiday>("Holiday.SelectAll", parameters, context);
+        Assert.NotNull(holidays2);
+
+        var cannedParams = new Hashtable()
+        {
+            { "orderBy", "Id" },
+            { "orderDirection", "Desc" },
+            { "startAtRowNumber", 0 },
+            { "pageSize", 10 }
+        };
+        var cannedQueries = mapper.QueryForList(
+            "CannedQuery.GridForOverview",
+            cannedParams,
+            context
+        );
+        Assert.NotNull(cannedQueries);
     }
 }

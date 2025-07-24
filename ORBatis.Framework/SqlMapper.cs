@@ -41,6 +41,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 //using IBatisNet.DataMapper.SessionStore;
 #endregion
@@ -954,6 +955,11 @@ namespace IBatisNet.DataMapper
         #endregion
 
         #region Get/Add ParemeterMap, ResultMap, MappedStatement, TypeAlias, DataSource, CacheModel
+
+        private Dictionary<string, Action> EntityToMap = new Dictionary<string, Action>();
+        public void RegisterEntityToMap(string entityName, Action configure) => EntityToMap[entityName] = configure;
+        private readonly Dictionary<string, Task<bool>> SqlMapFileProcessed = new Dictionary<string, Task<bool>>();
+        
         /// <summary>
         ///     Gets a MappedStatement by name
         /// </summary>
@@ -961,8 +967,68 @@ namespace IBatisNet.DataMapper
         /// <returns> The MappedStatement</returns>
         public IMappedStatement GetMappedStatement(string id)
         {
-            if (MappedStatements.Contains(id) == false) throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
+            // In the original iBatis, a missing ID would cause the application to throw immediately.
+            // Now we lazy load the configuration maps, and so we need to double check that the map has actually been loaded.
+            if (MappedStatements.Contains(id) == false)
+            {
+                var didLazyLoad = LazyLoadMappedStatement(id);
+                if(!didLazyLoad)
+                    throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
+            }
+            
             return (IMappedStatement)MappedStatements[id];
+        }
+
+        public bool LazyLoadMappedStatement(string id)
+        {
+            var parts = id.Split('.');
+            if (parts.Length < 2)
+                return false;
+
+            // Root will be the name of the .sql file. i.e. Holiday -> Holiday.xml
+            var root = parts[0];
+            if (!EntityToMap.TryGetValue(root, out var configurationAction))
+                return false; // THis mapping should have been set by the Initialization process!
+
+            // Loading this SQLMap has already started. Let's await the result
+            if (SqlMapFileProcessed.TryGetValue(root, out var task))
+            {
+                var loaded = task.Result;
+                return loaded;
+            }
+            
+            // Looks like this thread might need to perform the lazy load.
+            // Lock the dictionary to prevent duplicate loads
+            var didWriteTask = false;
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+            lock (SqlMapFileProcessed)
+            {
+                if (!SqlMapFileProcessed.TryGetValue(root, out task))
+                {
+                    SqlMapFileProcessed.Add(root, taskCompletionSource.Task);
+                    didWriteTask = true;
+                }
+            }
+
+            if (!didWriteTask)
+            {
+                var loaded = task.Result; // Someone else beat us to it. Await and return.
+                return loaded;
+            }
+            
+            // Call the configuration method
+            try
+            {
+                configurationAction();
+                taskCompletionSource.SetResult(true);
+                return true;
+            }
+            catch
+            {
+                // This is bad! Really the app should die, but at least setting result will let other threads complete.
+                taskCompletionSource.SetResult(false);
+                throw; 
+            }
         }
 
         /// <summary>
@@ -1009,7 +1075,8 @@ namespace IBatisNet.DataMapper
         /// <returns>The ResultMap</returns>
         public IResultMap GetResultMap(string name)
         {
-            if (ResultMaps.Contains(name) == false) throw new DataMapperException("This SQL map does not contain an ResultMap named " + name);
+            if (ResultMaps.Contains(name) == false) 
+                throw new DataMapperException("This SQL map does not contain an ResultMap named " + name);
             return (ResultMap)ResultMaps[name];
         }
 
