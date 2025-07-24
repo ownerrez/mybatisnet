@@ -11,6 +11,10 @@
       <EmbeddedResource Include="Config\Providers.config" />
       <None Remove="Config\Definitions\CannedQuery.xml" />
       <EmbeddedResource Include="Config\Definitions\CannedQuery.xml" />
+      <None Remove="Config\Definitions\GridReview.xml" />
+      <EmbeddedResource Include="Config\Definitions\GridReview.xml" />
+      <None Remove="Config\Definitions\Review.xml" />
+      <EmbeddedResource Include="Config\Definitions\Review.xml" />
     </ItemGroup>
 
     <ItemGroup>

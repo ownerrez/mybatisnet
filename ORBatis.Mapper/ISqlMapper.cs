@@ -156,7 +156,6 @@ namespace IBatisNet.DataMapper
 
         void RegisterEntityToMap(string entityName, Action configure);
 
-        
         /// <summary>
         ///     Adds a (named) MappedStatement.
         /// </summary>

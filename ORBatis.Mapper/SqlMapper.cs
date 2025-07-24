@@ -956,8 +956,17 @@ namespace IBatisNet.DataMapper
 
         #region Get/Add ParemeterMap, ResultMap, MappedStatement, TypeAlias, DataSource, CacheModel
 
-        private Dictionary<string, Action> EntityToMap = new Dictionary<string, Action>();
-        public void RegisterEntityToMap(string entityName, Action configure) => EntityToMap[entityName] = configure;
+        private Dictionary<string, List<Action>> EntityToMap = new Dictionary<string, List<Action>>();
+
+        public void RegisterEntityToMap(string entityName, Action configure)
+        {
+            if (!EntityToMap.TryGetValue(entityName, out var actions))
+            {
+                actions = new List<Action>();
+                EntityToMap[entityName] = actions;
+            }
+            actions.Add(configure);
+        }
         private readonly Dictionary<string, Task<bool>> SqlMapFileProcessed = new Dictionary<string, Task<bool>>();
         
         /// <summary>
@@ -976,7 +985,7 @@ namespace IBatisNet.DataMapper
                     throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
             }
             
-            return (IMappedStatement)MappedStatements[id];
+            return (IMappedStatement)MappedStatements[id] ?? throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
         }
 
         public bool LazyLoadMappedStatement(string id)
@@ -987,7 +996,7 @@ namespace IBatisNet.DataMapper
 
             // Root will be the name of the .sql file. i.e. Holiday -> Holiday.xml
             var root = parts[0];
-            if (!EntityToMap.TryGetValue(root, out var configurationAction))
+            if (!EntityToMap.TryGetValue(root, out var configurationActions))
                 return false; // THis mapping should have been set by the Initialization process!
 
             // Loading this SQLMap has already started. Let's await the result
@@ -1024,7 +1033,8 @@ namespace IBatisNet.DataMapper
                 // we allow multiple to be configured simultaneously.
                 lock (SqlMapFileProcessed)
                 {
-                    configurationAction();
+                    foreach (var action in configurationActions)
+                        action();
                 }
                 taskCompletionSource.SetResult(true);
                 return true;

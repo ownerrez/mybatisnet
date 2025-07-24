@@ -59,5 +59,18 @@ public class Tests
             context
         );
         Assert.NotNull(cannedQueries);
+        
+        var reviews = mapper.QueryForList<Review>("Review.SelectAll", parameters, context);
+        Assert.NotNull(reviews);
+
+        var reviewParams = new Hashtable()
+        {
+            { "orderBy", "Id" },
+            { "orderDirection", "Desc" },
+            { "startAtRowNumber", 0 },
+            { "pageSize", 10 }
+        };
+        var gridReview = mapper.QueryForList("Review.GridForOverview", reviewParams, context);
+        Assert.NotNull(gridReview);
     }
 }

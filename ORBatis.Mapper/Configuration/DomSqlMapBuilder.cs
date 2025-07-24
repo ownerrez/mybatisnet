@@ -824,7 +824,7 @@ namespace IBatisNet.DataMapper.Configuration
             #endregion
 
             #region Load sqlMap mapping files
-            var toProcessLazily = new List<string>();
+            // var toProcessLazily = new List<string>();
             foreach (XmlNode xmlNode in _configScope.SqlMapConfigDocument.SelectNodes(ApplyDataMapperNamespacePrefix(XML_SQLMAP), _configScope.XmlNamespaceManager))
             {
                 var shouldLazyLoad = false;
@@ -833,9 +833,9 @@ namespace IBatisNet.DataMapper.Configuration
                 if (isEmbedded)
                 {
                     var embeddedPath = xmlNode.Attributes["embedded"].Value;
-                    
                     // This is a special result used in many other sqlMaps.
-                    if (!embeddedPath.ToLower().Contains(".global.xml,"))
+                    var isSpecialFile = embeddedPath.ToLower().Contains(".global.xml,");
+                    if (!isSpecialFile)
                     {
                         var parts = embeddedPath.Split('.');
                         for (var i = 1; i < parts.Length; i++)
@@ -845,14 +845,25 @@ namespace IBatisNet.DataMapper.Configuration
                                 continue;
 
                             var entityName = parts[i - 1];
+                            
+                            var fileData = Resources.GetAsXmlDocument(xmlNode, _configScope.Properties);
+                            var sqlMap = fileData.LastChild;
+
+                            var fileNamespace = sqlMap.Attributes["namespace"].Value;
+                            if (entityName != fileNamespace)
+                            {
+                                _logger.Info($"File with name {entityName} is being mapped to namespace {fileNamespace}.");
+                                entityName = fileNamespace;
+                            }
+                            
                             var configScope = _configScope;
                             var currentNode = xmlNode;
                             configScope.SqlMapper.RegisterEntityToMap(entityName, () =>
                             {
-                                ConfigureSqlMap(currentNode, configScope, true);
+                                ConfigureSqlMap(currentNode, configScope, isLazy: true);
                             });
                             shouldLazyLoad = true;
-                            toProcessLazily.Add(entityName);
+                            // toProcessLazily.Add(entityName);
                         }
                     }
                 }
@@ -942,14 +953,17 @@ namespace IBatisNet.DataMapper.Configuration
             for (var index = 0; index < resultMap.Properties.Count; index++)
             {
                 var result = resultMap.Properties[index];
-                if (result.NestedResultMapName.Length > 0) result.NestedResultMap = configScope.SqlMapper.GetResultMap(result.NestedResultMapName);
+                if (result.NestedResultMapName.Length > 0) 
+                    result.NestedResultMap = configScope.SqlMapper.GetResultMap(result.NestedResultMapName);
+                
                 result.PropertyStrategy = PropertyStrategyFactory.Get(result);
             }
 
             for (var index = 0; index < resultMap.Parameters.Count; index++)
             {
                 var result = resultMap.Parameters[index];
-                if (result.NestedResultMapName.Length > 0) result.NestedResultMap = configScope.SqlMapper.GetResultMap(result.NestedResultMapName);
+                if (result.NestedResultMapName.Length > 0) 
+                    result.NestedResultMap = configScope.SqlMapper.GetResultMap(result.NestedResultMapName);
                 result.ArgumentStrategy = ArgumentStrategyFactory.Get((ArgumentProperty)result);
             }
 
@@ -1754,7 +1768,6 @@ namespace IBatisNet.DataMapper.Configuration
                         for (var i = 0; i < superMap.Parameters.Count; i++) resultMap.Parameters.Add(superMap.Parameters[i]);
                         if (resultMap.Parameters.Count > 0) resultMap.SetObjectFactory(configScope);
                     }
-
 
                     // Verify that that each groupBy element correspond to a class member
                     // of one of result property
