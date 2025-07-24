@@ -1019,7 +1019,13 @@ namespace IBatisNet.DataMapper
             // Call the configuration method
             try
             {
-                configurationAction();
+                // Note: It is essential that only one of these maps is ever configured at simultaneously!
+                // The embedded configConfig contains lots of static values which will be corrupted if
+                // we allow multiple to be configured simultaneously.
+                lock (SqlMapFileProcessed)
+                {
+                    configurationAction();
+                }
                 taskCompletionSource.SetResult(true);
                 return true;
             }

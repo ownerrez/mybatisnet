@@ -57,7 +57,14 @@ namespace IBatisNet.DataMapper.Configuration.Serializers
 
             typeAlias.Initialize();
 
-            configScope.SqlMapper.TypeHandlerFactory.AddTypeAlias(typeAlias.Name, typeAlias);
+            if (configScope.SqlMapper.TypeHandlerFactory.GetTypeAlias(typeAlias.Name) == null)
+            {
+                lock (configScope.SqlMapper.TypeHandlerFactory)
+                {
+                    if (configScope.SqlMapper.TypeHandlerFactory.GetTypeAlias(typeAlias.Name) == null)
+                        configScope.SqlMapper.TypeHandlerFactory.AddTypeAlias(typeAlias.Name, typeAlias);
+                }
+            }
         }
     }
 }

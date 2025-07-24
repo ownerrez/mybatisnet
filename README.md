@@ -17,13 +17,24 @@ In particular:
     - If we detect that a file can be loaded lazily, we will attempt to do so.
     - Calls the `RegisterEntityToMap` method to configure the lazy-load method
     - Also tweaked the `ConfigureSqlMap` method to be easier to call for lazy callers.
-    - At the end of the config method, we start a background thread which will load each of the Lazy-loadable .xml files in turn.
+    - ~At the end of the config method, we start a background thread which will load each of the Lazy-loadable .xml files in turn.~
+    - Rework design to not depend on configScope so much
+    - Delete some of the FileScope/Cache logic
+  - `TypeAliasDeSerializer`
+    - Add locking to prevent an Alias collision
 
 ## Important!
 
 Make sure that if you change the NetFramework behavior, that you also change the NetCore behavior!
 - They're basically duplicates of one another, but the shared logic is difficult to move
   into the common project due to dependency on runtime specific Reflect/ILEmit logic.
+
+Many parameters are passed statically on the configScope to child entities.
+- This means that we ABSOLUTELY CANNOT ALLOW two maps to be built at the same time.
+  - If we permit this, then in testing everything will look fine...
+  - but when we deploy to production we'll get all sorts of strange, unexpected errors.
+  - Maps in Holiday.xml getting assigned to the Booking.xml namespace and similar.
+- To avoid this, we would need to totally re-write the configuration process. Not an easy feat.
 
 ## Big Quirks!
 

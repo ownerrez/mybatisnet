@@ -844,10 +844,7 @@ namespace IBatisNet.DataMapper.Configuration
                             if (!part.ToLower().StartsWith("xml,")) 
                                 continue;
 
-                            // TODO: Can we recursively load types? Probably not?
-
                             var entityName = parts[i - 1];
-                            // TODO: Extract out configuration logic to make sure it doesn't depend on _configScope!
                             var configScope = _configScope;
                             var currentNode = xmlNode;
                             configScope.SqlMapper.RegisterEntityToMap(entityName, () =>
@@ -1063,19 +1060,18 @@ namespace IBatisNet.DataMapper.Configuration
             configScope.ErrorContext.Activity = "loading SqlMap";
             configScope.ErrorContext.Resource = sqlMapNode.OuterXml;
 
-            if (configScope.UseConfigFileWatcher)
-                if (sqlMapNode.Attributes["resource"] != null || sqlMapNode.Attributes["url"] != null)
-                    ConfigWatcherHandler.AddFileToWatch(Resources.GetFileInfo(Resources.GetValueOfNodeResourceUrl(sqlMapNode, configScope.Properties)));
-
             // Load the file 
             configScope.SqlMapDocument = Resources.GetAsXmlDocument(sqlMapNode, configScope.Properties);
 
-            if (configScope.ValidateSqlMap) ValidateSchema(configScope.SqlMapDocument.ChildNodes[1], "SqlMap.xsd");
+            if (configScope.ValidateSqlMap)
+                ValidateSchema(configScope.SqlMapDocument.ChildNodes[1], "SqlMap.xsd");
 
             configScope.SqlMapNamespace = configScope.SqlMapDocument.SelectSingleNode(ApplyMappingNamespacePrefix(XML_MAPPING_ROOT), configScope.XmlNamespaceManager).Attributes["namespace"].Value;
 
             #region Load TypeAlias
-            foreach (XmlNode xmlNode in configScope.SqlMapDocument.SelectNodes(ApplyMappingNamespacePrefix(XML_TYPEALIAS), configScope.XmlNamespaceManager)) TypeAliasDeSerializer.Deserialize(xmlNode, configScope);
+            foreach (XmlNode xmlNode in configScope.SqlMapDocument.SelectNodes(ApplyMappingNamespacePrefix(XML_TYPEALIAS), configScope.XmlNamespaceManager))
+               TypeAliasDeSerializer.Deserialize(xmlNode, configScope);
+            
             configScope.ErrorContext.MoreInfo = string.Empty;
             configScope.ErrorContext.ObjectId = string.Empty;
             #endregion
@@ -1127,7 +1123,7 @@ namespace IBatisNet.DataMapper.Configuration
                 configScope.ErrorContext.ObjectId = statement.Id;
                 statement.Initialize(configScope);
 
-                // Build ISql (analyse sql statement)		
+                // Build ISql (analyse sql statement)
                 ProcessSqlStatement(statement);
 
                 // Build MappedStatement
