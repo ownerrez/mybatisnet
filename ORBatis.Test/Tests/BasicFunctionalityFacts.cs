@@ -2,7 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Xml;
+using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper.Configuration;
 using ORBatis.Test.Common;
 using ORBatis.Test.Common.Models;
@@ -18,7 +23,7 @@ public class Tests
         var sqlMapConfig = IBatisNet.Common.Utilities.Resources.GetEmbeddedResourceAsXmlDocument(path);
         return sqlMapConfig;
     }
-    
+
     [Fact]
     public void Basic_AbleToSelectHolidays()
     {

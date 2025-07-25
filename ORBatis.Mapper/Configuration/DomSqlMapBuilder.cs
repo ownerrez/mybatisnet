@@ -845,12 +845,8 @@ namespace IBatisNet.DataMapper.Configuration
                                 continue;
 
                             var entityName = parts[i - 1];
-                            
-                            var fileData = Resources.GetAsXmlDocument(xmlNode, _configScope.Properties);
-                            var sqlMap = fileData.LastChild;
-
-                            var fileNamespace = sqlMap.Attributes["namespace"].Value;
-                            if (entityName != fileNamespace)
+                            var fileNamespace = GetNamespaceFromFile(embeddedPath);
+                            if (fileNamespace != null && entityName != fileNamespace)
                             {
                                 _logger.Info($"File with name {entityName} is being mapped to namespace {fileNamespace}.");
                                 entityName = fileNamespace;
@@ -871,6 +867,34 @@ namespace IBatisNet.DataMapper.Configuration
                 if(!shouldLazyLoad)
                     ConfigureSqlMap(xmlNode, _configScope);
             }
+
+            string GetNamespaceFromFile(string fileName)
+            {
+                var fileInfo = new Resources.FileAssemblyInfo(fileName);
+                var assembly =  Assembly.Load(fileInfo.AssemblyName);
+                using (var stream = assembly.GetManifestResourceStream(fileInfo.FileName))
+                using (var streamReader = new StreamReader(stream))
+                {
+                    for (var i = 0; i < 5; i++)
+                    {
+                        var data = streamReader.ReadLine();
+                        const string mapString = "<sqlMap ";
+                        const string searchString = "namespace=\"";
+                        var sqlMapIndex = data.IndexOf(mapString);
+                        if (string.IsNullOrEmpty(data) || sqlMapIndex > -1)
+                        {
+                            var searchStringIdx = data.IndexOf(searchString);
+                            var openQuoteIdx = searchStringIdx + searchString.Length;
+                            var closingQuoteIndex = data.IndexOf("\"", openQuoteIdx);
+                            var ns = data.Substring(openQuoteIdx, closingQuoteIndex - openQuoteIdx);
+                            return ns;
+                        }
+                    }
+                }
+
+                return null;
+            }
+            
             #endregion
 
             #region Load sqlMap Modules

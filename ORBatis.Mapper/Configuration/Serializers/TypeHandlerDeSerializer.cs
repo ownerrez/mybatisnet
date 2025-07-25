@@ -36,6 +36,7 @@ using System.Xml;
 
 namespace IBatisNet.DataMapper.Configuration.Serializers
 {
+    // NL: This TypeHandler *shouldn't* need concurrent checks as it's called in Initialize and nowhere else.
     /// <summary>
     ///     Summary description for TypeHandlerDeSerializer.
     /// </summary>

@@ -21,7 +21,7 @@ In particular:
     - Rework design to not depend on configScope so much
     - Delete some of the FileScope/Cache logic
   - `TypeAliasDeSerializer`
-    - Add locking to prevent an Alias collision
+    - Add locking to prevent concurrent Alias collision
 
 ## Important!
 
@@ -30,7 +30,7 @@ Make sure that if you change the NetFramework behavior, that you also change the
   into the common project due to dependency on runtime specific Reflect/ILEmit logic.
 
 Many parameters are passed statically on the configScope to child entities.
-- This means that we ABSOLUTELY CANNOT ALLOW two maps to be built at the same time.
+- This means that we ABSOLUTELY CANNOT ALLOW two entity.xml maps to be built at the same time.
   - If we permit this, then in testing everything will look fine...
   - but when we deploy to production we'll get all sorts of strange, unexpected errors.
   - Maps in Holiday.xml getting assigned to the Booking.xml namespace and similar.
@@ -40,9 +40,6 @@ Many parameters are passed statically on the configScope to child entities.
 
 - Global.xml is always loaded eagerly because we have several queries which depend on it.
   - It would be better if we detected dependencies and lazy loaded them too, but I'm not sure if this is possible.
-
-TODO!
-- Check for other lock-required areas. I think I saw some Deserialize methods which might cause race conditions.
-- Migrate the Framework code into Core. They've gotten out of sync!
-- See if we can reduce the code duplication.
-- Double check that netCore serializer hack I made. It's not supported for net8, but should be better tested!
+- Because of the "Namespace" feature, I need to load the entire XML into memory for every SQL map to double check that it doesn't belong to a different .xml namespace.
+  - i.e. GridReviewForOverview in GridReview.xml actually belongs to the "Review.xml" namespace.
+  - This causes the up-front compilation time to increase 3.5x
