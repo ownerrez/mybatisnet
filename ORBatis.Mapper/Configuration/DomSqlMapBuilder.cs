@@ -824,7 +824,6 @@ namespace IBatisNet.DataMapper.Configuration
             #endregion
 
             #region Load sqlMap mapping files
-            // var toProcessLazily = new List<string>();
             foreach (XmlNode xmlNode in _configScope.SqlMapConfigDocument.SelectNodes(ApplyDataMapperNamespacePrefix(XML_SQLMAP), _configScope.XmlNamespaceManager))
             {
                 var shouldLazyLoad = false;
@@ -845,13 +844,6 @@ namespace IBatisNet.DataMapper.Configuration
                                 continue;
 
                             var entityName = parts[i - 1];
-                            var fileNamespace = GetNamespaceFromFile(embeddedPath);
-                            if (fileNamespace != null && entityName != fileNamespace)
-                            {
-                                _logger.Info($"File with name {entityName} is being mapped to namespace {fileNamespace}.");
-                                entityName = fileNamespace;
-                            }
-                            
                             var configScope = _configScope;
                             var currentNode = xmlNode;
                             configScope.SqlMapper.RegisterEntityToMap(entityName, () =>
@@ -859,7 +851,6 @@ namespace IBatisNet.DataMapper.Configuration
                                 ConfigureSqlMap(currentNode, configScope, isLazy: true);
                             });
                             shouldLazyLoad = true;
-                            // toProcessLazily.Add(entityName);
                         }
                     }
                 }
@@ -867,34 +858,6 @@ namespace IBatisNet.DataMapper.Configuration
                 if(!shouldLazyLoad)
                     ConfigureSqlMap(xmlNode, _configScope);
             }
-
-            string GetNamespaceFromFile(string fileName)
-            {
-                var fileInfo = new Resources.FileAssemblyInfo(fileName);
-                var assembly =  Assembly.Load(fileInfo.AssemblyName);
-                using (var stream = assembly.GetManifestResourceStream(fileInfo.FileName))
-                using (var streamReader = new StreamReader(stream))
-                {
-                    for (var i = 0; i < 5; i++)
-                    {
-                        var data = streamReader.ReadLine();
-                        const string mapString = "<sqlMap ";
-                        const string searchString = "namespace=\"";
-                        var sqlMapIndex = data.IndexOf(mapString);
-                        if (string.IsNullOrEmpty(data) || sqlMapIndex > -1)
-                        {
-                            var searchStringIdx = data.IndexOf(searchString);
-                            var openQuoteIdx = searchStringIdx + searchString.Length;
-                            var closingQuoteIndex = data.IndexOf("\"", openQuoteIdx);
-                            var ns = data.Substring(openQuoteIdx, closingQuoteIndex - openQuoteIdx);
-                            return ns;
-                        }
-                    }
-                }
-
-                return null;
-            }
-            
             #endregion
 
             #region Load sqlMap Modules
@@ -960,16 +923,6 @@ namespace IBatisNet.DataMapper.Configuration
 
             _configScope.ErrorContext.Reset();
             #endregion
-            
-            // Kick-Start the Lazy-Load process
-            // Note: Given we re-use the SQLMapConfig for many mappers, I'm not sure that this is a win.
-            // Task.Run(() =>
-            // {
-            //     foreach (var entity in toProcessLazily)
-            //     {
-            //         _configScope.SqlMapper.LazyLoadMappedStatement($"{entity}.LazyInitialization");
-            //     }
-            // });
         }
 
         private void PostProcessResultMap(ResultMap resultMap, ConfigurationScope configScope)
