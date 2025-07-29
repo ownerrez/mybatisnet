@@ -41,6 +41,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 //using IBatisNet.DataMapper.SessionStore;
@@ -969,6 +970,7 @@ namespace IBatisNet.DataMapper
         }
         private readonly Dictionary<string, Task<bool>> SqlMapFileProcessed = new Dictionary<string, Task<bool>>();
         
+        ReaderWriterLockSlim _writeLocker =  new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         /// <summary>
         ///     Gets a MappedStatement by name
         /// </summary>
@@ -978,14 +980,29 @@ namespace IBatisNet.DataMapper
         {
             // In the original iBatis, a missing ID would cause the application to throw immediately.
             // Now we lazy load the configuration maps, and so we need to double check that the map has actually been loaded.
-            if (MappedStatements.Contains(id) == false)
-            {
-                var didLazyLoad = LazyLoadMappedStatement(id);
-                if(!didLazyLoad)
-                    throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
-            }
+            IMappedStatement statement = AttemptLazyLoadMappedStatement(id);
+            if (statement != null)
+                return statement;
             
-            return (IMappedStatement)MappedStatements[id] ?? throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
+            var didLazyLoad = LazyLoadMappedStatement(id);
+            if(!didLazyLoad)
+                throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
+            
+            return AttemptLazyLoadMappedStatement(id) ?? throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
+        }
+
+        private IMappedStatement AttemptLazyLoadMappedStatement(string id)
+        {
+            IMappedStatement statement = null;
+            _writeLocker.EnterReadLock();
+            try
+            {
+                if (MappedStatements.Contains(id))
+                    statement = (IMappedStatement)MappedStatements[id];
+            }
+            finally { _writeLocker.ExitReadLock(); }
+            
+            return statement;
         }
 
         public bool LazyLoadMappedStatement(string id)
@@ -997,14 +1014,17 @@ namespace IBatisNet.DataMapper
             // Root will be the name of the .sql file. i.e. Holiday -> Holiday.xml
             var root = parts[0];
             if (!EntityToMap.TryGetValue(root, out var configurationActions))
-                return false; // THis mapping should have been set by the Initialization process!
+                return false; // This mapping should have been set by the Initialization process!
 
             // Loading this SQLMap has already started. Let's await the result
-            if (SqlMapFileProcessed.TryGetValue(root, out var task))
+            Task<bool> task = null;
+            lock (SqlMapFileProcessed)
             {
-                var loaded = task.Result;
-                return loaded;
+                SqlMapFileProcessed.TryGetValue(root, out task);
             }
+
+            if (task != null)
+                return task.Result;
             
             // Looks like this thread might need to perform the lazy load.
             // Lock the dictionary to prevent duplicate loads
@@ -1031,11 +1051,15 @@ namespace IBatisNet.DataMapper
                 // Note: It is essential that only one of these maps is ever configured at simultaneously!
                 // The embedded configConfig contains lots of static values which will be corrupted if
                 // we allow multiple to be configured simultaneously.
-                lock (SqlMapFileProcessed)
+
+                _writeLocker.EnterWriteLock();
+                try
                 {
                     foreach (var action in configurationActions)
                         action();
                 }
+                finally { _writeLocker.ExitWriteLock(); }
+                
                 taskCompletionSource.SetResult(true);
                 return true;
             }
@@ -1070,8 +1094,13 @@ namespace IBatisNet.DataMapper
         /// <returns>The ParameterMap</returns>
         public ParameterMap GetParameterMap(string name)
         {
-            if (!ParameterMaps.Contains(name)) throw new DataMapperException("This SQL map does not contain an ParameterMap named " + name + ".  ");
-            return (ParameterMap)ParameterMaps[name];
+            _writeLocker.EnterReadLock();
+            try
+            {
+                if (!ParameterMaps.Contains(name)) 
+                    throw new DataMapperException("This SQL map does not contain an ParameterMap named " + name + ".  ");
+                return (ParameterMap)ParameterMaps[name];
+            } finally{ _writeLocker.ExitReadLock(); }
         }
 
         /// <summary>
@@ -1091,9 +1120,13 @@ namespace IBatisNet.DataMapper
         /// <returns>The ResultMap</returns>
         public IResultMap GetResultMap(string name)
         {
-            if (ResultMaps.Contains(name) == false) 
-                throw new DataMapperException("This SQL map does not contain an ResultMap named " + name);
-            return (ResultMap)ResultMaps[name];
+            _writeLocker.EnterReadLock();
+            try
+            {
+                if (ResultMaps.Contains(name) == false) 
+                    throw new DataMapperException("This SQL map does not contain an ResultMap named " + name);
+                return (ResultMap)ResultMaps[name];
+            } finally{ _writeLocker.ExitReadLock(); }
         }
 
         /// <summary>
