@@ -10,7 +10,6 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <AssemblyName>IBatisNet.DataMapper</AssemblyName>
         <RootNamespace>IBatisNet.DataMapper</RootNamespace>
-        <TargetFramework>net48</TargetFramework>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>

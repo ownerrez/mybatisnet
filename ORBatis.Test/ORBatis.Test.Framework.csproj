@@ -11,7 +11,6 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>ORBatis.Test</RootNamespace>
         <AssemblyName>ORBatis.Test</AssemblyName>
-        <TargetFramework>net48</TargetFramework>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>13</LangVersion>

@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORBatis.Core", "ORBatis.Mapper\ORBatis.Core.csproj", "{2882B001-EDFD-4946-9460-858542F5BEAF}"
 EndProject
