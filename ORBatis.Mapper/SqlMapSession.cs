@@ -28,6 +28,7 @@ using IBatisNet.Common;
 using IBatisNet.Common.Logging;
 using IBatisNet.DataMapper.Exceptions;
 using System;
+using System.Configuration;
 using System.Data;
 using System.Reflection;
 #endregion
@@ -43,6 +44,12 @@ namespace IBatisNet.DataMapper
     {
         #region Fields
         private static readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        const string ConfigCaptureCloseStackKey = "SqlMapSession.CaptureCloseStack";
+        static bool CaptureCloseStack => string.Equals(ConfigurationManager.AppSettings[ConfigCaptureCloseStackKey], "true", StringComparison.OrdinalIgnoreCase);
+
+        private bool _connectionClosed;
+        private string _closedAtStackTrace;
         #endregion
         #region Constructor (s) / Destructor
         /// <summary>
@@ -55,12 +62,26 @@ namespace IBatisNet.DataMapper
         }
         #endregion
 
+        void ThrowIfClosed()
+        {
+            if (!_connectionClosed)
+                return;
+            string message = "SqlMapSession connection has been closed; use-after-close is not allowed.";
+            var ex = new ObjectDisposedException(typeof(SqlMapSession).Name, message);
+            if (!string.IsNullOrEmpty(_closedAtStackTrace))
+                ex.Data["ClosedAtStackTrace"] = _closedAtStackTrace;
+            throw ex;
+        }
+
         #region IDisposable Members
         /// <summary>
         ///     Releasing, or resetting resources.
         /// </summary>
         public void Dispose()
         {
+            if (_connectionClosed || _connection == null)
+                return;
+
             if (_logger.IsDebugEnabled) _logger.Debug("Dispose SqlMapSession");
             if (IsTransactionStart == false)
             {
@@ -122,7 +143,14 @@ namespace IBatisNet.DataMapper
         ///     The Connection use by the session.
         /// </summary>
         /// <value></value>
-        public IDbConnection Connection => _connection;
+        public IDbConnection Connection
+        {
+            get
+            {
+                ThrowIfClosed();
+                return _connection;
+            }
+        }
 
 
         /// <summary>
@@ -189,6 +217,7 @@ namespace IBatisNet.DataMapper
         /// <param name="connectionString">The connection string</param>
         public void OpenConnection(string connectionString)
         {
+            ThrowIfClosed();
             if (_connection == null)
             {
                 CreateConnection(connectionString);
@@ -229,6 +258,9 @@ namespace IBatisNet.DataMapper
             }
 
             _connection = null;
+            _connectionClosed = true;
+            if (CaptureCloseStack)
+                _closedAtStackTrace = Environment.StackTrace;
         }
 
         /// <summary>
@@ -245,6 +277,7 @@ namespace IBatisNet.DataMapper
         /// <param name="connectionString">The connection string</param>
         public void BeginTransaction(string connectionString)
         {
+            ThrowIfClosed();
             if (_connection == null || _connection.State != ConnectionState.Open) OpenConnection(connectionString);
             _transaction = _connection.BeginTransaction();
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
@@ -257,6 +290,7 @@ namespace IBatisNet.DataMapper
         /// <param name="openConnection">Open a connection.</param>
         public void BeginTransaction(bool openConnection)
         {
+            ThrowIfClosed();
             if (openConnection)
             {
                 BeginTransaction();
@@ -288,6 +322,7 @@ namespace IBatisNet.DataMapper
         /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
         public void BeginTransaction(string connectionString, IsolationLevel isolationLevel)
         {
+            ThrowIfClosed();
             if (_connection == null || _connection.State != ConnectionState.Open) OpenConnection(connectionString);
             _transaction = _connection.BeginTransaction(isolationLevel);
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
@@ -314,6 +349,7 @@ namespace IBatisNet.DataMapper
         /// <param name="openConnection">Open a connection.</param>
         public void BeginTransaction(string connectionString, bool openConnection, IsolationLevel isolationLevel)
         {
+            ThrowIfClosed();
             if (openConnection)
             {
                 BeginTransaction(connectionString, isolationLevel);
@@ -335,13 +371,14 @@ namespace IBatisNet.DataMapper
         /// </remarks>
         public void CommitTransaction()
         {
+            ThrowIfClosed();
             if (_logger.IsDebugEnabled) _logger.Debug("Commit Transaction.");
             _transaction.Commit();
             _transaction.Dispose();
             _transaction = null;
             IsTransactionStart = false;
 
-            if (_connection.State != ConnectionState.Closed) CloseConnection();
+            if (_connection != null && _connection.State != ConnectionState.Closed) CloseConnection();
         }
 
         /// <summary>
@@ -350,6 +387,7 @@ namespace IBatisNet.DataMapper
         /// <param name="closeConnection">Close the connection</param>
         public void CommitTransaction(bool closeConnection)
         {
+            ThrowIfClosed();
             if (closeConnection)
             {
                 CommitTransaction();
@@ -372,12 +410,13 @@ namespace IBatisNet.DataMapper
         /// </remarks>
         public void RollBackTransaction()
         {
+            ThrowIfClosed();
             if (_logger.IsDebugEnabled) _logger.Debug("RollBack Transaction.");
             _transaction.Rollback();
             _transaction.Dispose();
             _transaction = null;
             IsTransactionStart = false;
-            if (_connection.State != ConnectionState.Closed) CloseConnection();
+            if (_connection != null && _connection.State != ConnectionState.Closed) CloseConnection();
         }
 
         /// <summary>
@@ -386,6 +425,7 @@ namespace IBatisNet.DataMapper
         /// <param name="closeConnection">Close the connection</param>
         public void RollBackTransaction(bool closeConnection)
         {
+            ThrowIfClosed();
             if (closeConnection)
             {
                 RollBackTransaction();
@@ -407,6 +447,9 @@ namespace IBatisNet.DataMapper
         /// <returns></returns>
         public IDbCommand CreateCommand(CommandType commandType)
         {
+            ThrowIfClosed();
+            if (_connection == null)
+                throw new ObjectDisposedException(typeof(SqlMapSession).Name, "SqlMapSession connection has not been opened.");
             var command = _connection.CreateCommand(); //_dataSource.DbProvider.CreateCommand();
             command.CommandTimeout = DataSource.DbProvider.DbCommandTimeout;
             command.CommandType = commandType;
