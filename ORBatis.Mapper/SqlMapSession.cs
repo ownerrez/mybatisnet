@@ -45,14 +45,14 @@ namespace IBatisNet.DataMapper
         #region Fields
         private static readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        const string ConfigCaptureCloseStackKey = "SqlMapSession.CaptureCloseStack";
-        static bool CaptureCloseStack => string.Equals(ConfigurationManager.AppSettings?[ConfigCaptureCloseStackKey], "true", StringComparison.OrdinalIgnoreCase);
+        const string ConfigCaptureDisposeStackKey = "SqlMapSession.CaptureDisposeStack";
+        static bool CaptureDisposeStack => string.Equals(ConfigurationManager.AppSettings?[ConfigCaptureDisposeStackKey], "true", StringComparison.OrdinalIgnoreCase);
 
-        private bool _connectionClosed;
-        private string _closedAtStackTrace;
+        private bool _disposed;
+        private string _disposedAtStackTrace;
 
-        bool IClosedSession.IsClosed => _connectionClosed;
-        string IClosedSession.ClosedAtStackTrace => _closedAtStackTrace;
+        bool IDisposedSession.IsDisposed => _disposed;
+        string IDisposedSession.DisposedAtStackTrace => _disposedAtStackTrace;
         #endregion
         #region Constructor (s) / Destructor
         /// <summary>
@@ -65,9 +65,9 @@ namespace IBatisNet.DataMapper
         }
         #endregion
 
-        void ThrowIfClosed()
+        void ThrowIfDisposed()
         {
-            DisposedSessionGuard.ThrowIfClosed(this, typeof(SqlMapSession).Name);
+            DisposedSessionGuard.ThrowIfDisposed(this, "Session");
         }
 
         #region IDisposable Members
@@ -76,7 +76,7 @@ namespace IBatisNet.DataMapper
         /// </summary>
         public void Dispose()
         {
-            if (_connectionClosed || _connection == null)
+            if (_disposed || _connection == null)
                 return;
 
             if (_logger.IsDebugEnabled) _logger.Debug("Dispose SqlMapSession");
@@ -144,7 +144,7 @@ namespace IBatisNet.DataMapper
         {
             get
             {
-                ThrowIfClosed();
+                ThrowIfDisposed();
                 return _connection;
             }
         }
@@ -214,7 +214,7 @@ namespace IBatisNet.DataMapper
         /// <param name="connectionString">The connection string</param>
         public void OpenConnection(string connectionString)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_connection == null)
             {
                 CreateConnection(connectionString);
@@ -255,9 +255,9 @@ namespace IBatisNet.DataMapper
             }
 
             _connection = null;
-            _connectionClosed = true;
-            if (CaptureCloseStack)
-                _closedAtStackTrace = Environment.StackTrace;
+                _disposed = true;
+            if (CaptureDisposeStack)
+                _disposedAtStackTrace = Environment.StackTrace;
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace IBatisNet.DataMapper
         /// <param name="connectionString">The connection string</param>
         public void BeginTransaction(string connectionString)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_connection == null || _connection.State != ConnectionState.Open) OpenConnection(connectionString);
             _transaction = _connection.BeginTransaction();
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
@@ -287,7 +287,7 @@ namespace IBatisNet.DataMapper
         /// <param name="openConnection">Open a connection.</param>
         public void BeginTransaction(bool openConnection)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (openConnection)
             {
                 BeginTransaction();
@@ -319,7 +319,7 @@ namespace IBatisNet.DataMapper
         /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
         public void BeginTransaction(string connectionString, IsolationLevel isolationLevel)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_connection == null || _connection.State != ConnectionState.Open) OpenConnection(connectionString);
             _transaction = _connection.BeginTransaction(isolationLevel);
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
@@ -346,7 +346,7 @@ namespace IBatisNet.DataMapper
         /// <param name="openConnection">Open a connection.</param>
         public void BeginTransaction(string connectionString, bool openConnection, IsolationLevel isolationLevel)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (openConnection)
             {
                 BeginTransaction(connectionString, isolationLevel);
@@ -368,7 +368,7 @@ namespace IBatisNet.DataMapper
         /// </remarks>
         public void CommitTransaction()
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_logger.IsDebugEnabled) _logger.Debug("Commit Transaction.");
             _transaction.Commit();
             _transaction.Dispose();
@@ -384,7 +384,7 @@ namespace IBatisNet.DataMapper
         /// <param name="closeConnection">Close the connection</param>
         public void CommitTransaction(bool closeConnection)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (closeConnection)
             {
                 CommitTransaction();
@@ -407,7 +407,7 @@ namespace IBatisNet.DataMapper
         /// </remarks>
         public void RollBackTransaction()
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_logger.IsDebugEnabled) _logger.Debug("RollBack Transaction.");
             _transaction.Rollback();
             _transaction.Dispose();
@@ -422,7 +422,7 @@ namespace IBatisNet.DataMapper
         /// <param name="closeConnection">Close the connection</param>
         public void RollBackTransaction(bool closeConnection)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (closeConnection)
             {
                 RollBackTransaction();
@@ -444,7 +444,7 @@ namespace IBatisNet.DataMapper
         /// <returns></returns>
         public IDbCommand CreateCommand(CommandType commandType)
         {
-            ThrowIfClosed();
+            ThrowIfDisposed();
             if (_connection == null)
                 throw new ObjectDisposedException(typeof(SqlMapSession).Name, "SqlMapSession connection has not been opened.");
             var command = _connection.CreateCommand(); //_dataSource.DbProvider.CreateCommand();

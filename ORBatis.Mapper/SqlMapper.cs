@@ -57,8 +57,8 @@ namespace IBatisNet.DataMapper
         void ThrowIfDisposed(ISqlMapSession session)
         {
             if (session == null)
-                throw new ObjectDisposedException(typeof(SqlMapper).Name, "Session is null.");
-            DisposedSessionGuard.ThrowIfClosed(session, typeof(SqlMapper).Name);
+                throw new ObjectDisposedException("Session", "Session is null.");
+            DisposedSessionGuard.ThrowIfDisposed(session, "Session");
         }
 
         #region Constructor (s) / Destructor

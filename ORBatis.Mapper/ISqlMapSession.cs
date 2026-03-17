@@ -30,7 +30,7 @@ namespace IBatisNet.DataMapper
     /// <summary>
     ///     SqlMap Session contract
     /// </summary>
-    public interface ISqlMapSession : IDalSession, IClosedSession
+    public interface ISqlMapSession : IDalSession, IDisposedSession
     {
         /// <summary>
         ///     Gets the SQL mapper.
