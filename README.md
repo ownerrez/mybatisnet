@@ -40,6 +40,5 @@ Many parameters are passed statically on the configScope to child entities.
 
 - Global.xml is always loaded eagerly because we have several queries which depend on it.
   - It would be better if we detected dependencies and lazy loaded them too, but I'm not sure if this is possible.
-- Because of the "Namespace" feature, I need to load the entire XML into memory for every SQL map to double check that it doesn't belong to a different .xml namespace.
-  - i.e. GridReviewForOverview in GridReview.xml actually belongs to the "Review.xml" namespace.
-  - This causes the up-front compilation time to increase 3.5x
+- Cross-file namespace references (e.g. GridReview.xml using namespace="Review") are no longer supported.
+  - Statements must live in the XML file matching their namespace.

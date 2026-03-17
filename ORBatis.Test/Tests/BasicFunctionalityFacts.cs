@@ -1,14 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Resources;
-using System.Xml;
 using IBatisNet.Common.Utilities;
+using IBatisNet.DataMapper;
 using IBatisNet.DataMapper.Configuration;
+using IBatisNet.DataMapper.Exceptions;
 using ORBatis.Test.Common;
 using ORBatis.Test.Common.Models;
 using Xunit;
@@ -17,17 +12,10 @@ namespace ORBatis.Test.Tests;
 
 public class Tests
 {
-    private static XmlDocument GetSqlMapConfig()
+    private static ISqlMapper BuildMapper()
     {
-        var path = $"ORBatis.Test.Config.SqlMap.config, ORBatis.Test";
-        var sqlMapConfig = IBatisNet.Common.Utilities.Resources.GetEmbeddedResourceAsXmlDocument(path);
-        return sqlMapConfig;
-    }
-
-    [Fact]
-    public void Basic_AbleToSelectHolidays()
-    {
-        var sqlMapConfig = GetSqlMapConfig();
+        var path = "ORBatis.Test.Config.SqlMap.config, ORBatis.Test";
+        var sqlMapConfig = Resources.GetEmbeddedResourceAsXmlDocument(path);
         var builder = new DomSqlMapBuilder()
         {
             Properties = new NameValueCollection()
@@ -35,8 +23,13 @@ public class Tests
                 { "ConnectionString", Constants.ConnectionString }
             }
         };
+        return builder.Configure(sqlMapConfig);
+    }
 
-        var mapper = builder.Configure(sqlMapConfig);
+    [Fact]
+    public void Basic_AbleToSelectHolidays()
+    {
+        var mapper = BuildMapper();
         var context = mapper.CreateSqlMapSession();
 
         Hashtable parameters = new Hashtable
@@ -64,9 +57,16 @@ public class Tests
             context
         );
         Assert.NotNull(cannedQueries);
-        
+
         var reviews = mapper.QueryForList<Review>("Review.SelectAll", parameters, context);
         Assert.NotNull(reviews);
+    }
+
+    [Fact]
+    public void GridForOverview_New_WorksWhenDefinedInSameNamespaceFile()
+    {
+        var mapper = BuildMapper();
+        var context = mapper.CreateSqlMapSession();
 
         var reviewParams = new Hashtable()
         {
@@ -77,5 +77,27 @@ public class Tests
         };
         var gridReview = mapper.QueryForList("Review.GridForOverview", reviewParams, context);
         Assert.NotNull(gridReview);
+    }
+
+    [Fact]
+    public void GridForOverview_Old_FailsWhenAccessedViaFileName()
+    {
+        var mapper = BuildMapper();
+        var context = mapper.CreateSqlMapSession();
+
+        var reviewParams = new Hashtable()
+        {
+            { "orderBy", "Id" },
+            { "orderDirection", "Desc" },
+            { "startAtRowNumber", 0 },
+            { "pageSize", 10 }
+        };
+
+        // GridReview.xml declares namespace="Review", but its lazy-load is registered
+        // under the filename "GridReview". Accessing via "GridReview.GridForOverview"
+        // fails because cross-file namespace resolution was removed.
+        Assert.Throws<DataMapperException>(
+            () => mapper.QueryForList("Review.GridForOverviewOld", reviewParams, context)
+        );
     }
 }
