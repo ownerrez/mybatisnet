@@ -56,8 +56,6 @@ namespace IBatisNet.DataMapper
     {
         void ThrowIfDisposed(ISqlMapSession session)
         {
-            if (session == null)
-                throw new ObjectDisposedException("Session", "Session is null.");
             DisposedSessionGuard.ThrowIfDisposed(session, "Session");
         }
 
@@ -1001,8 +999,8 @@ namespace IBatisNet.DataMapper
             actions.Add(configure);
         }
         private readonly Dictionary<string, Task<bool>> SqlMapFileProcessed = new Dictionary<string, Task<bool>>();
-        
-        ReaderWriterLockSlim _writeLocker =  new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+        ReaderWriterLockSlim _writeLocker = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         /// <summary>
         ///     Gets a MappedStatement by name
         /// </summary>
@@ -1015,11 +1013,11 @@ namespace IBatisNet.DataMapper
             IMappedStatement statement = AttemptLazyLoadMappedStatement(id);
             if (statement != null)
                 return statement;
-            
+
             var didLazyLoad = LazyLoadMappedStatement(id);
-            if(!didLazyLoad)
+            if (!didLazyLoad)
                 throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
-            
+
             return AttemptLazyLoadMappedStatement(id) ?? throw new DataMapperException("This SQL map does not contain a MappedStatement named " + id);
         }
 
@@ -1033,7 +1031,7 @@ namespace IBatisNet.DataMapper
                     statement = (IMappedStatement)MappedStatements[id];
             }
             finally { _writeLocker.ExitReadLock(); }
-            
+
             return statement;
         }
 
@@ -1057,7 +1055,7 @@ namespace IBatisNet.DataMapper
 
             if (task != null)
                 return task.Result;
-            
+
             // Looks like this thread might need to perform the lazy load.
             // Lock the dictionary to prevent duplicate loads
             var didWriteTask = false;
@@ -1076,7 +1074,7 @@ namespace IBatisNet.DataMapper
                 var loaded = task.Result; // Someone else beat us to it. Await and return.
                 return loaded;
             }
-            
+
             // Call the configuration method
             try
             {
@@ -1091,7 +1089,7 @@ namespace IBatisNet.DataMapper
                         action();
                 }
                 finally { _writeLocker.ExitWriteLock(); }
-                
+
                 taskCompletionSource.SetResult(true);
                 return true;
             }
@@ -1099,7 +1097,7 @@ namespace IBatisNet.DataMapper
             {
                 // This is bad! Really the app should die, but at least setting result will let other threads complete.
                 taskCompletionSource.SetResult(false);
-                throw; 
+                throw;
             }
         }
 
@@ -1129,7 +1127,7 @@ namespace IBatisNet.DataMapper
             _writeLocker.EnterReadLock();
             try
             {
-                if (!ParameterMaps.Contains(name)) 
+                if (!ParameterMaps.Contains(name))
                     throw new DataMapperException("This SQL map does not contain an ParameterMap named " + name + ".  ");
                 return (ParameterMap)ParameterMaps[name];
             } finally{ _writeLocker.ExitReadLock(); }
@@ -1155,7 +1153,7 @@ namespace IBatisNet.DataMapper
             _writeLocker.EnterReadLock();
             try
             {
-                if (ResultMaps.Contains(name) == false) 
+                if (ResultMaps.Contains(name) == false)
                     throw new DataMapperException("This SQL map does not contain an ResultMap named " + name);
                 return (ResultMap)ResultMaps[name];
             } finally{ _writeLocker.ExitReadLock(); }
