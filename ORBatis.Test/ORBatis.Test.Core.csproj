@@ -1,11 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <BaseIntermediateOutputPath>obj\Core\</BaseIntermediateOutputPath>
+        <DefaultItemExcludes>$(DefaultItemExcludes);Properties\AssemblyInfo.cs;obj\Framework\**</DefaultItemExcludes>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <RootNamespace>ORBatis.Test</RootNamespace>
         <AssemblyName>ORBatis.Test</AssemblyName>
     </PropertyGroup>

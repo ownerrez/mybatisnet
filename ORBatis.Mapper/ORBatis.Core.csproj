@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <BaseIntermediateOutputPath>obj\Core\</BaseIntermediateOutputPath>
+        <DefaultItemExcludes>$(DefaultItemExcludes);Properties\AssemblyInfo.cs;obj\Framework\**</DefaultItemExcludes>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>IBatisNet.DataMapper</AssemblyName>
         <RootNamespace>IBatisNet.DataMapper</RootNamespace>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
 
     <ItemGroup>

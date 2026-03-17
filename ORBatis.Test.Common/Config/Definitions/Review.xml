@@ -86,6 +86,23 @@
             and lp.Id = #linkedAccountPropertyId#
             and r.IsReviewerHost = false
         </select>
+        <select id="GridForOverview" resultClass="GridReviewForOverview,int" parameterClass="hashtable">
+            select
+                SQL_CALC_FOUND_ROWS
+                r.Id,
+                r.UserId
+            from Review r
+            order by
+            $orderBy$ $orderDirection$, Id
+            <isNotNull property="startAtRowNumber">
+                <isNotNull property="pageSize">
+                    limit
+                    #startAtRowNumber#, #pageSize#
+                </isNotNull>
+            </isNotNull>
+            ;
+            select FOUND_ROWS() as TotalRows;
+        </select>
     </statements>
 
     <resultMaps>
