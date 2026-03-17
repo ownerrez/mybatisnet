@@ -46,10 +46,13 @@ namespace IBatisNet.DataMapper
         private static readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         const string ConfigCaptureCloseStackKey = "SqlMapSession.CaptureCloseStack";
-        static bool CaptureCloseStack => string.Equals(ConfigurationManager.AppSettings[ConfigCaptureCloseStackKey], "true", StringComparison.OrdinalIgnoreCase);
+        static bool CaptureCloseStack => string.Equals(ConfigurationManager.AppSettings?[ConfigCaptureCloseStackKey], "true", StringComparison.OrdinalIgnoreCase);
 
         private bool _connectionClosed;
         private string _closedAtStackTrace;
+
+        bool IClosedSession.IsClosed => _connectionClosed;
+        string IClosedSession.ClosedAtStackTrace => _closedAtStackTrace;
         #endregion
         #region Constructor (s) / Destructor
         /// <summary>
@@ -64,13 +67,7 @@ namespace IBatisNet.DataMapper
 
         void ThrowIfClosed()
         {
-            if (!_connectionClosed)
-                return;
-            string message = "SqlMapSession connection has been closed; use-after-close is not allowed.";
-            var ex = new ObjectDisposedException(typeof(SqlMapSession).Name, message);
-            if (!string.IsNullOrEmpty(_closedAtStackTrace))
-                ex.Data["ClosedAtStackTrace"] = _closedAtStackTrace;
-            throw ex;
+            DisposedSessionGuard.ThrowIfClosed(this, typeof(SqlMapSession).Name);
         }
 
         #region IDisposable Members

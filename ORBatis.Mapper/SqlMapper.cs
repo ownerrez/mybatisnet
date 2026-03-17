@@ -54,6 +54,13 @@ namespace IBatisNet.DataMapper
     /// </summary>
     public class SqlMapper : ISqlMapper
     {
+        void ThrowIfDisposed(ISqlMapSession session)
+        {
+            if (session == null)
+                throw new ObjectDisposedException(typeof(SqlMapper).Name, "Session is null.");
+            DisposedSessionGuard.ThrowIfClosed(session, typeof(SqlMapper).Name);
+        }
+
         #region Constructor (s) / Destructor
         /// <summary>
         ///     Initializes a new instance of the <see cref="SqlMapper" /> class.
@@ -84,6 +91,7 @@ namespace IBatisNet.DataMapper
         /// <returns></returns>
         public DataTable QueryForDataTable(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var dataTable = new DataTable(statementName);
             var request = statement.Statement.Sql.GetRequestScope(statement, parameterObject, session);
@@ -110,6 +118,7 @@ namespace IBatisNet.DataMapper
         [Obsolete("This method will be remove in future version.", false)]
         public PaginatedList QueryForPaginatedList(string statementName, object parameterObject, int pageSize, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             return new PaginatedList(statement, parameterObject, pageSize, session);
         }
@@ -541,6 +550,7 @@ namespace IBatisNet.DataMapper
         /// <returns> The single result object populated with the result set data.</returns>
         public object QueryForObject(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var result = statement.ExecuteQueryForObject(session, parameterObject);
             return result;
@@ -556,6 +566,7 @@ namespace IBatisNet.DataMapper
         /// <returns>The single result object populated with the result set data.</returns>
         public object QueryForObject(string statementName, object parameterObject, object resultObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var result = statement.ExecuteQueryForObject(session, parameterObject, resultObject);
 
@@ -576,6 +587,7 @@ namespace IBatisNet.DataMapper
         /// <returns> The single result object populated with the result set data.</returns>
         public T QueryForObject<T>(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var result = statement.ExecuteQueryForObject<T>(session, parameterObject);
 
@@ -592,6 +604,7 @@ namespace IBatisNet.DataMapper
         /// <returns>The single result object populated with the result set data.</returns>
         public T QueryForObject<T>(string statementName, object parameterObject, T instanceObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var result = statement.ExecuteQueryForObject(session, parameterObject, instanceObject);
 
@@ -610,6 +623,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A IDictionary (Hashtable) of object containing the rows keyed by keyProperty.</returns>
         public IDictionary QueryForDictionary(string statementName, object parameterObject, string keyProperty, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             return QueryForMap(statementName, parameterObject, keyProperty, session);
         }
 
@@ -625,6 +639,7 @@ namespace IBatisNet.DataMapper
         /// <exception cref="DataMapperException">If a transaction is not in progress, or the database throws an exception.</exception>
         public IDictionary QueryForDictionary(string statementName, object parameterObject, string keyProperty, string valueProperty, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             return QueryForMap(statementName, parameterObject, keyProperty, valueProperty, session);
         }
 
@@ -638,6 +653,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A IDictionary (Hashtable) of object containing the rows keyed by keyProperty.</returns>
         public IDictionary QueryForMap(string statementName, object parameterObject, string keyProperty, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             return QueryForMap(statementName, parameterObject, keyProperty, null, session);
         }
 
@@ -654,6 +670,7 @@ namespace IBatisNet.DataMapper
         /// <exception cref="DataMapperException">If a transaction is not in progress, or the database throws an exception.</exception>
         public IDictionary QueryForMap(string statementName, object parameterObject, string keyProperty, string valueProperty, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var map = statement.ExecuteQueryForMap(session, parameterObject, keyProperty, valueProperty);
 
@@ -674,6 +691,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList QueryForList(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForList(session, parameterObject);
 
@@ -693,6 +711,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList QueryForList(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForList(session, parameterObject, skipResults, maxResults);
 
@@ -713,6 +732,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public void QueryForList(string statementName, object parameterObject, IList resultObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             statement.ExecuteQueryForList(session, parameterObject, resultObject);
         }
@@ -732,6 +752,7 @@ namespace IBatisNet.DataMapper
         /// <exception cref="DataMapperException">If a transaction is not in progress, or the database throws an exception.</exception>
         public IDictionary<K, V> QueryForDictionary<K, V>(string statementName, object parameterObject, string keyProperty, string valueProperty, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var map = statement.ExecuteQueryForDictionary<K, V>(session, parameterObject, keyProperty, valueProperty);
 
@@ -749,7 +770,8 @@ namespace IBatisNet.DataMapper
         /// <returns>A IDictionary of object containing the rows keyed by keyProperty.</returns>
         public IDictionary<K, V> QueryForDictionary<K, V>(string statementName, object parameterObject, string keyProperty, ISqlMapSession session)
         {
-            return QueryForDictionary<K, V>(statementName, parameterObject, keyProperty, null);
+            ThrowIfDisposed(session);
+            return QueryForDictionary<K, V>(statementName, parameterObject, keyProperty, null, session);
         }
 
         /// <summary>
@@ -768,6 +790,7 @@ namespace IBatisNet.DataMapper
         /// <exception cref="DataMapperException">If a transaction is not in progress, or the database throws an exception.</exception>
         public IDictionary<K, V> QueryForDictionary<K, V>(string statementName, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var map = statement.ExecuteQueryForDictionary(session, parameterObject, keyProperty, valueProperty, rowDelegate);
 
@@ -788,6 +811,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList<T> QueryForList<T>(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForList<T>(session, parameterObject);
 
@@ -807,6 +831,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList<T> QueryForList<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForList<T>(session, parameterObject, skipResults, maxResults);
 
@@ -826,6 +851,7 @@ namespace IBatisNet.DataMapper
         /// <param name="resultObject">An Ilist object used to hold the objects.</param>
         public void QueryForList<T>(string statementName, object parameterObject, IList<T> resultObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             statement.ExecuteQueryForList(session, parameterObject, resultObject);
         }
@@ -845,6 +871,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList QueryWithRowDelegate(string statementName, object parameterObject, RowDelegate rowDelegate, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForRowDelegate(session, parameterObject, rowDelegate);
 
@@ -864,6 +891,7 @@ namespace IBatisNet.DataMapper
         /// <returns>A List of result objects.</returns>
         public IList<T> QueryWithRowDelegate<T>(string statementName, object parameterObject, RowDelegate<T> rowDelegate, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var list = statement.ExecuteQueryForRowDelegate(session, parameterObject, rowDelegate);
 
@@ -886,6 +914,7 @@ namespace IBatisNet.DataMapper
         /// <exception cref="DataMapperException">If a transaction is not in progress, or the database throws an exception.</exception>
         public IDictionary QueryForMapWithRowDelegate(string statementName, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate rowDelegate, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var map = statement.ExecuteQueryForMapWithRowDelegate(session, parameterObject, keyProperty, valueProperty, rowDelegate);
 
@@ -913,6 +942,7 @@ namespace IBatisNet.DataMapper
         /// </returns>
         public object Insert(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var generatedKey = statement.ExecuteInsert(session, parameterObject);
 
@@ -933,6 +963,7 @@ namespace IBatisNet.DataMapper
         /// <returns>The number of rows effected.</returns>
         public int Update(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var rows = statement.ExecuteUpdate(session, parameterObject);
 
@@ -948,6 +979,7 @@ namespace IBatisNet.DataMapper
         /// <returns>The number of rows effected.</returns>
         public int Delete(string statementName, object parameterObject, ISqlMapSession session)
         {
+            ThrowIfDisposed(session);
             var statement = GetMappedStatement(statementName);
             var rows = statement.ExecuteUpdate(session, parameterObject);
 
@@ -1152,7 +1184,12 @@ namespace IBatisNet.DataMapper
         /// <summary>
         ///     The DataSource
         /// </summary>
-        public IDataSource DataSource { get; set; }
+        public IDataSource DataSource
+        {
+            get { return _dataSource; }
+            set { _dataSource = value; }
+        }
+        private IDataSource _dataSource;
 
         /// <summary>
         ///     Flushes all cached objects that belong to this SqlMap
