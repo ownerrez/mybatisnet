@@ -3,7 +3,7 @@
     <PropertyGroup>
         <BaseIntermediateOutputPath>obj\Core\</BaseIntermediateOutputPath>
         <DefaultItemExcludes>$(DefaultItemExcludes);Properties\AssemblyInfo.cs;obj\Framework\**</DefaultItemExcludes>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>IBatisNet.DataMapper</AssemblyName>
@@ -11,13 +11,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ORBatis.Common\ORBatis.Common.csproj"/>
+        <ProjectReference Include="..\ORBatis.Common\ORBatis.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Castle.Core" Version="5.2.1"/>
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7"/>
-        <PackageReference Include="System.Security.Permissions" Version="9.0.7"/>
+        <PackageReference Include="Castle.Core" Version="5.2.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
+        <PackageReference Include="System.Security.Permissions" Version="9.0.7" />
     </ItemGroup>
 
     <ItemGroup>
