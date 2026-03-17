@@ -11,6 +11,7 @@
         <AssemblyName>IBatisNet.DataMapper</AssemblyName>
         <RootNamespace>IBatisNet.DataMapper</RootNamespace>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

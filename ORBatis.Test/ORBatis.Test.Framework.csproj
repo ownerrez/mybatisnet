@@ -12,6 +12,7 @@
         <RootNamespace>ORBatis.Test</RootNamespace>
         <AssemblyName>ORBatis.Test</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <FileAlignment>512</FileAlignment>
         <LangVersion>13</LangVersion>
     </PropertyGroup>
