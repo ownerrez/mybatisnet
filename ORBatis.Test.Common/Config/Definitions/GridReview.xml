@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Review" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <statements>
+    <select id="GridForOverviewOld" resultClass="GridReviewForOverview,int" parameterClass="hashtable">
+      select
+        SQL_CALC_FOUND_ROWS
+        r.Id,
+        r.UserId
+      from Review r
+      order by
+      $orderBy$ $orderDirection$, Id
+      <isNotNull property="startAtRowNumber">
+        <isNotNull property="pageSize">
+          limit
+          #startAtRowNumber#, #pageSize#
+        </isNotNull>
+      </isNotNull>
+      ;
+      select FOUND_ROWS() as TotalRows;
+    </select>
+  </statements>
+
+</sqlMap>

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Review" xmlns="http://ibatis.apache.org/mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <statements>
+        <insert id="Insert" parameterMap="InsertParams">
+            <selectKey property="Id" type="post" resultClass="int">
+                select LAST_INSERT_ID() as value
+            </selectKey>
+            <generate table="Review"/>
+        </insert>
+        <update id="Update" parameterMap="UpdateParams">
+            <generate table="Review" by="Id"/>
+        </update>
+        <select id="Select" resultMap="Review" parameterClass="int">
+            select * from Review
+            <dynamic prepend="where">
+                <isParameterPresent>
+                    Id = #value#
+                </isParameterPresent>
+            </dynamic>
+        </select>
+        <select id="SelectAll" resultMap="Review" parameterClass="hashtable">
+            select * from Review
+            <dynamic prepend="where">
+                <isNotNull property="userId" prepend="and">UserId = #userId#</isNotNull>
+                <isNotNull property="listingSiteId" prepend="and">ListingSiteId = #listingSiteId#</isNotNull>
+                <isNotNull property="bookingId" prepend="and">BookingId = #bookingId#</isNotNull>
+                <isNotNull property="guestId" prepend="and">GuestId = #guestId#</isNotNull>
+                <isNotNull property="propertyId" prepend="and">PropertyId = #propertyId#</isNotNull>
+                <isNotNull property="active" prepend="and">Active = #active#</isNotNull>
+                <isNotNull property="isGuestEntered" prepend="and">IsGuestEntered = #isGuestEntered#</isNotNull>
+                <isNotNull property="isReviewerHost" prepend="and">IsReviewerHost = #isReviewerHost#</isNotNull>
+                <isNotNull property="deleted">
+                    <isEqual property="deleted" compareValue="true" prepend="and">not DeletedUtc is null</isEqual>
+                    <isEqual property="deleted" compareValue="false" prepend="and">DeletedUtc is null</isEqual>
+                </isNotNull>
+            </dynamic>
+        </select>
+        <select id="SelectByListingSiteReviewId" resultMap="Review" parameterClass="hashtable">
+            select * from Review where UserId = #userId# and ListingSiteReviewId = #listingSiteReviewId# and DeletedUtc
+            is null limit 1
+        </select>
+        <select id="SelectCountForHostUnsubmitted" resultClass="int" parameterClass="int">
+            select count(*) from Review r where IsReviewerHost=1 and UserId=#value# and DeletedUtc is null and
+            ChannelSubmittedUtc is null
+        </select>
+        <select id="SelectReviewsByPropertyId" resultMap="Review" parameterClass="hashtable">
+            select r.*
+            from Review r
+            inner join Property p1
+            on r.PropertyId = p1.ID
+            WHERE r.IsReviewerHost = false
+            and p1.Active = true
+            and p1.DeletedUtc is null
+            and p1.Id = #propertyId#
+        </select>
+        <select id="SelectReviewsByLinkedPropertyId" resultMap="Review" parameterClass="hashtable">
+            select r.*
+            from LinkedAccount l
+            inner join LinkedAccountProperty lp
+            on l.Id = lp.LinkedAccountId
+            inner join Property p1
+            on p1.Id = lp.PropertyId
+            inner join Booking b
+            on b.PropertyId = p1.Id
+            inner join Review r
+            on b.Id = r.BookingId
+            WHERE l.Active = true
+            and lp.Active = true
+            and lp.DeletedUtc is null
+            and lp.Id = #linkedAccountPropertyId#
+            and r.IsReviewerHost = false
+            UNION
+            select r.*
+            from LinkedAccount l
+            inner join LinkedAccountProperty lp
+            on l.Id = lp.LinkedAccountId
+            inner join Property p2
+            on p2.Id = lp.PropertyId
+            inner join Review r
+            on p2.Id = r.PropertyId
+            WHERE l.Active = true
+            and lp.Active = true
+            and lp.DeletedUtc is null
+            and lp.Id = #linkedAccountPropertyId#
+            and r.IsReviewerHost = false
+        </select>
+        <select id="GridForOverview" resultClass="GridReviewForOverview,int" parameterClass="hashtable">
+            select
+                SQL_CALC_FOUND_ROWS
+                r.Id,
+                r.UserId
+            from Review r
+            order by
+            $orderBy$ $orderDirection$, Id
+            <isNotNull property="startAtRowNumber">
+                <isNotNull property="pageSize">
+                    limit
+                    #startAtRowNumber#, #pageSize#
+                </isNotNull>
+            </isNotNull>
+            ;
+            select FOUND_ROWS() as TotalRows;
+        </select>
+    </statements>
+
+    <resultMaps>
+        <resultMap id="Review" class="Review">
+            <result property="Id" column="Id"/>
+            <result property="UserId" column="UserId"/>
+            <result property="StarsOutOf5" column="StarsOutOf5"/>
+            <result property="CreatedUtc" column="CreatedUtc"/>
+            <result property="CreatedUserId" column="CreatedUserId"/>
+            <result property="UpdatedUtc" column="UpdatedUtc"/>
+            <result property="UpdatedUserId" column="UpdatedUserId"/>
+            <result property="DeletedUtc" column="DeletedUtc"/>
+            <result property="DeletedUserId" column="DeletedUserId"/>
+        </resultMap>
+    </resultMaps>
+
+    <parameterMaps>
+        <parameterMap id="InsertParams" class="Review">
+            <parameter property="UserId" column="UserId"/>
+            <parameter property="StarsOutOf5" column="StarsOutOf5"/>
+            <parameter property="CreatedUtc" column="CreatedUtc"/>
+            <parameter property="CreatedUserId" column="CreatedUserId"/>
+        </parameterMap>
+        <parameterMap id="UpdateParams" extends="InsertParams">
+            <parameter property="UpdatedUtc" column="UpdatedUtc"/>
+            <parameter property="UpdatedUserId" column="UpdatedUserId"/>
+            <parameter property="DeletedUtc" column="DeletedUtc"/>
+            <parameter property="DeletedUserId" column="DeletedUserId"/>
+            <parameter property="Id" column="Id"/>
+        </parameterMap>
+    </parameterMaps>
+
+</sqlMap>

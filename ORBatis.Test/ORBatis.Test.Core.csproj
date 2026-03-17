@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <BaseIntermediateOutputPath>obj\Core\</BaseIntermediateOutputPath>
+        <DefaultItemExcludes>$(DefaultItemExcludes);Properties\AssemblyInfo.cs;obj\Framework\**</DefaultItemExcludes>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>ORBatis.Test</RootNamespace>
+        <AssemblyName>ORBatis.Test</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.2"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
+        <PackageReference Include="MySqlConnector" Version="2.4.0" />
+        <PackageReference Include="xunit" Version="2.9.2"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ORBatis.Common\ORBatis.Common.csproj" />
+      <ProjectReference Include="..\ORBatis.Mapper\ORBatis.Core.csproj" />
+      <ProjectReference Include="..\ORBatis.Test.Common\ORBatis.Test.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Config\SqlMap.config" />
+    </ItemGroup>
+
+</Project>

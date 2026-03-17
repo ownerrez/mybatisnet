@@ -9,6 +9,9 @@ obj
 *.mdf
 *.ldf
 
+/src/packages/*
+
+.idea
 .vs
 *.ssms_suo
 IBatisNet.Common.Logging.Log4Net.xml

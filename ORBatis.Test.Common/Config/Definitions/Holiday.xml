@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Holiday" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <statements>
+    <insert id="Insert" parameterMap="InsertParams">
+      <selectKey property="Id" type="post" resultClass="int">
+        select LAST_INSERT_ID() as value
+      </selectKey>
+      <generate table="Holiday"/>
+    </insert>
+    <update id="Update" parameterClass="Holiday">
+      update Holiday set
+        UserId = #UserId#,
+        Name = #Name#,
+        AllowAllProperties = #AllowAllProperties#,
+        Active = #Active#,
+        UpdatedUtc = #UpdatedUtc#,
+        UpdatedUserId = #UpdatedUserId#,
+        DeletedUtc = #DeletedUtc#,
+        DeletedUserId = #DeletedUserId#
+      where
+        Id = #Id#
+    </update>
+    <select id="Select" resultMap="Holiday" parameterClass="int">
+      select * from Holiday
+      <dynamic prepend="where">
+        <isParameterPresent>
+          Id = #value#
+        </isParameterPresent>
+      </dynamic>
+    </select>
+    <select id="SelectAll" resultMap="Holiday" parameterClass="hashtable">
+      select h.* from Holiday h
+      <isNotNull property="propertyId">
+        left join HolidayProperty hp on h.Id = hp.HolidayId
+      </isNotNull>
+      <dynamic prepend="where">
+        <isNotNull property="userId" prepend="and">UserId = #userId#</isNotNull>
+        <isNotNull property="propertyId" prepend="and">(h.AllowAllProperties = 1 or hp.PropertyId = #propertyId#)</isNotNull>
+        <isNotNull property="active" prepend="and">Active = #active#</isNotNull>
+        <isNotNull property="deleted" prepend="and">
+          <isEqual property="deleted" compareValue="true">not DeletedUtc is null</isEqual>
+          <isEqual property="deleted" compareValue="false">DeletedUtc is null</isEqual>
+        </isNotNull>
+      </dynamic>
+    </select>
+    <select id="SelectAllOccurrences" resultClass="GenericHoliday" parameterClass="hashtable">
+      select
+        o.Id,
+        o.HolidayId,
+        h.Name,
+        o.Occurrence as Date
+      from Holiday h
+        join HolidayOccurrence o on o.HolidayId=h.Id
+      <isNotNull property="propertyIds">
+        left join HolidayProperty hp on h.Id = hp.HolidayId
+      </isNotNull>
+      where h.Active = 1 and h.DeletedUtc is null and o.DeletedUtc is null
+      <dynamic prepend="and">
+        <isNotNull property="userId" prepend="and">UserId = #userId#</isNotNull>
+        <isNotNull property="propertyIds" prepend="and">(h.AllowAllProperties = 1 or hp.PropertyId in (<iterate property="propertyIds" open="" conjunction="," close="">#propertyIds[]#</iterate>))</isNotNull>
+      </dynamic>
+    </select>
+  </statements>
+  <resultMaps>
+    <resultMap id="Holiday" class="Holiday">
+      <result property="Id" column="ID" />
+      <result property="UserId" column="UserId" />
+      <result property="Name" column="Name" />
+      <result property="AllowAllProperties" column="AllowAllProperties" />
+      <result property="Active" column="Active" />
+      <result property="CreatedUtc" column="CreatedUtc" />
+      <result property="CreatedUserId" column="CreatedUserId" />
+      <result property="UpdatedUtc" column="UpdatedUtc" />
+      <result property="UpdatedUserId" column="UpdatedUserId" />
+      <result property="DeletedUtc" column="DeletedUtc" />
+      <result property="DeletedUserId" column="DeletedUserId" />
+    </resultMap>
+  </resultMaps>
+  <parameterMaps>
+    <parameterMap id="InsertParams" class="Holiday">
+      <parameter property="UserId" column="UserId" />
+      <parameter property="Name" column="Name" />
+      <parameter property="AllowAllProperties" column="AllowAllProperties" />
+      <parameter property="Active" column="Active" />
+      <parameter property="CreatedUtc" column="CreatedUtc" />
+      <parameter property="CreatedUserId" column="CreatedUserId" />
+      <parameter property="UpdatedUtc" column="UpdatedUtc" />
+      <parameter property="UpdatedUserId" column="UpdatedUserId" />
+      <parameter property="DeletedUtc" column="DeletedUtc" />
+      <parameter property="DeletedUserId" column="DeletedUserId" />
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
