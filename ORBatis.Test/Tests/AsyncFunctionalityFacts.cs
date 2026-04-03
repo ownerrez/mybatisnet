@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper;
 using IBatisNet.DataMapper.Configuration;
@@ -32,7 +34,7 @@ public class AsyncFunctionalityFacts
     private static Holiday CreateTestHoliday() => new Holiday
     {
         UserId = 347317427,
-        Name = "Test" + Guid.NewGuid().ToString("N")[..8],
+        Name = "Test" + Guid.NewGuid().ToString("N").Substring(0, 8),
         AllowAllProperties = true,
         Active = true,
         CreatedUtc = DateTime.UtcNow,
