@@ -27,6 +27,8 @@
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Exceptions;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IBatisNet.DataMapper.MappedStatements
 {
@@ -151,6 +153,33 @@ namespace IBatisNet.DataMapper.MappedStatements
         public override object ExecuteQueryForObject(ISqlMapSession session, object parameterObject, object resultObject)
         {
             throw new DataMapperException("Insert statements cannot be executed as a query for object.");
+        }
+        #endregion
+
+        #region Async
+        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            throw new DataMapperException("Insert statements cannot be executed as a query for object.");
+        }
+
+        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        {
+            throw new DataMapperException("Insert statements cannot be executed as a query for object.");
+        }
+
+        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            throw new DataMapperException("Insert statements cannot be executed as a query for list.");
+        }
+
+        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        {
+            throw new DataMapperException("Insert statements cannot be executed as a query for list.");
+        }
+
+        public override Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        {
+            throw new DataMapperException("Insert statements cannot be executed as a update query.");
         }
         #endregion
     }

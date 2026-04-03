@@ -31,6 +31,7 @@ using IBatisNet.DataMapper.Scope;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements
@@ -481,6 +482,67 @@ namespace IBatisNet.DataMapper.MappedStatements
         public IDictionary ExecuteQueryForMapWithRowDelegate(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate rowDelegate)
         {
             return _mappedStatement.ExecuteQueryForMapWithRowDelegate(session, parameterObject, keyProperty, valueProperty, rowDelegate);
+        }
+        #endregion
+
+        #region Async
+        public Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            return ExecuteQueryForObjectAsync(session, parameterObject, default(T));
+        }
+
+        public async Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            _mappedStatement.PreparedCommand.Create(request, session, Statement, parameterObject);
+
+            var cacheKey = GetCacheKey(request);
+            cacheKey.Update("ExecuteQueryForObject");
+
+            var cacheObject = Statement.CacheModel[cacheKey];
+            if (cacheObject is T cached)
+                return cached;
+            if (cacheObject == CacheModel.NULL_OBJECT)
+                return default;
+
+            var obj = await _mappedStatement.RunQueryForObjectAsync(request, session, parameterObject, resultObject).ConfigureAwait(false);
+            Statement.CacheModel[cacheKey] = obj;
+            return obj;
+        }
+
+        public Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            return ExecuteQueryForListAsync<T>(session, parameterObject, MappedStatement.NO_SKIPPED_RESULTS, MappedStatement.NO_MAXIMUM_RESULTS);
+        }
+
+        public async Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            _mappedStatement.PreparedCommand.Create(request, session, Statement, parameterObject);
+
+            var cacheKey = GetCacheKey(request);
+            cacheKey.Update("ExecuteQueryForList");
+            cacheKey.Update(skipResults);
+            cacheKey.Update(maxResults);
+
+            var list = Statement.CacheModel[cacheKey] as IList<T>;
+            if (list == null)
+            {
+                list = await _mappedStatement.RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults).ConfigureAwait(false);
+                Statement.CacheModel[cacheKey] = list;
+            }
+
+            return list;
+        }
+
+        public Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        {
+            return _mappedStatement.ExecuteUpdateAsync(session, parameterObject);
+        }
+
+        public Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        {
+            return _mappedStatement.ExecuteInsertAsync(session, parameterObject);
         }
         #endregion
         #endregion

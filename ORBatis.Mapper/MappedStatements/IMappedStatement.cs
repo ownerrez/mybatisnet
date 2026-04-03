@@ -28,6 +28,7 @@ using IBatisNet.DataMapper.Commands;
 using IBatisNet.DataMapper.Configuration.Statements;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements
@@ -286,6 +287,41 @@ namespace IBatisNet.DataMapper.MappedStatements
         ///     database throws an exception.
         /// </exception>
         IDictionary ExecuteQueryForMapWithRowDelegate(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate rowDelegate);
+        #endregion
+
+        #region Async
+        /// <summary>
+        ///     Executes an SQL statement that returns a single row as an Object.
+        /// </summary>
+        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject);
+
+        /// <summary>
+        ///     Executes an SQL statement that returns a single row as an Object of the type of
+        ///     the resultObject passed in as a parameter.
+        /// </summary>
+        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject);
+
+        /// <summary>
+        ///     Executes the SQL and retuns all rows selected.
+        /// </summary>
+        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject);
+
+        /// <summary>
+        ///     Executes the SQL and retuns a subset of the rows selected.
+        /// </summary>
+        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults);
+
+        /// <summary>
+        ///     Execute an update statement. Also used for delete statement.
+        ///     Return the number of rows effected.
+        /// </summary>
+        Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject);
+
+        /// <summary>
+        ///     Execute an insert statement. Fill the parameter object with
+        ///     the output parameters if any, also could return the insert generated key.
+        /// </summary>
+        Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject);
         #endregion
     }
 }

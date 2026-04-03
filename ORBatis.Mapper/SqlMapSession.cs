@@ -28,8 +28,11 @@ using IBatisNet.Common;
 using IBatisNet.Common.Logging;
 using IBatisNet.DataMapper.Exceptions;
 using System;
+using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
+using System.Threading.Tasks;
 #endregion
 
 
@@ -82,6 +85,12 @@ namespace IBatisNet.DataMapper
                     }
                 }
             }
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            Dispose();
+            return default;
         }
         #endregion
 
@@ -207,6 +216,37 @@ namespace IBatisNet.DataMapper
                 try
                 {
                     _connection.Open();
+                    if (_logger.IsDebugEnabled) _logger.Debug(string.Format("Open Connection \"{0}\" to \"{1}\".", _connection.GetHashCode().ToString(), DataSource.DbProvider.Description));
+                }
+                catch (Exception ex)
+                {
+                    throw new DataMapperException(string.Format("Unable to open connection to \"{0}\".", DataSource.DbProvider.Description), ex);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Open a connection asynchronously.
+        /// </summary>
+        public Task OpenConnectionAsync()
+        {
+            return OpenConnectionAsync(DataSource.ConnectionString);
+        }
+
+        /// <summary>
+        ///     Open a connection asynchronously, on the specified connection string.
+        /// </summary>
+        /// <param name="connectionString">The connection string</param>
+        public async Task OpenConnectionAsync(string connectionString)
+        {
+            if (_connection == null)
+                CreateConnection(connectionString);
+
+            if (_connection.State != ConnectionState.Open)
+            {
+                try
+                {
+                    await ((DbConnection)_connection).OpenAsync().ConfigureAwait(false);
                     if (_logger.IsDebugEnabled) _logger.Debug(string.Format("Open Connection \"{0}\" to \"{1}\".", _connection.GetHashCode().ToString(), DataSource.DbProvider.Description));
                 }
                 catch (Exception ex)

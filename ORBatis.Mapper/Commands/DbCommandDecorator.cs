@@ -39,6 +39,11 @@ namespace IBatisNet.DataMapper.Commands
         private readonly RequestScope _request;
 
         /// <summary>
+        ///     The underlying IDbCommand, unwrapped from the decorator.
+        /// </summary>
+        public IDbCommand InnerCommand => _innerDbCommand;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="DbCommandDecorator" /> class.
         /// </summary>
         /// <param name="dbCommand">The db command.</param>

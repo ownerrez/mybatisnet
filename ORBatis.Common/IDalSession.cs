@@ -26,6 +26,7 @@
 #region Imports
 using System;
 using System.Data;
+using System.Threading.Tasks;
 #endregion
 
 
@@ -35,7 +36,7 @@ namespace IBatisNet.Common
     ///     A template for a session in the iBATIS.NET framwork.
     ///     Holds the connection, the transaction ...
     /// </summary>
-    public interface IDalSession : IDisposable
+    public interface IDalSession : IDisposable, IAsyncDisposable
     {
         /// <summary>
         ///     The data source use by the session.
@@ -148,6 +149,17 @@ namespace IBatisNet.Common
         /// </summary>
         /// <param name="closeConnection">Close the connection</param>
         void RollBackTransaction(bool closeConnection);
+
+        /// <summary>
+        ///     Open a connection asynchronously.
+        /// </summary>
+        Task OpenConnectionAsync();
+
+        /// <summary>
+        ///     Open a connection asynchronously, on the specified connection string.
+        /// </summary>
+        /// <param name="connectionString">The connection string</param>
+        Task OpenConnectionAsync(string connectionString);
 
         /// <summary>
         ///     Create a command

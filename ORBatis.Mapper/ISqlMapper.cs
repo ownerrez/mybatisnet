@@ -40,6 +40,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
+using System.Threading.Tasks;
 
 //using IBatisNet.DataMapper.SessionStore;
 #endregion
@@ -520,5 +521,43 @@ namespace IBatisNet.DataMapper
         /// <param name="parameterObject">The parameter object.</param>
         /// <returns></returns>
         DataTable QueryForDataTable(string statementName, object parameterObject, ISqlMapSession session);
+
+        #region Async
+        /// <summary>
+        ///     Executes a Sql SELECT statement that returns data to populate a single object instance.
+        /// </summary>
+        Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes a Sql SELECT statement that returns a single object of the type of the
+        ///     resultObject parameter.
+        /// </summary>
+        Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, T instanceObject, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes a Sql SELECT statement that returns data to populate a number of result objects.
+        /// </summary>
+        Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes the SQL and retuns a subset of the rows selected.
+        /// </summary>
+        Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes a Sql INSERT statement asynchronously.
+        /// </summary>
+        Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes a Sql UPDATE statement asynchronously.
+        /// </summary>
+        Task<int> UpdateAsync(string statementName, object parameterObject, ISqlMapSession session);
+
+        /// <summary>
+        ///     Executes a Sql DELETE statement asynchronously.
+        /// </summary>
+        Task<int> DeleteAsync(string statementName, object parameterObject, ISqlMapSession session);
+        #endregion
     }
 }

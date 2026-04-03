@@ -35,7 +35,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Text;
+using System.Threading.Tasks;
 #endregion
 
 namespace IBatisNet.DataMapper.MappedStatements
@@ -1058,6 +1060,220 @@ namespace IBatisNet.DataMapper.MappedStatements
         }
         #endregion
 
+
+        #region Async
+        private static DbCommand UnwrapDbCommand(IDbCommand command)
+        {
+            if (command is DbCommand db) return db;
+            if (command is Commands.DbCommandDecorator decorator) return (DbCommand)decorator.InnerCommand;
+            throw new DataMapperException("Cannot obtain DbCommand for async execution. The IDbCommand type " + command.GetType().Name + " is not supported.");
+        }
+
+        /// <summary>
+        ///     Executes an SQL statement that returns a single row as an Object.
+        /// </summary>
+        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            return ExecuteQueryForObjectAsync(session, parameterObject, default(T));
+        }
+
+        /// <summary>
+        ///     Executes an SQL statement that returns a single row as an Object of the type of
+        ///     the resultObject passed in as a parameter.
+        /// </summary>
+        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForObjectAsync(request, session, parameterObject, resultObject);
+        }
+
+        internal async Task<T> RunQueryForObjectAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, T resultObject)
+        {
+            var result = resultObject;
+
+            using (var command = request.IDbCommand)
+            {
+                request.MoveNextResultMap();
+                var dbCommand = UnwrapDbCommand(command);
+                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
+                try
+                {
+                    while (await dbReader.ReadAsync().ConfigureAwait(false))
+                    {
+                        var obj = _resultStrategy.Process(request, ref reader, resultObject);
+                        if (obj != BaseStrategy.SKIP) result = (T)obj;
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                ExecutePostSelect(request);
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+
+            RaiseExecuteEvent();
+            return result;
+        }
+
+        /// <summary>
+        ///     Executes the SQL and retuns all rows selected.
+        /// </summary>
+        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForListAsync<T>(request, session, parameterObject, NO_SKIPPED_RESULTS, NO_MAXIMUM_RESULTS);
+        }
+
+        /// <summary>
+        ///     Executes the SQL and retuns a subset of the rows selected.
+        /// </summary>
+        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults);
+        }
+
+        internal async Task<IList<T>> RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        {
+            IList<T> list;
+
+            using (var command = request.IDbCommand)
+            {
+                if (Statement.ListClass == null)
+                    list = new List<T>();
+                else
+                    list = Statement.CreateInstanceOfGenericListClass<T>();
+
+                request.MoveNextResultMap();
+                var dbCommand = UnwrapDbCommand(command);
+                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
+                try
+                {
+                    for (var i = 0; i < skipResults; i++)
+                        if (!await dbReader.ReadAsync().ConfigureAwait(false))
+                            break;
+
+                    var resultsFetched = 0;
+                    while ((maxResults == NO_MAXIMUM_RESULTS || resultsFetched < maxResults)
+                           && await dbReader.ReadAsync().ConfigureAwait(false))
+                    {
+                        var obj = _resultStrategy.Process(request, ref reader, null);
+                        if (obj != BaseStrategy.SKIP) list.Add((T)obj);
+                        resultsFetched++;
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                ExecutePostSelect(request);
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        ///     Execute an update statement asynchronously. Also used for delete statement.
+        ///     Return the number of rows effected.
+        /// </summary>
+        public virtual async Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+
+            int rows;
+            using (var command = request.IDbCommand)
+            {
+                var dbCommand = UnwrapDbCommand(command);
+                rows = await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+
+            RaiseExecuteEvent();
+            return rows;
+        }
+
+        /// <summary>
+        ///     Execute an insert statement asynchronously.
+        /// </summary>
+        public virtual async Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        {
+            object generatedKey = null;
+            SelectKey selectKeyStatement = null;
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+
+            if (Statement is Insert) selectKeyStatement = ((Insert)Statement).SelectKey;
+
+            if (selectKeyStatement != null && !selectKeyStatement.isAfter)
+            {
+                var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
+                generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject).ConfigureAwait(false);
+
+                ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
+                    request.DataExchangeFactory.ObjectFactory,
+                    request.DataExchangeFactory.AccessorFactory);
+            }
+
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            using (var command = request.IDbCommand)
+            {
+                var dbCommand = UnwrapDbCommand(command);
+                if (Statement is Insert)
+                {
+                    await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                }
+                else if (Statement is Procedure && Statement.ResultClass != null &&
+                         SqlMap.TypeHandlerFactory.IsSimpleType(Statement.ResultClass))
+                {
+                    IDataParameter returnValueParameter = command.CreateParameter();
+                    returnValueParameter.Direction = ParameterDirection.ReturnValue;
+                    command.Parameters.Add(returnValueParameter);
+
+                    await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    generatedKey = returnValueParameter.Value;
+
+                    var typeHandler = SqlMap.TypeHandlerFactory.GetTypeHandler(Statement.ResultClass);
+                    generatedKey = typeHandler.GetDataBaseValue(generatedKey, Statement.ResultClass);
+                }
+                else
+                {
+                    generatedKey = await dbCommand.ExecuteScalarAsync().ConfigureAwait(false);
+                    if (Statement.ResultClass != null &&
+                        SqlMap.TypeHandlerFactory.IsSimpleType(Statement.ResultClass))
+                    {
+                        var typeHandler = SqlMap.TypeHandlerFactory.GetTypeHandler(Statement.ResultClass);
+                        generatedKey = typeHandler.GetDataBaseValue(generatedKey, Statement.ResultClass);
+                    }
+                }
+
+                if (selectKeyStatement != null && selectKeyStatement.isAfter)
+                {
+                    var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
+                    generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject).ConfigureAwait(false);
+
+                    ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
+                        request.DataExchangeFactory.ObjectFactory,
+                        request.DataExchangeFactory.AccessorFactory);
+                }
+
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+
+            RaiseExecuteEvent();
+            return generatedKey;
+        }
+        #endregion
 
         /// <summary>
         ///     Executes the <see cref="PostBindind" />.

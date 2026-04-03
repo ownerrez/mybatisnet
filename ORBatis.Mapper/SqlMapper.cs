@@ -955,6 +955,43 @@ namespace IBatisNet.DataMapper
         }
         #endregion
 
+        #region Async
+        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync<T>(session, parameterObject);
+        }
+
+        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, T instanceObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync(session, parameterObject, instanceObject);
+        }
+
+        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject);
+        }
+
+        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject, skipResults, maxResults);
+        }
+
+        public Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteInsertAsync(session, parameterObject);
+        }
+
+        public Task<int> UpdateAsync(string statementName, object parameterObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject);
+        }
+
+        public Task<int> DeleteAsync(string statementName, object parameterObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject);
+        }
+        #endregion
+
         #region Get/Add ParemeterMap, ResultMap, MappedStatement, TypeAlias, DataSource, CacheModel
 
         private Dictionary<string, List<Action>> EntityToMap = new Dictionary<string, List<Action>>();

@@ -61,6 +61,9 @@
         <isNotNull property="propertyIds" prepend="and">(h.AllowAllProperties = 1 or hp.PropertyId in (<iterate property="propertyIds" open="" conjunction="," close="">#propertyIds[]#</iterate>))</isNotNull>
       </dynamic>
     </select>
+    <delete id="Delete" parameterClass="int">
+      delete from Holiday where Id = #value#
+    </delete>
   </statements>
   <resultMaps>
     <resultMap id="Holiday" class="Holiday">
