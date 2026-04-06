@@ -64,6 +64,9 @@ namespace IBatisNet.DataMapper
         /// </summary>
         public void Dispose()
         {
+            if (_connection == null)
+                return;
+
             if (_logger.IsDebugEnabled) _logger.Debug("Dispose SqlMapSession");
             if (IsTransactionStart == false)
             {
@@ -254,6 +257,32 @@ namespace IBatisNet.DataMapper
                     throw new DataMapperException(string.Format("Unable to open connection to \"{0}\".", DataSource.DbProvider.Description), ex);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Open a connection asynchronously and begin a transaction.
+        /// </summary>
+        public async Task BeginTransactionAsync()
+        {
+            if (_connection == null || _connection.State != ConnectionState.Open)
+                await OpenConnectionAsync().ConfigureAwait(false);
+            _transaction = _connection.BeginTransaction();
+            if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
+            IsTransactionStart = true;
+        }
+
+        /// <summary>
+        ///     Open a connection asynchronously and begin a transaction
+        ///     with the specified isolation level.
+        /// </summary>
+        /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
+        {
+            if (_connection == null || _connection.State != ConnectionState.Open)
+                await OpenConnectionAsync().ConfigureAwait(false);
+            _transaction = _connection.BeginTransaction(isolationLevel);
+            if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
+            IsTransactionStart = true;
         }
 
         /// <summary>

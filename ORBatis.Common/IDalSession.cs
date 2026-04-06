@@ -162,6 +162,18 @@ namespace IBatisNet.Common
         Task OpenConnectionAsync(string connectionString);
 
         /// <summary>
+        ///     Open a connection asynchronously and begin a transaction.
+        /// </summary>
+        Task BeginTransactionAsync();
+
+        /// <summary>
+        ///     Open a connection asynchronously and begin a transaction
+        ///     with the specified isolation level.
+        /// </summary>
+        /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
+        Task BeginTransactionAsync(IsolationLevel isolationLevel);
+
+        /// <summary>
         ///     Create a command
         /// </summary>
         /// <param name="commandType">The type of the command</param>

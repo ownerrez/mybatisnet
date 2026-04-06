@@ -312,6 +312,11 @@ namespace IBatisNet.DataMapper.MappedStatements
         Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults);
 
         /// <summary>
+        ///     Executes the SQL and fills a strongly typed collection.
+        /// </summary>
+        Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject);
+
+        /// <summary>
         ///     Execute an update statement. Also used for delete statement.
         ///     Return the number of rows effected.
         /// </summary>

@@ -535,6 +535,11 @@ namespace IBatisNet.DataMapper.MappedStatements
             return list;
         }
 
+        public Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        {
+            return _mappedStatement.ExecuteQueryForListAsync(session, parameterObject, resultObject);
+        }
+
         public Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
         {
             return _mappedStatement.ExecuteUpdateAsync(session, parameterObject);

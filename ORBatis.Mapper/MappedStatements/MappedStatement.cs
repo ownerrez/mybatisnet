@@ -1184,6 +1184,43 @@ namespace IBatisNet.DataMapper.MappedStatements
         }
 
         /// <summary>
+        ///     Executes the SQL and fills a strongly typed collection.
+        /// </summary>
+        public virtual Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForListAsync(request, session, parameterObject, resultObject);
+        }
+
+        internal async Task RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        {
+            using (var command = request.IDbCommand)
+            {
+                request.MoveNextResultMap();
+                var dbCommand = UnwrapDbCommand(command);
+                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
+                try
+                {
+                    while (await dbReader.ReadAsync().ConfigureAwait(false))
+                    {
+                        var obj = _resultStrategy.Process(request, ref reader, null);
+                        if (obj != BaseStrategy.SKIP) resultObject.Add((T)obj);
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                ExecutePostSelect(request);
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+        }
+
+        /// <summary>
         ///     Execute an update statement asynchronously. Also used for delete statement.
         ///     Return the number of rows effected.
         /// </summary>

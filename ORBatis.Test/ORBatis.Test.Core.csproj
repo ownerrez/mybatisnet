@@ -3,7 +3,7 @@
     <PropertyGroup>
         <BaseIntermediateOutputPath>obj\Core\</BaseIntermediateOutputPath>
         <DefaultItemExcludes>$(DefaultItemExcludes);Properties\AssemblyInfo.cs;obj\Framework\**</DefaultItemExcludes>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>

@@ -976,6 +976,11 @@ namespace IBatisNet.DataMapper
             return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject, skipResults, maxResults);
         }
 
+        public Task QueryForListAsync<T>(string statementName, object parameterObject, IList<T> resultObject, ISqlMapSession session)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync(session, parameterObject, resultObject);
+        }
+
         public Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session)
         {
             return GetMappedStatement(statementName).ExecuteInsertAsync(session, parameterObject);

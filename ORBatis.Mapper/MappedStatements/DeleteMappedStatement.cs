@@ -165,6 +165,11 @@ namespace IBatisNet.DataMapper.MappedStatements
         {
             throw new DataMapperException("Delete statements cannot be executed as a query insert.");
         }
+
+        public override Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        {
+            throw new DataMapperException("Delete statements cannot be executed as a query for list.");
+        }
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper;
@@ -78,14 +79,28 @@ public class AsyncFunctionalityFacts
 
         var parameters = new Hashtable { { "active", true }, { "userId", 347317427 } };
 
-        var syncResults = mapper.QueryForList<Holiday>("Holiday.SelectAll", parameters, session);
-        var asyncResults = await mapper.QueryForListAsync<Holiday>("Holiday.SelectAll", parameters, session);
+        // Insert a known row so we have a guaranteed match
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
 
-        Assert.Equal(syncResults.Count, asyncResults.Count);
-        for (var i = 0; i < syncResults.Count; i++)
+        try
         {
-            Assert.Equal(syncResults[i].Id, asyncResults[i].Id);
-            Assert.Equal(syncResults[i].Name, asyncResults[i].Name);
+            var syncResults = mapper.QueryForList<Holiday>("Holiday.SelectAll", parameters, session);
+            var asyncResults = await mapper.QueryForListAsync<Holiday>("Holiday.SelectAll", parameters, session);
+
+            // Both should contain our known row
+            Assert.Contains(syncResults, h => h.Id == id);
+            Assert.Contains(asyncResults, h => h.Id == id);
+
+            // Verify the known row has the same data in both
+            var syncRow = syncResults.First(h => h.Id == id);
+            var asyncRow = asyncResults.First(h => h.Id == id);
+            Assert.Equal(syncRow.Name, asyncRow.Name);
+            Assert.Equal(syncRow.UserId, asyncRow.UserId);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
         }
     }
 

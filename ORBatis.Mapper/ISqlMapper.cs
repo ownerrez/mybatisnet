@@ -545,6 +545,12 @@ namespace IBatisNet.DataMapper
         Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session);
 
         /// <summary>
+        ///     Executes a Sql SELECT statement that returns data to populate
+        ///     a number of result objects into an existing collection.
+        /// </summary>
+        Task QueryForListAsync<T>(string statementName, object parameterObject, IList<T> resultObject, ISqlMapSession session);
+
+        /// <summary>
         ///     Executes a Sql INSERT statement asynchronously.
         /// </summary>
         Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session);

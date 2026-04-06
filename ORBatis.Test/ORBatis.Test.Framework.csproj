@@ -95,9 +95,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Tests\AsyncCrudFacts.cs" />
         <Compile Include="Tests\AsyncFunctionalityFacts.cs" />
         <Compile Include="Tests\BasicFunctionalityFacts.cs" />
-        <Compile Include="Tests\CrudFunctionalityFacts.cs" />
+        <Compile Include="Tests\SyncCrudFacts.cs" />
         <Compile Include="TypeHandlers\GuidByteArray.cs" />
         <Compile Include="TypeHandlers\NullableEnum.cs" />
     </ItemGroup>
