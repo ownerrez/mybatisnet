@@ -28,6 +28,8 @@ using IBatisNet.DataMapper.Commands;
 using IBatisNet.DataMapper.Configuration.Statements;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 #endregion
 
@@ -293,40 +295,55 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// <summary>
         ///     Executes an SQL statement that returns a single row as an Object.
         /// </summary>
-        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject);
+        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Executes an SQL statement that returns a single row as an Object of the type of
         ///     the resultObject passed in as a parameter.
         /// </summary>
-        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject);
+        Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Executes the SQL and retuns all rows selected.
         /// </summary>
-        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject);
+        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Executes the SQL and retuns a subset of the rows selected.
         /// </summary>
-        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults);
+        Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Executes the SQL and fills a strongly typed collection.
         /// </summary>
-        Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject);
+        Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Execute an update statement. Also used for delete statement.
         ///     Return the number of rows effected.
         /// </summary>
-        Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject);
+        Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Execute an insert statement. Fill the parameter object with
         ///     the output parameters if any, also could return the insert generated key.
         /// </summary>
-        Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject);
+        Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Executes the SQL and returns all rows selected in a dictionary.
+        /// </summary>
+        Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Executes the SQL and returns all rows selected in a dictionary, using a row delegate.
+        /// </summary>
+        Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Runs a query with a custom object that gets a chance to deal with each row as it is processed.
+        /// </summary>
+        Task<IList<T>> ExecuteQueryForRowDelegateAsync<T>(ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken = default);
         #endregion
     }
 }

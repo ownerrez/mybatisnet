@@ -28,6 +28,7 @@ using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Exceptions;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IBatisNet.DataMapper.MappedStatements
@@ -158,34 +159,49 @@ namespace IBatisNet.DataMapper.MappedStatements
         #endregion
 
         #region Async
-        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query for object.");
         }
 
-        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        public override Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query for object.");
         }
 
-        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query for list.");
         }
 
-        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        public override Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query for list.");
         }
 
-        public override Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        public override Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query insert.");
         }
 
-        public override Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        public override Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken)
         {
             throw new DataMapperException("Update statements cannot be executed as a query for list.");
+        }
+
+        public override Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, CancellationToken cancellationToken)
+        {
+            throw new DataMapperException("Update statements cannot be executed as a query for dictionary.");
+        }
+
+        public override Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken)
+        {
+            throw new DataMapperException("Update statements cannot be executed as a query for dictionary.");
+        }
+
+        public override Task<IList<T>> ExecuteQueryForRowDelegateAsync<T>(ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken)
+        {
+            throw new DataMapperException("Update statements cannot be executed as a query with row delegate.");
         }
         #endregion
     }

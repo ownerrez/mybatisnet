@@ -32,6 +32,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 #endregion
 
@@ -231,16 +232,16 @@ namespace IBatisNet.DataMapper
         /// <summary>
         ///     Open a connection asynchronously.
         /// </summary>
-        public Task OpenConnectionAsync()
+        public Task OpenConnectionAsync(CancellationToken cancellationToken = default)
         {
-            return OpenConnectionAsync(DataSource.ConnectionString);
+            return OpenConnectionAsync(DataSource.ConnectionString, cancellationToken);
         }
 
         /// <summary>
         ///     Open a connection asynchronously, on the specified connection string.
         /// </summary>
         /// <param name="connectionString">The connection string</param>
-        public async Task OpenConnectionAsync(string connectionString)
+        public async Task OpenConnectionAsync(string connectionString, CancellationToken cancellationToken = default)
         {
             if (_connection == null)
                 CreateConnection(connectionString);
@@ -249,7 +250,7 @@ namespace IBatisNet.DataMapper
             {
                 try
                 {
-                    await ((DbConnection)_connection).OpenAsync().ConfigureAwait(false);
+                    await ((DbConnection)_connection).OpenAsync(cancellationToken).ConfigureAwait(false);
                     if (_logger.IsDebugEnabled) _logger.Debug(string.Format("Open Connection \"{0}\" to \"{1}\".", _connection.GetHashCode().ToString(), DataSource.DbProvider.Description));
                 }
                 catch (Exception ex)
@@ -262,10 +263,10 @@ namespace IBatisNet.DataMapper
         /// <summary>
         ///     Open a connection asynchronously and begin a transaction.
         /// </summary>
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
             if (_connection == null || _connection.State != ConnectionState.Open)
-                await OpenConnectionAsync().ConfigureAwait(false);
+                await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
             _transaction = _connection.BeginTransaction();
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
             IsTransactionStart = true;
@@ -276,10 +277,10 @@ namespace IBatisNet.DataMapper
         ///     with the specified isolation level.
         /// </summary>
         /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
-        public async Task BeginTransactionAsync(IsolationLevel isolationLevel)
+        public async Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default)
         {
             if (_connection == null || _connection.State != ConnectionState.Open)
-                await OpenConnectionAsync().ConfigureAwait(false);
+                await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
             _transaction = _connection.BeginTransaction(isolationLevel);
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
             IsTransactionStart = true;

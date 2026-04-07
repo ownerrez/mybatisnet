@@ -956,44 +956,89 @@ namespace IBatisNet.DataMapper
         #endregion
 
         #region Async
-        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, ISqlMapSession session)
+        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync<T>(session, parameterObject);
+            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync<T>(session, parameterObject, cancellationToken);
         }
 
-        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, T instanceObject, ISqlMapSession session)
+        public Task<T> QueryForObjectAsync<T>(string statementName, object parameterObject, T instanceObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync(session, parameterObject, instanceObject);
+            return GetMappedStatement(statementName).ExecuteQueryForObjectAsync(session, parameterObject, instanceObject, cancellationToken);
         }
 
-        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, ISqlMapSession session)
+        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject);
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject, cancellationToken);
         }
 
-        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session)
+        public Task<IList<T>> QueryForListAsync<T>(string statementName, object parameterObject, int skipResults, int maxResults, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject, skipResults, maxResults);
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync<T>(session, parameterObject, skipResults, maxResults, cancellationToken);
         }
 
-        public Task QueryForListAsync<T>(string statementName, object parameterObject, IList<T> resultObject, ISqlMapSession session)
+        public Task QueryForListAsync<T>(string statementName, object parameterObject, IList<T> resultObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteQueryForListAsync(session, parameterObject, resultObject);
+            return GetMappedStatement(statementName).ExecuteQueryForListAsync(session, parameterObject, resultObject, cancellationToken);
         }
 
-        public Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session)
+        public Task<object> InsertAsync(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteInsertAsync(session, parameterObject);
+            return GetMappedStatement(statementName).ExecuteInsertAsync(session, parameterObject, cancellationToken);
         }
 
-        public Task<int> UpdateAsync(string statementName, object parameterObject, ISqlMapSession session)
+        public Task<int> UpdateAsync(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject);
+            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject, cancellationToken);
         }
 
-        public Task<int> DeleteAsync(string statementName, object parameterObject, ISqlMapSession session)
+        public Task<int> DeleteAsync(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
-            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject);
+            return GetMappedStatement(statementName).ExecuteUpdateAsync(session, parameterObject, cancellationToken);
+        }
+
+        public Task<IDictionary<K, V>> QueryForDictionaryAsync<K, V>(string statementName, object parameterObject, string keyProperty, string valueProperty, ISqlMapSession session, CancellationToken cancellationToken = default)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForDictionaryAsync<K, V>(session, parameterObject, keyProperty, valueProperty, cancellationToken);
+        }
+
+        public Task<IDictionary<K, V>> QueryForDictionaryAsync<K, V>(string statementName, object parameterObject, string keyProperty, ISqlMapSession session, CancellationToken cancellationToken = default)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForDictionaryAsync<K, V>(session, parameterObject, keyProperty, null, cancellationToken);
+        }
+
+        public Task<IDictionary<K, V>> QueryForDictionaryAsync<K, V>(string statementName, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, ISqlMapSession session, CancellationToken cancellationToken = default)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForDictionaryAsync(session, parameterObject, keyProperty, valueProperty, rowDelegate, cancellationToken);
+        }
+
+        public Task<IList<T>> QueryWithRowDelegateAsync<T>(string statementName, object parameterObject, RowDelegate<T> rowDelegate, ISqlMapSession session, CancellationToken cancellationToken = default)
+        {
+            return GetMappedStatement(statementName).ExecuteQueryForRowDelegateAsync(session, parameterObject, rowDelegate, cancellationToken);
+        }
+
+        public async Task<DataTable> QueryForDataTableAsync(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
+        {
+            var statement = GetMappedStatement(statementName);
+            var dataTable = new DataTable(statementName);
+            var request = statement.Statement.Sql.GetRequestScope(statement, parameterObject, session);
+            statement.PreparedCommand.Create(request, session, statement.Statement, parameterObject);
+
+            using (request.IDbCommand)
+            {
+                var dbCommand = MappedStatement.UnwrapDbCommand(request.IDbCommand);
+                var reader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+                try
+                {
+                    dataTable.Load(reader);
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+            }
+
+            return dataTable;
         }
         #endregion
 

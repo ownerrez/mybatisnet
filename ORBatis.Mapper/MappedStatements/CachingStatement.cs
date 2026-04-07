@@ -31,6 +31,7 @@ using IBatisNet.DataMapper.Scope;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 #endregion
 
@@ -486,12 +487,12 @@ namespace IBatisNet.DataMapper.MappedStatements
         #endregion
 
         #region Async
-        public Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        public Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
-            return ExecuteQueryForObjectAsync(session, parameterObject, default(T));
+            return ExecuteQueryForObjectAsync(session, parameterObject, default(T), cancellationToken);
         }
 
-        public async Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        public async Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             _mappedStatement.PreparedCommand.Create(request, session, Statement, parameterObject);
@@ -505,17 +506,17 @@ namespace IBatisNet.DataMapper.MappedStatements
             if (cacheObject == CacheModel.NULL_OBJECT)
                 return default;
 
-            var obj = await _mappedStatement.RunQueryForObjectAsync(request, session, parameterObject, resultObject).ConfigureAwait(false);
+            var obj = await _mappedStatement.RunQueryForObjectAsync(request, session, parameterObject, resultObject, cancellationToken).ConfigureAwait(false);
             Statement.CacheModel[cacheKey] = obj;
             return obj;
         }
 
-        public Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        public Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
-            return ExecuteQueryForListAsync<T>(session, parameterObject, MappedStatement.NO_SKIPPED_RESULTS, MappedStatement.NO_MAXIMUM_RESULTS);
+            return ExecuteQueryForListAsync<T>(session, parameterObject, MappedStatement.NO_SKIPPED_RESULTS, MappedStatement.NO_MAXIMUM_RESULTS, cancellationToken);
         }
 
-        public async Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        public async Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             _mappedStatement.PreparedCommand.Create(request, session, Statement, parameterObject);
@@ -528,26 +529,41 @@ namespace IBatisNet.DataMapper.MappedStatements
             var list = Statement.CacheModel[cacheKey] as IList<T>;
             if (list == null)
             {
-                list = await _mappedStatement.RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults).ConfigureAwait(false);
+                list = await _mappedStatement.RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults, cancellationToken).ConfigureAwait(false);
                 Statement.CacheModel[cacheKey] = list;
             }
 
             return list;
         }
 
-        public Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        public Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken = default)
         {
-            return _mappedStatement.ExecuteQueryForListAsync(session, parameterObject, resultObject);
+            return _mappedStatement.ExecuteQueryForListAsync(session, parameterObject, resultObject, cancellationToken);
         }
 
-        public Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        public Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
-            return _mappedStatement.ExecuteUpdateAsync(session, parameterObject);
+            return _mappedStatement.ExecuteUpdateAsync(session, parameterObject, cancellationToken);
         }
 
-        public Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        public Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
-            return _mappedStatement.ExecuteInsertAsync(session, parameterObject);
+            return _mappedStatement.ExecuteInsertAsync(session, parameterObject, cancellationToken);
+        }
+
+        public Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, CancellationToken cancellationToken = default)
+        {
+            return _mappedStatement.ExecuteQueryForDictionaryAsync<K, V>(session, parameterObject, keyProperty, valueProperty, cancellationToken);
+        }
+
+        public Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken = default)
+        {
+            return _mappedStatement.ExecuteQueryForDictionaryAsync(session, parameterObject, keyProperty, valueProperty, rowDelegate, cancellationToken);
+        }
+
+        public Task<IList<T>> ExecuteQueryForRowDelegateAsync<T>(ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken = default)
+        {
+            return _mappedStatement.ExecuteQueryForRowDelegateAsync(session, parameterObject, rowDelegate, cancellationToken);
         }
         #endregion
         #endregion

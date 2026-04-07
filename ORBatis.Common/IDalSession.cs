@@ -26,6 +26,7 @@
 #region Imports
 using System;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 #endregion
 
@@ -153,25 +154,25 @@ namespace IBatisNet.Common
         /// <summary>
         ///     Open a connection asynchronously.
         /// </summary>
-        Task OpenConnectionAsync();
+        Task OpenConnectionAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Open a connection asynchronously, on the specified connection string.
         /// </summary>
         /// <param name="connectionString">The connection string</param>
-        Task OpenConnectionAsync(string connectionString);
+        Task OpenConnectionAsync(string connectionString, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Open a connection asynchronously and begin a transaction.
         /// </summary>
-        Task BeginTransactionAsync();
+        Task BeginTransactionAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Open a connection asynchronously and begin a transaction
         ///     with the specified isolation level.
         /// </summary>
         /// <param name="isolationLevel">The transaction isolation level for this connection.</param>
-        Task BeginTransactionAsync(IsolationLevel isolationLevel);
+        Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Create a command

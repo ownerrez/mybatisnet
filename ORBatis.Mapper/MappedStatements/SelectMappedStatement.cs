@@ -26,6 +26,7 @@
 
 using IBatisNet.DataMapper.Configuration.Statements;
 using IBatisNet.DataMapper.Exceptions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IBatisNet.DataMapper.MappedStatements
@@ -69,14 +70,14 @@ namespace IBatisNet.DataMapper.MappedStatements
         #endregion
 
         #region Async
-        public override Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        public override Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken)
         {
-            throw new DataMapperException("Update statements cannot be executed as a query insert.");
+            throw new DataMapperException("Select statements cannot be executed as an insert.");
         }
 
-        public override Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        public override Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken)
         {
-            throw new DataMapperException("Insert statements cannot be executed as a update query.");
+            throw new DataMapperException("Select statements cannot be executed as an update.");
         }
         #endregion
     }

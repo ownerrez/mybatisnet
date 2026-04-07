@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 #endregion
 
@@ -1062,7 +1063,7 @@ namespace IBatisNet.DataMapper.MappedStatements
 
 
         #region Async
-        private static DbCommand UnwrapDbCommand(IDbCommand command)
+        internal static DbCommand UnwrapDbCommand(IDbCommand command)
         {
             if (command is DbCommand db) return db;
             if (command is Commands.DbCommandDecorator decorator) return (DbCommand)decorator.InnerCommand;
@@ -1072,23 +1073,23 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// <summary>
         ///     Executes an SQL statement that returns a single row as an Object.
         /// </summary>
-        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject)
+        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
-            return ExecuteQueryForObjectAsync(session, parameterObject, default(T));
+            return ExecuteQueryForObjectAsync(session, parameterObject, default(T), cancellationToken);
         }
 
         /// <summary>
         ///     Executes an SQL statement that returns a single row as an Object of the type of
         ///     the resultObject passed in as a parameter.
         /// </summary>
-        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject)
+        public virtual Task<T> ExecuteQueryForObjectAsync<T>(ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
-            return RunQueryForObjectAsync(request, session, parameterObject, resultObject);
+            return RunQueryForObjectAsync(request, session, parameterObject, resultObject, cancellationToken);
         }
 
-        internal async Task<T> RunQueryForObjectAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, T resultObject)
+        internal async Task<T> RunQueryForObjectAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken)
         {
             var result = resultObject;
 
@@ -1096,11 +1097,11 @@ namespace IBatisNet.DataMapper.MappedStatements
             {
                 request.MoveNextResultMap();
                 var dbCommand = UnwrapDbCommand(command);
-                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
                 try
                 {
-                    while (await dbReader.ReadAsync().ConfigureAwait(false))
+                    while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
                     {
                         var obj = _resultStrategy.Process(request, ref reader, resultObject);
                         if (obj != BaseStrategy.SKIP) result = (T)obj;
@@ -1123,24 +1124,24 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// <summary>
         ///     Executes the SQL and retuns all rows selected.
         /// </summary>
-        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject)
+        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
-            return RunQueryForListAsync<T>(request, session, parameterObject, NO_SKIPPED_RESULTS, NO_MAXIMUM_RESULTS);
+            return RunQueryForListAsync<T>(request, session, parameterObject, NO_SKIPPED_RESULTS, NO_MAXIMUM_RESULTS, cancellationToken);
         }
 
         /// <summary>
         ///     Executes the SQL and retuns a subset of the rows selected.
         /// </summary>
-        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        public virtual Task<IList<T>> ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
-            return RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults);
+            return RunQueryForListAsync<T>(request, session, parameterObject, skipResults, maxResults, cancellationToken);
         }
 
-        internal async Task<IList<T>> RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, int skipResults, int maxResults)
+        internal async Task<IList<T>> RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken)
         {
             IList<T> list;
 
@@ -1153,17 +1154,17 @@ namespace IBatisNet.DataMapper.MappedStatements
 
                 request.MoveNextResultMap();
                 var dbCommand = UnwrapDbCommand(command);
-                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
                 try
                 {
                     for (var i = 0; i < skipResults; i++)
-                        if (!await dbReader.ReadAsync().ConfigureAwait(false))
+                        if (!await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
                             break;
 
                     var resultsFetched = 0;
                     while ((maxResults == NO_MAXIMUM_RESULTS || resultsFetched < maxResults)
-                           && await dbReader.ReadAsync().ConfigureAwait(false))
+                           && await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
                     {
                         var obj = _resultStrategy.Process(request, ref reader, null);
                         if (obj != BaseStrategy.SKIP) list.Add((T)obj);
@@ -1186,24 +1187,24 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// <summary>
         ///     Executes the SQL and fills a strongly typed collection.
         /// </summary>
-        public virtual Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        public virtual Task ExecuteQueryForListAsync<T>(ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
-            return RunQueryForListAsync(request, session, parameterObject, resultObject);
+            return RunQueryForListAsync(request, session, parameterObject, resultObject, cancellationToken);
         }
 
-        internal async Task RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, IList<T> resultObject)
+        internal async Task RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken)
         {
             using (var command = request.IDbCommand)
             {
                 request.MoveNextResultMap();
                 var dbCommand = UnwrapDbCommand(command);
-                var dbReader = await dbCommand.ExecuteReaderAsync().ConfigureAwait(false);
+                var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
                 try
                 {
-                    while (await dbReader.ReadAsync().ConfigureAwait(false))
+                    while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
                     {
                         var obj = _resultStrategy.Process(request, ref reader, null);
                         if (obj != BaseStrategy.SKIP) resultObject.Add((T)obj);
@@ -1224,7 +1225,7 @@ namespace IBatisNet.DataMapper.MappedStatements
         ///     Execute an update statement asynchronously. Also used for delete statement.
         ///     Return the number of rows effected.
         /// </summary>
-        public virtual async Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject)
+        public virtual async Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
@@ -1233,7 +1234,7 @@ namespace IBatisNet.DataMapper.MappedStatements
             using (var command = request.IDbCommand)
             {
                 var dbCommand = UnwrapDbCommand(command);
-                rows = await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                rows = await dbCommand.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
                 RetrieveOutputParameters(request, session, command, parameterObject);
             }
 
@@ -1244,7 +1245,7 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// <summary>
         ///     Execute an insert statement asynchronously.
         /// </summary>
-        public virtual async Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject)
+        public virtual async Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
             object generatedKey = null;
             SelectKey selectKeyStatement = null;
@@ -1255,7 +1256,7 @@ namespace IBatisNet.DataMapper.MappedStatements
             if (selectKeyStatement != null && !selectKeyStatement.isAfter)
             {
                 var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
-                generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject).ConfigureAwait(false);
+                generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject, cancellationToken).ConfigureAwait(false);
 
                 ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
                     request.DataExchangeFactory.ObjectFactory,
@@ -1268,7 +1269,7 @@ namespace IBatisNet.DataMapper.MappedStatements
                 var dbCommand = UnwrapDbCommand(command);
                 if (Statement is Insert)
                 {
-                    await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    await dbCommand.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
                 }
                 else if (Statement is Procedure && Statement.ResultClass != null &&
                          SqlMap.TypeHandlerFactory.IsSimpleType(Statement.ResultClass))
@@ -1277,7 +1278,7 @@ namespace IBatisNet.DataMapper.MappedStatements
                     returnValueParameter.Direction = ParameterDirection.ReturnValue;
                     command.Parameters.Add(returnValueParameter);
 
-                    await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    await dbCommand.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
                     generatedKey = returnValueParameter.Value;
 
                     var typeHandler = SqlMap.TypeHandlerFactory.GetTypeHandler(Statement.ResultClass);
@@ -1285,7 +1286,7 @@ namespace IBatisNet.DataMapper.MappedStatements
                 }
                 else
                 {
-                    generatedKey = await dbCommand.ExecuteScalarAsync().ConfigureAwait(false);
+                    generatedKey = await dbCommand.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
                     if (Statement.ResultClass != null &&
                         SqlMap.TypeHandlerFactory.IsSimpleType(Statement.ResultClass))
                     {
@@ -1297,7 +1298,7 @@ namespace IBatisNet.DataMapper.MappedStatements
                 if (selectKeyStatement != null && selectKeyStatement.isAfter)
                 {
                     var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
-                    generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject).ConfigureAwait(false);
+                    generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject, cancellationToken).ConfigureAwait(false);
 
                     ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
                         request.DataExchangeFactory.ObjectFactory,
@@ -1309,6 +1310,120 @@ namespace IBatisNet.DataMapper.MappedStatements
 
             RaiseExecuteEvent();
             return generatedKey;
+        }
+
+        /// <summary>
+        ///     Executes the SQL and returns all rows selected in a dictionary asynchronously.
+        /// </summary>
+        public virtual Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, CancellationToken cancellationToken = default)
+        {
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForDictionaryAsync<K, V>(request, session, parameterObject, keyProperty, valueProperty, null, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Executes the SQL and returns all rows selected in a dictionary, using a row delegate.
+        /// </summary>
+        public virtual Task<IDictionary<K, V>> ExecuteQueryForDictionaryAsync<K, V>(ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken = default)
+        {
+            if (rowDelegate == null) throw new DataMapperException("A null DictionaryRowDelegate was passed to QueryForDictionary.");
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForDictionaryAsync(request, session, parameterObject, keyProperty, valueProperty, rowDelegate, cancellationToken);
+        }
+
+        internal async Task<IDictionary<K, V>> RunQueryForDictionaryAsync<K, V>(RequestScope request, ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken)
+        {
+            IDictionary<K, V> map = new Dictionary<K, V>();
+
+            using (var command = request.IDbCommand)
+            {
+                var dbCommand = UnwrapDbCommand(command);
+                var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+                IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
+                try
+                {
+                    if (rowDelegate == null)
+                        while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
+                        {
+                            var obj = _resultStrategy.Process(request, ref reader, null);
+                            var key = (K)ObjectProbe.GetMemberValue(obj, keyProperty, request.DataExchangeFactory.AccessorFactory);
+                            var value = valueProperty != null
+                                ? (V)ObjectProbe.GetMemberValue(obj, valueProperty, request.DataExchangeFactory.AccessorFactory)
+                                : (V)obj;
+                            map.Add(key, value);
+                        }
+                    else
+                        while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
+                        {
+                            var obj = _resultStrategy.Process(request, ref reader, null);
+                            var key = (K)ObjectProbe.GetMemberValue(obj, keyProperty, request.DataExchangeFactory.AccessorFactory);
+                            var value = valueProperty != null
+                                ? (V)ObjectProbe.GetMemberValue(obj, valueProperty, request.DataExchangeFactory.AccessorFactory)
+                                : (V)obj;
+                            rowDelegate(key, value, parameterObject, map);
+                        }
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                ExecutePostSelect(request);
+            }
+
+            return map;
+        }
+
+        /// <summary>
+        ///     Runs a query with a custom object that gets a chance to deal with each row as it is processed.
+        /// </summary>
+        public virtual Task<IList<T>> ExecuteQueryForRowDelegateAsync<T>(ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken = default)
+        {
+            if (rowDelegate == null) throw new DataMapperException("A null RowDelegate was passed to QueryForRowDelegate.");
+            var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
+            PreparedCommand.Create(request, session, Statement, parameterObject);
+            return RunQueryForRowDelegateAsync(request, session, parameterObject, rowDelegate, cancellationToken);
+        }
+
+        internal async Task<IList<T>> RunQueryForRowDelegateAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken)
+        {
+            IList<T> list;
+
+            using (var command = request.IDbCommand)
+            {
+                if (Statement.ListClass == null)
+                    list = new List<T>();
+                else
+                    list = Statement.CreateInstanceOfGenericListClass<T>();
+
+                var dbCommand = UnwrapDbCommand(command);
+                var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+                IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
+                try
+                {
+                    do
+                    {
+                        while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
+                        {
+                            var obj = (T)_resultStrategy.Process(request, ref reader, null);
+                            rowDelegate(obj, parameterObject, list);
+                        }
+                    } while (await dbReader.NextResultAsync(cancellationToken).ConfigureAwait(false));
+                }
+                finally
+                {
+                    reader.Close();
+                    reader.Dispose();
+                }
+
+                ExecutePostSelect(request);
+                RetrieveOutputParameters(request, session, command, parameterObject);
+            }
+
+            return list;
         }
         #endregion
 
