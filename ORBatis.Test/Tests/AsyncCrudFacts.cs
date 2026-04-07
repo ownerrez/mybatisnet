@@ -12,6 +12,7 @@ using Xunit;
 
 namespace ORBatis.Test.Tests;
 
+[Collection("Database")]
 public class AsyncCrudFacts
 {
     private static ISqlMapper BuildMapper()

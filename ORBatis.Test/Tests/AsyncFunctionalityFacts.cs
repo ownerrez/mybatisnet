@@ -19,6 +19,7 @@ namespace ORBatis.Test.Tests;
 ///     Tests specific to async behavior that don't fit the shared sync/async CRUD base class:
 ///     mixed sync/async usage, await using, and sync/async result parity.
 /// </summary>
+[Collection("Database")]
 public class AsyncFunctionalityFacts
 {
     private static ISqlMapper BuildMapper()
