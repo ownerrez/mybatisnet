@@ -1339,6 +1339,7 @@ namespace IBatisNet.DataMapper.MappedStatements
 
             using (var command = request.IDbCommand)
             {
+                request.MoveNextResultMap();
                 var dbCommand = UnwrapDbCommand(command);
                 var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
@@ -1399,6 +1400,7 @@ namespace IBatisNet.DataMapper.MappedStatements
                 else
                     list = Statement.CreateInstanceOfGenericListClass<T>();
 
+                request.MoveNextResultMap();
                 var dbCommand = UnwrapDbCommand(command);
                 var dbReader = await dbCommand.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);

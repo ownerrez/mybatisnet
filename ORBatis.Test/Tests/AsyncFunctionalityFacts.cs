@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using IBatisNet.Common.Utilities;
 using IBatisNet.DataMapper;
@@ -231,6 +234,321 @@ public class AsyncFunctionalityFacts
         Assert.True(
             session.Connection == null || session.Connection.State == System.Data.ConnectionState.Closed
         );
+    }
+    #endregion
+
+    #region QueryForDictionaryAsync
+    [Fact]
+    public async Task QueryForDictionaryAsync_ReturnsDictionaryKeyedByProperty()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+            var dict = await mapper.QueryForDictionaryAsync<int, Holiday>(
+                "Holiday.SelectAll", parameters, "Id", null, session);
+
+            Assert.NotNull(dict);
+            Assert.True(dict.ContainsKey(id));
+            Assert.Equal(holiday.Name, dict[id].Name);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+
+    [Fact]
+    public async Task QueryForDictionaryAsync_WithValueProperty_ReturnsScalarValues()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+            var dict = await mapper.QueryForDictionaryAsync<int, string>(
+                "Holiday.SelectAll", parameters, "Id", "Name", session);
+
+            Assert.NotNull(dict);
+            Assert.True(dict.ContainsKey(id));
+            Assert.Equal(holiday.Name, dict[id]);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+
+    [Fact]
+    public async Task QueryForDictionaryAsync_WithRowDelegate_InvokesDelegate()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+            var callCount = 0;
+
+            var dict = await mapper.QueryForDictionaryAsync<int, Holiday>(
+                "Holiday.SelectAll", parameters, "Id", null,
+                (key, value, param, dictionary) =>
+                {
+                    callCount++;
+                    dictionary[key] = value;
+                },
+                session);
+
+            Assert.True(callCount > 0);
+            Assert.True(dict.ContainsKey(id));
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+
+    [Fact]
+    public async Task QueryForDictionaryAsync_SyncAndAsync_ReturnSameResults()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+
+            var syncDict = mapper.QueryForDictionary<int, string>(
+                "Holiday.SelectAll", parameters, "Id", "Name", session);
+            var asyncDict = await mapper.QueryForDictionaryAsync<int, string>(
+                "Holiday.SelectAll", parameters, "Id", "Name", session);
+
+            Assert.Equal(syncDict.Count, asyncDict.Count);
+            Assert.Equal(syncDict[id], asyncDict[id]);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+    #endregion
+
+    #region QueryWithRowDelegateAsync
+    [Fact]
+    public async Task QueryWithRowDelegateAsync_InvokesDelegatePerRow()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+            var delegateCalled = false;
+
+            var results = await mapper.QueryWithRowDelegateAsync<Holiday>(
+                "Holiday.SelectAll", parameters,
+                (obj, param, list) =>
+                {
+                    delegateCalled = true;
+                    list.Add((Holiday)obj);
+                },
+                session);
+
+            Assert.True(delegateCalled);
+            Assert.Contains(results, h => h.Id == id);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+
+    [Fact]
+    public async Task QueryWithRowDelegateAsync_DelegateCanFilter()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var parameters = new Hashtable { { "userId", 347317427 } };
+
+            var results = await mapper.QueryWithRowDelegateAsync<Holiday>(
+                "Holiday.SelectAll", parameters,
+                (obj, param, list) =>
+                {
+                    var h = (Holiday)obj;
+                    if (h.Id == id) list.Add(h);
+                },
+                session);
+
+            Assert.Single(results);
+            Assert.Equal(id, results[0].Id);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+    #endregion
+
+    #region QueryForDataTableAsync
+    [Fact]
+    public async Task QueryForDataTableAsync_ReturnsDataTable()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var dt = await mapper.QueryForDataTableAsync("Holiday.Select", id, session);
+
+            Assert.NotNull(dt);
+            Assert.Equal(1, dt.Rows.Count);
+            Assert.Equal(id, Convert.ToInt32(dt.Rows[0]["Id"]));
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+
+    [Fact]
+    public async Task QueryForDataTableAsync_SyncAndAsync_ReturnSameResults()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session));
+
+        try
+        {
+            var syncDt = mapper.QueryForDataTable("Holiday.Select", id, session);
+            var asyncDt = await mapper.QueryForDataTableAsync("Holiday.Select", id, session);
+
+            Assert.Equal(syncDt.Rows.Count, asyncDt.Rows.Count);
+            Assert.Equal(
+                Convert.ToInt32(syncDt.Rows[0]["Id"]),
+                Convert.ToInt32(asyncDt.Rows[0]["Id"]));
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session);
+        }
+    }
+    #endregion
+
+    #region CancellationToken
+    [Fact]
+    public async Task CancelledToken_QueryForObjectAsync_ThrowsOperationCancelled()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => mapper.QueryForObjectAsync<Holiday>("Holiday.Select", -1, session, cts.Token));
+    }
+
+    [Fact]
+    public async Task CancelledToken_QueryForListAsync_ThrowsOperationCancelled()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var parameters = new Hashtable { { "userId", 347317427 } };
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => mapper.QueryForListAsync<Holiday>("Holiday.SelectAll", parameters, session, cts.Token));
+    }
+
+    [Fact]
+    public async Task CancelledToken_InsertAsync_ThrowsOperationCancelled()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync();
+
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var holiday = CreateTestHoliday();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => mapper.InsertAsync("Holiday.Insert", holiday, session, cts.Token));
+    }
+
+    [Fact]
+    public async Task CancelledToken_OpenConnectionAsync_ThrowsOperationCancelled()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+
+        var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => session.OpenConnectionAsync(cts.Token));
+    }
+
+    [Fact]
+    public async Task DefaultCancellationToken_OperatesNormally()
+    {
+        var mapper = BuildMapper();
+        await using var session = mapper.CreateSqlMapSession();
+        await session.OpenConnectionAsync(CancellationToken.None);
+
+        var holiday = CreateTestHoliday();
+        var id = (int)(await mapper.InsertAsync("Holiday.Insert", holiday, session, CancellationToken.None));
+
+        try
+        {
+            var result = await mapper.QueryForObjectAsync<Holiday>("Holiday.Select", id, session, CancellationToken.None);
+            Assert.NotNull(result);
+            Assert.Equal(id, result.Id);
+        }
+        finally
+        {
+            await mapper.DeleteAsync("Holiday.Delete", id, session, CancellationToken.None);
+        }
     }
     #endregion
 }

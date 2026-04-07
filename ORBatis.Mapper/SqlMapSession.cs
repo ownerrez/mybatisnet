@@ -253,6 +253,7 @@ namespace IBatisNet.DataMapper
                     await ((DbConnection)_connection).OpenAsync(cancellationToken).ConfigureAwait(false);
                     if (_logger.IsDebugEnabled) _logger.Debug(string.Format("Open Connection \"{0}\" to \"{1}\".", _connection.GetHashCode().ToString(), DataSource.DbProvider.Description));
                 }
+                catch (OperationCanceledException) { throw; }
                 catch (Exception ex)
                 {
                     throw new DataMapperException(string.Format("Unable to open connection to \"{0}\".", DataSource.DbProvider.Description), ex);
