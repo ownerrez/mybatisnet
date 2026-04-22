@@ -1204,11 +1204,14 @@ namespace IBatisNet.DataMapper.MappedStatements
                 IDataReader reader = new Commands.DataReaderDecorator(dbReader, request);
                 try
                 {
-                    while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
+                    do
                     {
-                        var obj = _resultStrategy.Process(request, ref reader, null);
-                        if (obj != BaseStrategy.SKIP) resultObject.Add((T)obj);
-                    }
+                        while (await dbReader.ReadAsync(cancellationToken).ConfigureAwait(false))
+                        {
+                            var obj = _resultStrategy.Process(request, ref reader, null);
+                            if (obj != BaseStrategy.SKIP) resultObject.Add((T)obj);
+                        }
+                    } while (await dbReader.NextResultAsync(cancellationToken).ConfigureAwait(false));
                 }
                 finally
                 {
