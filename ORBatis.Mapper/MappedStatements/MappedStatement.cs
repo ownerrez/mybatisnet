@@ -1091,6 +1091,8 @@ namespace IBatisNet.DataMapper.MappedStatements
 
         internal async Task<T> RunQueryForObjectAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, T resultObject, CancellationToken cancellationToken)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             var result = resultObject;
 
             using (var command = request.IDbCommand)
@@ -1143,6 +1145,8 @@ namespace IBatisNet.DataMapper.MappedStatements
 
         internal async Task<IList<T>> RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, int skipResults, int maxResults, CancellationToken cancellationToken)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             IList<T> list;
 
             using (var command = request.IDbCommand)
@@ -1196,6 +1200,8 @@ namespace IBatisNet.DataMapper.MappedStatements
 
         internal async Task RunQueryForListAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, IList<T> resultObject, CancellationToken cancellationToken)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             using (var command = request.IDbCommand)
             {
                 request.MoveNextResultMap();
@@ -1230,6 +1236,8 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// </summary>
         public virtual async Task<int> ExecuteUpdateAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
             PreparedCommand.Create(request, session, Statement, parameterObject);
 
@@ -1250,6 +1258,8 @@ namespace IBatisNet.DataMapper.MappedStatements
         /// </summary>
         public virtual async Task<object> ExecuteInsertAsync(ISqlMapSession session, object parameterObject, CancellationToken cancellationToken = default)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             object generatedKey = null;
             SelectKey selectKeyStatement = null;
             var request = Statement.Sql.GetRequestScope(this, parameterObject, session);
@@ -1338,6 +1348,8 @@ namespace IBatisNet.DataMapper.MappedStatements
 
         internal async Task<IDictionary<K, V>> RunQueryForDictionaryAsync<K, V>(RequestScope request, ISqlMapSession session, object parameterObject, string keyProperty, string valueProperty, DictionaryRowDelegate<K, V> rowDelegate, CancellationToken cancellationToken)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             IDictionary<K, V> map = new Dictionary<K, V>();
 
             using (var command = request.IDbCommand)
@@ -1394,6 +1406,8 @@ namespace IBatisNet.DataMapper.MappedStatements
 
         internal async Task<IList<T>> RunQueryForRowDelegateAsync<T>(RequestScope request, ISqlMapSession session, object parameterObject, RowDelegate<T> rowDelegate, CancellationToken cancellationToken)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             IList<T> list;
 
             using (var command = request.IDbCommand)

@@ -274,7 +274,15 @@ namespace IBatisNet.DataMapper
         ///     Open a connection asynchronously, on the specified connection string.
         /// </summary>
         /// <param name="connectionString">The connection string</param>
-        public async Task OpenConnectionAsync(string connectionString, CancellationToken cancellationToken = default)
+        public Task OpenConnectionAsync(string connectionString, CancellationToken cancellationToken = default)
+        {
+            if (_connection != null && _connection.State == ConnectionState.Open)
+                return Task.CompletedTask;
+
+            return OpenConnectionAsyncCore(connectionString, cancellationToken);
+        }
+
+        async Task OpenConnectionAsyncCore(string connectionString, CancellationToken cancellationToken)
         {
             if (_connection == null)
                 CreateConnection(connectionString);
