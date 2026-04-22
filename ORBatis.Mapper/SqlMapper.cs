@@ -1018,6 +1018,8 @@ namespace IBatisNet.DataMapper
 
         public async Task<DataTable> QueryForDataTableAsync(string statementName, object parameterObject, ISqlMapSession session, CancellationToken cancellationToken = default)
         {
+            await session.OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
             var statement = GetMappedStatement(statementName);
             var dataTable = new DataTable(statementName);
             var request = statement.Statement.Sql.GetRequestScope(statement, parameterObject, session);
