@@ -91,11 +91,44 @@ namespace IBatisNet.DataMapper
             }
         }
 
+#if NET5_0_OR_GREATER
+        public async ValueTask DisposeAsync()
+        {
+            if (_connection == null)
+                return;
+
+            if (_logger.IsDebugEnabled) _logger.Debug("Dispose SqlMapSession");
+
+            if (!IsTransactionStart)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                    await CloseConnectionAsync().ConfigureAwait(false);
+            }
+            else if (_consistent)
+            {
+                await CommitTransactionAsync().ConfigureAwait(false);
+            }
+            else if (_connection.State != ConnectionState.Closed)
+            {
+                await RollBackTransactionAsync().ConfigureAwait(false);
+            }
+        }
+
+        async Task CloseConnectionAsync()
+        {
+            var conn = (DbConnection)_connection;
+            await conn.CloseAsync().ConfigureAwait(false);
+            if (_logger.IsDebugEnabled) _logger.Debug(string.Format("Close Connection \"{0}\" to \"{1}\".", conn.GetHashCode().ToString(), DataSource.DbProvider.Description));
+            await conn.DisposeAsync().ConfigureAwait(false);
+            _connection = null;
+        }
+#else
         public ValueTask DisposeAsync()
         {
             Dispose();
             return default;
         }
+#endif
         #endregion
 
         #region IDalSession Members
@@ -268,7 +301,13 @@ namespace IBatisNet.DataMapper
         {
             if (_connection == null || _connection.State != ConnectionState.Open)
                 await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
+#if NET5_0_OR_GREATER
+            _transaction = await ((DbConnection)_connection).BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
+#else
             _transaction = _connection.BeginTransaction();
+#endif
+
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
             IsTransactionStart = true;
         }
@@ -282,7 +321,13 @@ namespace IBatisNet.DataMapper
         {
             if (_connection == null || _connection.State != ConnectionState.Open)
                 await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+
+#if NET5_0_OR_GREATER
+            _transaction = await ((DbConnection)_connection).BeginTransactionAsync(isolationLevel, cancellationToken).ConfigureAwait(false);
+#else
             _transaction = _connection.BeginTransaction(isolationLevel);
+#endif
+
             if (_logger.IsDebugEnabled) _logger.Debug("Begin Transaction.");
             IsTransactionStart = true;
         }
@@ -470,6 +515,114 @@ namespace IBatisNet.DataMapper
                 IsTransactionStart = false;
             }
         }
+
+#if NET5_0_OR_GREATER
+        /// <summary>
+        ///     Commit a transaction asynchronously and close the associated connection.
+        /// </summary>
+        public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            if (_logger.IsDebugEnabled) _logger.Debug("Commit Transaction.");
+
+            var tx = (DbTransaction)_transaction;
+            await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
+            await tx.DisposeAsync().ConfigureAwait(false);
+
+            _transaction = null;
+            IsTransactionStart = false;
+
+            if (_connection.State != ConnectionState.Closed)
+                await CloseConnectionAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Commits the database transaction asynchronously.
+        /// </summary>
+        /// <param name="closeConnection">Close the connection</param>
+        public async Task CommitTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default)
+        {
+            if (closeConnection)
+            {
+                await CommitTransactionAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                if (_logger.IsDebugEnabled) _logger.Debug("Commit Transaction.");
+
+                var tx = (DbTransaction)_transaction;
+                await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
+                await tx.DisposeAsync().ConfigureAwait(false);
+
+                _transaction = null;
+                IsTransactionStart = false;
+            }
+        }
+
+        /// <summary>
+        ///     Roll back a transaction asynchronously and close the associated connection.
+        /// </summary>
+        public async Task RollBackTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            if (_logger.IsDebugEnabled) _logger.Debug("RollBack Transaction.");
+
+            var tx = (DbTransaction)_transaction;
+            await tx.RollbackAsync(cancellationToken).ConfigureAwait(false);
+            await tx.DisposeAsync().ConfigureAwait(false);
+
+            _transaction = null;
+            IsTransactionStart = false;
+
+            if (_connection.State != ConnectionState.Closed)
+                await CloseConnectionAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Rolls back a transaction asynchronously from a pending state.
+        /// </summary>
+        /// <param name="closeConnection">Close the connection</param>
+        public async Task RollBackTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default)
+        {
+            if (closeConnection)
+            {
+                await RollBackTransactionAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                if (_logger.IsDebugEnabled) _logger.Debug("RollBack Transaction.");
+
+                var tx = (DbTransaction)_transaction;
+                await tx.RollbackAsync(cancellationToken).ConfigureAwait(false);
+                await tx.DisposeAsync().ConfigureAwait(false);
+
+                _transaction = null;
+                IsTransactionStart = false;
+            }
+        }
+#else
+        public Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            CommitTransaction();
+            return Task.CompletedTask;
+        }
+
+        public Task CommitTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default)
+        {
+            CommitTransaction(closeConnection);
+            return Task.CompletedTask;
+        }
+
+        public Task RollBackTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            RollBackTransaction();
+            return Task.CompletedTask;
+        }
+
+        public Task RollBackTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default)
+        {
+            RollBackTransaction(closeConnection);
+            return Task.CompletedTask;
+        }
+#endif
 
         /// <summary>
         ///     Create a command object

@@ -175,6 +175,28 @@ namespace IBatisNet.Common
         Task BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     Commit a transaction asynchronously and close the associated connection.
+        /// </summary>
+        Task CommitTransactionAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Commits the database transaction asynchronously.
+        /// </summary>
+        /// <param name="closeConnection">Close the connection</param>
+        Task CommitTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Roll back a transaction asynchronously and close the associated connection.
+        /// </summary>
+        Task RollBackTransactionAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Rolls back a transaction asynchronously from a pending state.
+        /// </summary>
+        /// <param name="closeConnection">Close the connection</param>
+        Task RollBackTransactionAsync(bool closeConnection, CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     Create a command
         /// </summary>
         /// <param name="commandType">The type of the command</param>
