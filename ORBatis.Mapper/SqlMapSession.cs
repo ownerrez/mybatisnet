@@ -639,6 +639,12 @@ namespace IBatisNet.DataMapper
         /// <returns></returns>
         public IDbCommand CreateCommand(CommandType commandType)
         {
+            // CloseConnection() nulls _connection, so a session reused after close would otherwise fail here with a
+            // bare NullReferenceException naming nothing.
+            if (_connection == null)
+                throw new InvalidOperationException(
+                    $"This SqlMapSession has no connection: it was closed or never opened (transactionStart={IsTransactionStart}, consistent={_consistent}). Create a new session instead of reusing a closed one.");
+
             var command = _connection.CreateCommand(); //_dataSource.DbProvider.CreateCommand();
             command.CommandTimeout = DataSource.DbProvider.DbCommandTimeout;
             command.CommandType = commandType;
