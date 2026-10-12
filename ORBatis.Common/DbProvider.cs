@@ -77,6 +77,10 @@ namespace IBatisNet.Common
 
         [NonSerialized] private IConnectionAdapter _connectionAdapter;
 
+        [NonSerialized] private string _generatedKeyReaderClass = string.Empty;
+
+        [NonSerialized] private IGeneratedKeyReader _generatedKeyReader;
+
         //		private static readonly ILog _connectionLogger = LogManager.GetLogger("System.Data.IDbConnection");
         #endregion
 
@@ -177,6 +181,22 @@ namespace IBatisNet.Common
             get => _connectionAdapterClass;
             set => _connectionAdapterClass = value;
         }
+
+        /// <summary>
+        ///     The <see cref="IGeneratedKeyReader" /> class name to use, if any.
+        /// </summary>
+        [XmlAttribute("generatedKeyReaderClass")]
+        public string GeneratedKeyReaderClass
+        {
+            get => _generatedKeyReaderClass;
+            set => _generatedKeyReaderClass = value;
+        }
+
+        /// <summary>
+        ///     The generated key reader built from <see cref="GeneratedKeyReaderClass" />, or null when none is configured.
+        /// </summary>
+        [XmlIgnore]
+        public IGeneratedKeyReader GeneratedKeyReader => _generatedKeyReader;
 
 
         /// <summary>
@@ -474,6 +494,15 @@ namespace IBatisNet.Common
                         connectionAdapterType = assembly.GetType(_connectionAdapterClass, true);
 
                     _connectionAdapter = (IConnectionAdapter)Activator.CreateInstance(connectionAdapterType);
+                }
+
+                if (!string.IsNullOrWhiteSpace(_generatedKeyReaderClass))
+                {
+                    var generatedKeyReaderType = _generatedKeyReaderClass.IndexOf(',') > 0
+                        ? TypeUtils.ResolveType(_generatedKeyReaderClass)
+                        : assembly.GetType(_generatedKeyReaderClass, true);
+
+                    _generatedKeyReader = (IGeneratedKeyReader)Activator.CreateInstance(generatedKeyReaderType);
                 }
             }
             catch (Exception e)
