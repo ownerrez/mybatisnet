@@ -62,6 +62,17 @@ namespace IBatisNet.Common
         string ConnectionAdapterClass { get; set; }
 
         /// <summary>
+        ///     The <see cref="IGeneratedKeyReader" /> class name to use, if any.
+        /// </summary>
+        [XmlAttribute("generatedKeyReaderClass")]
+        string GeneratedKeyReaderClass { get; set; }
+
+        /// <summary>
+        ///     The generated key reader built from <see cref="GeneratedKeyReaderClass" />, or null when none is configured.
+        /// </summary>
+        IGeneratedKeyReader GeneratedKeyReader { get; }
+
+        /// <summary>
         ///     Does this ConnectionProvider require the use of a Named Prefix in the SQL
         ///     statement.
         /// </summary>

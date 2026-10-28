@@ -98,6 +98,7 @@
         <Compile Include="Tests\AsyncCrudFacts.cs" />
         <Compile Include="Tests\AsyncFunctionalityFacts.cs" />
         <Compile Include="Tests\BasicFunctionalityFacts.cs" />
+        <Compile Include="Tests\GeneratedKeyReaderFacts.cs" />
         <Compile Include="Tests\SyncCrudFacts.cs" />
         <Compile Include="TypeHandlers\GuidByteArray.cs" />
         <Compile Include="TypeHandlers\NullableEnum.cs" />
@@ -105,6 +106,8 @@
     <ItemGroup>
       <None Include="App.config" />
       <EmbeddedResource Include="Config\SqlMap.config" />
+      <EmbeddedResource Include="Config\SqlMapGeneratedKeys.config" />
+      <EmbeddedResource Include="Config\GeneratedKeys.xml" />
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>

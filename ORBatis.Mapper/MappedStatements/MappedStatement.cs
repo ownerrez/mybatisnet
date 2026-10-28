@@ -852,8 +852,11 @@ namespace IBatisNet.DataMapper.MappedStatements
 
                 if (selectKeyStatement != null && selectKeyStatement.isAfter)
                 {
-                    var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
-                    generatedKey = mappedStatement.ExecuteQueryForObject(session, parameterObject);
+                    if (!TryReadGeneratedKey(session, command, selectKeyStatement, out generatedKey))
+                    {
+                        var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
+                        generatedKey = mappedStatement.ExecuteQueryForObject(session, parameterObject);
+                    }
 
                     ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
                         request.DataExchangeFactory.ObjectFactory,
@@ -868,6 +871,30 @@ namespace IBatisNet.DataMapper.MappedStatements
             RaiseExecuteEvent();
 
             return generatedKey;
+        }
+
+        /// <summary>
+        ///     Takes a post selectKey's value from the provider's <see cref="IGeneratedKeyReader" />. False when no reader is
+        ///     configured, the result class is not a simple type, or the command's reply carries no key.
+        /// </summary>
+        private bool TryReadGeneratedKey(ISqlMapSession session, IDbCommand command, SelectKey selectKey, out object generatedKey)
+        {
+            generatedKey = null;
+
+            var reader = session.DataSource.DbProvider.GeneratedKeyReader;
+
+            if (reader == null || selectKey.ResultClass == null || !SqlMap.TypeHandlerFactory.IsSimpleType(selectKey.ResultClass))
+                return false;
+
+            var providerCommand = command is Commands.DbCommandDecorator decorator ? decorator.InnerCommand : command;
+            var value = reader.ReadGeneratedKey(providerCommand);
+
+            if (value == null)
+                return false;
+
+            generatedKey = SqlMap.TypeHandlerFactory.GetTypeHandler(selectKey.ResultClass).GetDataBaseValue(value, selectKey.ResultClass);
+
+            return true;
         }
         #endregion
 
@@ -1310,8 +1337,11 @@ namespace IBatisNet.DataMapper.MappedStatements
 
                 if (selectKeyStatement != null && selectKeyStatement.isAfter)
                 {
-                    var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
-                    generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject, cancellationToken).ConfigureAwait(false);
+                    if (!TryReadGeneratedKey(session, command, selectKeyStatement, out generatedKey))
+                    {
+                        var mappedStatement = SqlMap.GetMappedStatement(selectKeyStatement.Id);
+                        generatedKey = await mappedStatement.ExecuteQueryForObjectAsync<object>(session, parameterObject, cancellationToken).ConfigureAwait(false);
+                    }
 
                     ObjectProbe.SetMemberValue(parameterObject, selectKeyStatement.PropertyName, generatedKey,
                         request.DataExchangeFactory.ObjectFactory,

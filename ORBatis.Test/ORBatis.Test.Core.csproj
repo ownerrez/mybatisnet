@@ -31,6 +31,8 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Config\SqlMap.config" />
+      <EmbeddedResource Include="Config\SqlMapGeneratedKeys.config" />
+      <EmbeddedResource Include="Config\GeneratedKeys.xml" />
     </ItemGroup>
 
 </Project>

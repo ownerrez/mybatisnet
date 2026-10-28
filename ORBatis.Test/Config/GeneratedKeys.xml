@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlMap namespace="GeneratedKeys" xmlns="http://ibatis.apache.org/mapping">
+  <statements>
+    <insert id="InsertWithResultMap" parameterClass="hashtable">
+      <selectKey property="Key" type="post" resultMap="Global.int">
+        select LAST_INSERT_ID() as value
+      </selectKey>
+      insert into Holiday (UserId, Name, AllowAllProperties, Active, CreatedUtc, CreatedUserId, UpdatedUserId)
+      values (#UserId#, #Name#, 1, 1, UTC_TIMESTAMP(), #UserId#, #UserId#)
+    </insert>
+    <insert id="InsertWithComplexKey" parameterClass="hashtable">
+      <selectKey property="Key" type="post" resultClass="hashtable">
+        select LAST_INSERT_ID() as value
+      </selectKey>
+      insert into Holiday (UserId, Name, AllowAllProperties, Active, CreatedUtc, CreatedUserId, UpdatedUserId)
+      values (#UserId#, #Name#, 1, 1, UTC_TIMESTAMP(), #UserId#, #UserId#)
+    </insert>
+  </statements>
+</sqlMap>
