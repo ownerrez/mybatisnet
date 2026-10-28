@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using IBatisNet.Common.Utilities;
@@ -195,6 +196,68 @@ public class GeneratedKeyReaderFacts : IDisposable
             finally
             {
                 mapper.Delete("Holiday.Delete", key, session);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task InsertAsync_WithNoReaderConfigured_RunsThePostSelectKey()
+    {
+        var mapper = BuildMapper("SqlMap.config");
+        GeneratedKeyReader.Read = _ => ReaderKey;
+
+        await using (var session = mapper.CreateSqlMapSession())
+        {
+            await session.BeginTransactionAsync();
+            try
+            {
+                var holiday = CreateTestHoliday();
+                var key = (int)await mapper.InsertAsync("Holiday.Insert", holiday, session);
+
+                Assert.Equal(0, GeneratedKeyReader.Calls);
+                Assert.Equal(key, holiday.Id);
+                Assert.Equal(holiday.Name, (await mapper.QueryForObjectAsync<Holiday>("Holiday.Select", key, session))?.Name);
+            }
+            finally
+            {
+                session.RollBackTransaction();
+            }
+        }
+    }
+
+    [Theory]
+    [InlineData("InsertWithResultMap", false)]
+    [InlineData("InsertWithResultMap", true)]
+    [InlineData("InsertWithComplexKey", false)]
+    [InlineData("InsertWithComplexKey", true)]
+    public async Task Insert_WithoutASimpleResultClass_RunsThePostSelectKey(string statement, bool useAsync)
+    {
+        var mapper = BuildMapper("SqlMapGeneratedKeys.config");
+        GeneratedKeyReader.Read = _ => throw new InvalidOperationException("The reader must not handle mapped or complex keys.");
+        var holiday = CreateTestHoliday();
+        var parameter = new Hashtable { ["UserId"] = holiday.UserId, ["Name"] = holiday.Name, ["Key"] = null };
+
+        await using (var session = mapper.CreateSqlMapSession())
+        {
+            await session.BeginTransactionAsync();
+            try
+            {
+                var key = useAsync
+                    ? await mapper.InsertAsync($"GeneratedKeys.{statement}", parameter, session)
+                    : mapper.Insert($"GeneratedKeys.{statement}", parameter, session);
+
+                Assert.Equal(0, GeneratedKeyReader.Calls);
+                Assert.Equal(key, parameter["Key"]);
+                var value = statement == "InsertWithComplexKey"
+                    ? Assert.IsAssignableFrom<IDictionary>(key)["value"]
+                    : Assert.IsType<ulong>(key);
+                int id = Convert.ToInt32(value);
+                Assert.True(id > 0);
+                Assert.Equal(holiday.Name, (await mapper.QueryForObjectAsync<Holiday>("Holiday.Select", id, session))?.Name);
+            }
+            finally
+            {
+                session.RollBackTransaction();
             }
         }
     }
